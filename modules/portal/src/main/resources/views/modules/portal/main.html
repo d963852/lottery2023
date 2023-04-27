@@ -1,0 +1,283 @@
+<% layout('/layouts/default.html', {title: '', bodyClass: ''}){ %>
+<!-- <link rel="stylesheet" href="${ctxStatic}/modules/sys/sysDesktop.css?${_version}"> -->
+<div class="content pb0">
+
+	<div class="row">
+		<div class="col-lg-2 col-md-6 col-xs-12">
+			<!-- small box -->
+			<div class="small-box bg-blue">
+				<div class="inner">
+					<h2>3</h2>
+					<p>项目数</p>
+				</div>
+				<div class="icon">
+					<i class="fa fa-cubes"></i>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-2 col-md-6 col-xs-12">
+			<!-- small box -->
+			<div class="small-box bg-yellow">
+				<div class="inner">
+					<h2>126</h2>
+					<p>进行的任务</p>
+				</div>
+				<div class="icon">
+					<i class="fa fa-forward"></i>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-2 col-md-6 col-xs-12">
+			<!-- small box -->
+			<div class="small-box bg-green">
+				<div class="inner">
+					<h2>18.36 <small style="color: #EEEEEE"> %</small></h2>
+					<p>完成进度</p>
+				</div>
+				<div class="icon">
+					<i class="fa fa-check-square-o"></i>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-2 col-md-6 col-xs-12">
+			<!-- small box -->
+			<div class="small-box bg-blue">
+				<div class="inner">
+					<h2>72</h2>
+					<p>参与人数</p>
+				</div>
+				<div class="icon">
+					<i class="fa fa-group"></i>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-2 col-md-6 col-xs-12">
+			<!-- small box -->
+			<div class="small-box bg-yellow">
+				<div class="inner">
+					<h2>150</h2>
+					<p>进展报告数</p>
+				</div>
+				<div class="icon">
+					<i class="fa fa-comments"></i>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-2 col-md-6 col-xs-12">
+			<!-- small box -->
+			<div class="small-box bg-red">
+				<div class="inner">
+					<h2>18</h2>
+					<p>超期任务</p>
+				</div>
+				<div class="icon">
+					<i class="fa fa-exclamation-circle"></i>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+
+		<!-- 效率报告  -->
+		<section class="col-md-6 ui-sortable">
+			<div class="box box-widget">
+				<div class="box-header with-border">
+					<h3 class="box-title">效率报告</h3>
+					<div class="box-tools pull-right">
+						<button type="button" class="btn btn-box-tool" data-widget="collapse">
+							<i class="fa fa-minus"></i>
+						</button>
+						<div class="btn-group">
+							<button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown">
+								<i class="fa fa-wrench"></i></button>
+							<ul class="dropdown-menu" role="menu">
+								<li><a href="#">导出Excel</a></li>
+								<li><a href="#">导出Word</a></li>
+								<li class="divider"></li>
+								<li><a href="#">基本设置</a></li>
+							</ul>
+						</div>
+						<button type="button" class="btn btn-box-tool" data-widget="remove">
+							<i class="fa fa-times"></i>
+						</button>
+					</div>
+				</div>
+				<div class="box-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="chart">
+								<div id="myChart" style="height:300px;width:100%"></div>
+								<script>
+									$(function () {
+										myChart1 = echarts.init(document.getElementById('myChart'), 'default');
+										myChart1.setOption({
+											title: {
+												text: js.formatDate(new Date(), 'yyyy-MM')
+											},
+											tooltip: {
+												trigger: 'axis'
+											},
+											legend: {
+												data: ['新增', '完成', '进行中']
+											},
+											toolbox: {
+												show: true,
+												feature: {
+													mark: {show: true},
+													dataView: {show: true, readOnly: false},
+													magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+													restore: {show: true},
+													saveAsImage: {show: true}
+												}
+											},
+											calculable: true,
+											grid: {
+												top: '49',
+												right: '30',
+												bottom: '30'
+											},
+											xAxis: [
+												{
+													type: 'category',
+													boundaryGap: false,
+													data: ['2021-10', '2021-11', '2021-12', '2022-01', '2022-02', '2022-03', '2022-04']
+												}
+											],
+											yAxis: [
+												{
+													type: 'value'
+												}
+											],
+											//color: ['#FAD860','#F3A43B','#60C0DD','#C6E579'],
+											series: [
+												{
+													name: '新增',
+													type: 'line',
+													smooth: true,
+													itemStyle: {normal: {areaStyle: {type: 'default'}}},
+													data: [10, 12, 21, 54, 260, 830, 710]
+												},
+												{
+													name: '进行中',
+													type: 'line',
+													smooth: true,
+													itemStyle: {normal: {areaStyle: {type: 'default'}}},
+													data: [30, 182, 434, 791, 390, 30, 10]
+												},
+												{
+													name: '完成',
+													type: 'line',
+													smooth: true,
+													itemStyle: {normal: {areaStyle: {type: 'default'}}},
+													data: [1320, 1132, 601, 234, 120, 90, 20]
+												}
+											]
+										});
+									});
+								</script>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- 分项目统计  -->
+		<section class="col-md-6 ui-sortable">
+			<div class="box box-widget">
+				<div class="box-header with-border">
+					<h3 class="box-title"><i class="fa fa-inbox"></i> 分项目任务数量统计</h3>
+					<div class="box-tools pull-right">
+						<button type="button" class="btn btn-box-tool" data-widget="collapse">
+							<i class="fa fa-minus"></i>
+						</button>
+						<button type="button" class="btn btn-box-tool" data-widget="remove">
+							<i class="fa fa-times"></i>
+						</button>
+					</div>
+				</div>
+				<div class="box-body">
+					<div class="row">
+						<div class="col-md-12">
+							<div id="myChart2" style="height:300px;width:100%"></div>
+							<script>
+								$(function () {
+									myChart2 = echarts.init(document.getElementById('myChart2'), 'light');
+									myChart2.setOption({
+										tooltip: {
+											trigger: 'item',
+											formatter: "{a} <br/>{b}: {c} ({d}%)"
+										},
+										series: [
+											{
+												name: '项目任务数',
+												type: 'pie',
+												radius: ['15%', '70%'],
+												roseType: 'radius',
+												avoidLabelOverlap: false,
+												label: {
+													normal: {
+														show: true
+													},
+													emphasis: {
+														show: true,
+														textStyle: {
+															fontSize: '10',
+															fontWeight: 'bold'
+														}
+													}
+												},
+												labelLine: {
+													normal: {
+														show: true
+													}
+												},
+												data: [
+													{value: 16, name: '保定市国家职业教育改革试点三年行动计划（2022-2024年）'},
+													{value: 37, name: '提质培优行动计划'},
+													{value: 31, name: '创新发展行动计划'},
+													{value: 5, name: '其他'}
+												]
+											}
+										]
+									});
+								});
+							</script>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+	</div>
+</div>
+<footer class="main-footer m0" style="padding-right:50px">
+	<div class="pull-right hidden-xs">当前版本： ${@Global.getConfig('productVersion')}</div>
+	&copy; ${@DateUtils.getYear()} ${@Global.getConfig('productName')} - Powered By
+	<a href="http://jeesite.com" target="_blank">JeeSite</a>
+</footer>
+<% } %>
+<script src="${ctxStatic}/jquery/jquery-ui-sortable-1.12.1.min.js"></script>
+<script src="${ctxStatic}/echarts/4.2/echarts.min.js"></script>
+<script>
+	$(function () {
+		$(window).resize(function () {
+			var footerHeight = $('.main-footer').outerHeight() || 0;
+			var windowHeight = $(window).height();
+			$('.content').css('min-height', windowHeight - footerHeight);
+			myChart1.resize();
+			myChart2.resize();
+		}).resize();
+		$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+			$(window).resize();
+		});
+		$('.ui-sortable').sortable({
+			connectWith: '.ui-sortable',
+			handle: '.box-header, .nav-tabs',
+			placeholder: 'sort-highlight',
+			forcePlaceholderSize: true,
+			zIndex: 999999
+		}).find('.box-header, .nav-tabs').css('cursor', 'move');
+	});
+</script>

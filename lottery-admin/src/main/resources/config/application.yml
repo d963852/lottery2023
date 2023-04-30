@@ -932,4 +932,3 @@ rocketmq:
     send-message-timeout: 10000
   consumer:
     group: LotteryConsumerGroup
-

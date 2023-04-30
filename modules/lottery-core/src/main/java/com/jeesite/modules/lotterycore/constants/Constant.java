@@ -116,25 +116,24 @@ public class Constant {
 
 
 
-	public static final String 游戏_广东11选5 = "GD11X5";
-
-	public static final String 游戏_江西11选5 = "JX11X5";
-
-	public static final String 游戏_江苏11选5 = "JS11X5";
-
-	public static final String 游戏_上海11选5 = "SH11X5";
-
-	public static final String 游戏_浙江11选5 = "ZJ11X5";
-
-	public static final String 游戏_重庆时时彩 = "CQSSC";
-
-	public static final String 游戏_新疆时时彩 = "XJSSC";
-
-	public static final String 游戏_云南时时彩 = "YNSSC";
-
-	public static final String 游戏_天津时时彩 = "TJSSC";
-
 	public static final String 游戏_奇趣分分彩 = "QIQFFC";
+	public static final String 游戏_腾讯分分彩 = "TXFFC";
+	public static final String 游戏_腾讯2分彩 = "TX2FCS";
+	public static final String 游戏_西贡五分彩 = "XG300";
+	public static final String 游戏_河内分分彩 = "HN60";
+	public static final String 游戏_河内五分彩 = "HN300";
+	public static final String 游戏_体彩排列3 = "TCPL3";
+	public static final String 游戏_福彩3D = "FC3D";
+	public static final String 游戏_幸运飞艇 = "XIYFT";
+	public static final String 游戏_经典重庆时时彩 = "JDCQSSC";
+	public static final String 游戏_重庆分分彩 = "CQFFC";
+	public static final String 游戏_重庆五分彩 = "CQ5FC";
+	public static final String 游戏_山东11选5 = "SD11X5";
+	public static final String 游戏_上海11选5 = "SH11X5";
+	public static final String 游戏_江苏快三 = "JSKS";
+	public static final String 游戏_北京PK10 = "BJPK10";
+	public static final String 游戏_新疆时时彩 = "XJSSC";
+	public static final String 游戏_欢乐生肖 = "CQSSC";
 
 
 

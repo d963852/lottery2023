@@ -13,8 +13,8 @@
 			<div class="box-body">
 				<div class="form-unit">${text('基本信息')}</div>
 				<#form:hidden path="id"/>
-				<#form:hidden path="gameId" value="${game.id}"/>
-				<#form:hidden path="gameCode" value="${game.gameCode}"/>
+				<#form:hidden name="gameId" value="${game.id}"/>
+				<#form:hidden name="gameCode" value="${game.gameCode}"/>
 				<div class="row">
 					<div class="col-xs-6">
 						<div class="form-group">
@@ -112,7 +112,7 @@
 							<label class="control-label col-sm-4" title="">
 								<span class="required ">*</span> ${text('投注截止时长（秒）')}：<i class="fa icon-question hide"></i></label>
 							<div class="col-sm-8">
-								<#form:input path="betCutOffTime" maxlength="5" class="form-control digits required "/>
+								<#form:input path="betCutOffTime" maxlength="5" class="form-control digits required "  defaultValue="5"/>
 							</div>
 						</div>
 					</div>

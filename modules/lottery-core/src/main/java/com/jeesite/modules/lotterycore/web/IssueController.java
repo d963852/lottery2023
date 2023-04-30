@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 彩票期号Controller
@@ -121,15 +120,13 @@ public class IssueController extends BaseController {
      */
     @RequiresPermissions("lotterycore:issue:view")
     @RequestMapping(value = "makeForm")
-    public String makeForm(Issue issue, Model model) {
-        Game gameSC = new Game();
-        gameSC.setGameCode(issue.getGameCode());
-        List<Game> gameList = gameService.findList(gameSC);
-        model.addAttribute("message", BizError.游戏不存在.getMsg());
-        if (gameList.size() < 1) {
+    public String makeForm(@Param("gameId") String gameId, Model model) {
+        Game gameSC = gameService.get(gameId);
+        if (gameSC == null) {
+            model.addAttribute("message", BizError.游戏不存在.getMsg());
             return "error/404";
         }
-        model.addAttribute("game", gameList.get(0));
+        model.addAttribute("game", gameSC);
         return "modules/lotterycore/issueMakeForm";
     }
 

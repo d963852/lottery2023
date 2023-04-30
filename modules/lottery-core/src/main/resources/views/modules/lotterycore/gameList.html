@@ -104,7 +104,7 @@ $('#dataGrid').dataGrid({
 			<% if(hasPermi('lotterycore:game:edit')){ %>
 				actions.push('<a href="${ctx}/lotterycore/game/form?id='+row.id+'" class="btn btn-default btn-xs btnList" title="${text("编辑游戏")}"><i class="fa fa-pencil"></i> 编辑</a>&nbsp;');
 				actions.push('<a href="${ctx}/lotterycore/issueGenerateRule/list?gameId='+row.id+'" class="btn btn-default btn-xs btnList" title="${text("期号生成规则")}"><i class="fa fa-gg"></i> 期号生成规则</a>&nbsp;');
-				actions.push('<a href="${ctx}/lotterycore/issue/makeForm?gameCode='+row.gameCode+'" class="btn btn-default btn-xs btnList" title="${text("手动生成期号")}"><i class="fa fa-get-pocket"></i> 手动生成期号</a>&nbsp;');
+				actions.push('<a href="${ctx}/lotterycore/issue/makeForm?gameId='+row.id+'" class="btn btn-default btn-xs btnList" title="${text("手动生成期号")}"><i class="fa fa-get-pocket"></i> 手动生成期号</a>&nbsp;');
 				if (row.status == Global.STATUS_NORMAL){
 					actions.push('<a href="${ctx}/lotterycore/game/disable?id='+row.id+'" class="btn btn-default btn-xs btnList" title="${text("停用")}" data-confirm="${text("确认要停用游戏吗？")}"><i class="glyphicon glyphicon-ban-circle"></i> 停用</a>&nbsp;');
 				} else if (row.status == Global.STATUS_DISABLE){

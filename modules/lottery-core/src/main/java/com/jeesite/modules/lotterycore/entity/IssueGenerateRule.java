@@ -1,14 +1,12 @@
 package com.jeesite.modules.lotterycore.entity;
 
-import javax.validation.constraints.Size;
-
 import com.jeesite.common.entity.BaseEntity;
-
 import com.jeesite.common.entity.DataEntity;
 import com.jeesite.common.mybatis.annotation.Column;
 import com.jeesite.common.mybatis.annotation.JoinTable;
 import com.jeesite.common.mybatis.annotation.Table;
 
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
@@ -49,7 +47,7 @@ import java.util.Date;
                                 @Column(name = "game_name", attrName = "gameName", label = "游戏名称"),
                         }),
         },
-        orderBy = "a.update_date DESC"
+        orderBy = "a.issue_begin_number ASC"
 )
 public class IssueGenerateRule extends DataEntity<IssueGenerateRule> {
 

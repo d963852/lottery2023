@@ -26,7 +26,8 @@ import java.util.Date;
 		@Column(name="start_time", attrName="startTime", label="开始时间", isUpdateForce=true),
 		@Column(name="end_time", attrName="endTime", label="结束时间", isUpdateForce=true),
 		@Column(name="state", attrName="state", label="期号状态"),
-		@Column(name="sync_time", attrName="syncTime", label="开奖同步时间", isUpdateForce=true),
+		@Column(name="sync_time", attrName="syncTime", label="实际开奖时间", isUpdateForce=true),
+		@Column(name="plan_sync_time", attrName="planSyncTime", label="计划开奖时间", isUpdateForce=true),
 		@Column(name="version", attrName="version", label="乐观锁版本号", isQuery=false, isUpdateForce=true),
 		@Column(name="settlement_time", attrName="settlementTime", label="结算时间", isUpdateForce=true),
 		@Column(name="automatic_lottery", attrName="automaticLottery", label="自动开奖"),
@@ -51,7 +52,8 @@ public class Issue extends DataEntity<Issue> {
 	private Date startTime;		// 开始时间
 	private Date endTime;		// 结束时间
 	private String state;		// 期号状态
-	private Date syncTime;		// 开奖同步时间
+	private Date syncTime;		// 计划开奖时间
+	private Date planSyncTime;		// 实际开奖时间
 	private Long version;		// 乐观锁版本号
 	private Date settlementTime;		// 结算时间
 	private String automaticLottery;		// 自动开奖
@@ -325,6 +327,14 @@ public class Issue extends DataEntity<Issue> {
 		this.lotterySource = lotterySource;
 	}
 
+	public Date getPlanSyncTime() {
+		return planSyncTime;
+	}
+
+	public void setPlanSyncTime(Date planSyncTime) {
+		this.planSyncTime = planSyncTime;
+	}
+
 	@Override
 	public String toString() {
 		return "Issue{" +
@@ -339,6 +349,7 @@ public class Issue extends DataEntity<Issue> {
 				", endTime=" + endTime +
 				", state='" + state + '\'' +
 				", syncTime=" + syncTime +
+				", planSyncTime=" + planSyncTime +
 				", version=" + version +
 				", settlementTime=" + settlementTime +
 				", automaticLottery='" + automaticLottery + '\'' +

@@ -39,3 +39,9 @@ mybatis:
   mapper:
     refresh:
       enabled: false
+
+xxl:
+  mq:
+    admin:
+      address: http://localhost:18080/
+    accessToken: duke

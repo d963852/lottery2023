@@ -1,6 +1,7 @@
 package com.jeesite.modules.lotterycore.service;
 
 import cn.hutool.core.date.DateUtil;
+import com.alibaba.fastjson.JSON;
 import com.jeesite.common.collect.ListUtils;
 import com.jeesite.common.entity.Page;
 import com.jeesite.common.idgen.IdGen;
@@ -15,13 +16,14 @@ import com.jeesite.modules.lotterycore.dao.IssueDao;
 import com.jeesite.modules.lotterycore.entity.Game;
 import com.jeesite.modules.lotterycore.entity.Issue;
 import com.jeesite.modules.lotterycore.entity.IssueGenerateRule;
-import org.apache.rocketmq.common.message.Message;
+import com.jeesite.modules.lotterycore.param.SyncLotteryNumMsg;
+import com.xxl.mq.client.message.XxlMqMessage;
+import com.xxl.mq.client.producer.XxlMqProducer;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -188,6 +190,9 @@ public class IssueService extends CrudService<IssueDao, Issue> {
                     theIssue.setEndTime(DateUtils.addSeconds(theIssue.getLotteryTime(), -10));
                     theIssue.setAutomaticLottery(issueGenerateRule.getAutomaticLottery());
                     theIssue.setAutomaticSettlement(issueGenerateRule.getAutomaticSettlement());
+                    // 采集时间（MQ发送时间）
+                    Date effectTime = DateUtils.addSeconds(theIssue.getLotteryTime(), 8);
+                    theIssue.setPlanSyncTime(effectTime);
 
                     // 生成每期的期数
                     issueList.add(theIssue);
@@ -205,7 +210,7 @@ public class IssueService extends CrudService<IssueDao, Issue> {
         Iterator<Issue> issueIterator = issueList.iterator();
         while (issueIterator.hasNext()) {
             Issue theNewIssue = issueIterator.next();
-            for(Issue issueHaved : issueListOfHaved) {
+            for (Issue issueHaved : issueListOfHaved) {
                 if (theNewIssue.getIssueNum().equals(issueHaved.getIssueNum())) {
                     issueIterator.remove();
                 }
@@ -214,10 +219,13 @@ public class IssueService extends CrudService<IssueDao, Issue> {
 
         if (issueList.size() > 0) {
             for (Issue issue : issueList) {
-                Date effectTime = DateUtils.addSeconds(issue.getLotteryTime(), 5);
-                Message message = new Message(Constant.消息主题_同步开奖数据, issue.getId(), game.getGameCode(), issue.getIssueNum().getBytes(StandardCharsets.UTF_8));
-                message.setDeliverTimeMs(effectTime.getTime());
-                rocketMQTemplate.syncSendDeliverTimeMills(Constant.消息主题_同步开奖数据, message, effectTime.getTime());
+//                Message<byte[]> message = MessageBuilder.withPayload(issue.getIssueNum().getBytes(StandardCharsets.UTF_8)).setHeader("KEYS", issue.getId()).build();
+//                SendResult sendResult = rocketMQTemplate.syncSendDeliverTimeMills(Constant.消息主题_同步开奖数据 + ":" + game.getGameCode(), message, issue.getPlanSyncTime().getTime());
+                XxlMqMessage mqMessage = new XxlMqMessage();
+                mqMessage.setTopic("SYNC_LOTTERY_NUM_" + issue.getGameCode());
+                mqMessage.setData(JSON.toJSONString(new SyncLotteryNumMsg(issue.getGameCode(), issue.getIssueNum(), 3)));
+                mqMessage.setEffectTime(issue.getPlanSyncTime());
+                XxlMqProducer.produce(mqMessage);
             }
             // 将没有的期号添加进去
             dao.insertBatch(issueList, 100);

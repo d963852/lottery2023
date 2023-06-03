@@ -1,0 +1,82 @@
+<% layout('/layouts/default.html', {title: '开奖管理', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-notebook"></i> ${text('开奖管理')}
+			</div>
+			<div class="box-tools pull-right">
+				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+				<a href="#" class="btn btn-default" id="btnSetting" title="${text('设置')}"><i class="fa fa-navicon"></i></a>
+			</div>
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" model="${issue}" action="${ctx}/lotterycore/issue/lotteryNumberListData" method="post" class="form-inline"
+					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+				<div class="form-group">
+					<label class="control-label">${text('游戏')}：</label>
+					<div class="control-inline width-180" style="min-width: 180px;">
+						<#form:select path="gameCode" items="${gameList}" itemLabel="gameName" itemValue="gameCode" blankOption="true" blankOptionLabel="全部" class="form-control width-180" style="min-width: 180px;"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('期号')}：</label>
+					<div class="control-inline">
+						<#form:input path="issueNum" maxlength="64" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('开奖日期')}：</label>
+					<div class="control-inline">
+						<#form:input path="lotteryDate_gte" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm" data-done="lotteryDate_lte.click()"/>
+						&nbsp;-&nbsp;
+						<#form:input path="lotteryDate_lte" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+					<button type="reset" class="btn btn-default btn-sm isQuick">${text('重置')}</button>
+				</div>
+			</#form:form>
+			<table id="dataGrid"></table>
+			<div id="dataGridPage"></div>
+		</div>
+	</div>
+</div>
+<% } %>
+<script>
+// 初始化DataGrid对象
+$('#dataGrid').dataGrid({
+	searchForm: $("#searchForm"),
+	columnModel: [
+		{header:'${text("游戏")}', name:'gameCode', index:'a.game_code', width:150, align:"center", frozen:true, formatter: function(val, obj, row, act){
+			return '<a href="${ctx}/lotterycore/issue/form?id='+row.id+'" class="btnList" data-title="${text("编辑彩票期号")}">'+(val||row.id)+'</a>';
+		}},
+		{header:'${text("期号")}', name:'issueNum', index:'a.issue_num', width:150, align:"center"},
+		{header:'${text("开奖日期")}', name:'lotteryDate', index:'a.lottery_date', width:150, align:"center",
+			formatter:"date",
+			formatoptions:{srcformat:'Y-m-d H:i:s', newformat:'Y-m-d'}
+		},
+		{header:'${text("开奖号码")}', name:'lotteryNum', index:'a.lottery_num', width:150, align:"center"},
+		{header:'${text("开奖时间")}', name:'lotteryTime', index:'a.lottery_time', width:150, align:"center"},
+		{header:'${text("操作")}', name:'actions', width:120, formatter: function(val, obj, row, act){
+			var actions = [];
+			//<% if(hasPermi('lotterycore:issue:edit')){ %>
+				actions.push('<a href="${ctx}/lotterycore/issue/form?id='+row.id+'" class="btnList" title="${text("编辑彩票期号")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+				if (row.status == Global.STATUS_NORMAL){
+					actions.push('<a href="${ctx}/lotterycore/issue/disable?id='+row.id+'" class="btnList" title="${text("停用彩票期号")}" data-confirm="${text("确认要停用该彩票期号吗？")}"><i class="glyphicon glyphicon-ban-circle"></i></a>&nbsp;');
+				} else if (row.status == Global.STATUS_DISABLE){
+					actions.push('<a href="${ctx}/lotterycore/issue/enable?id='+row.id+'" class="btnList" title="${text("启用彩票期号")}" data-confirm="${text("确认要启用该彩票期号吗？")}"><i class="glyphicon glyphicon-ok-circle"></i></a>&nbsp;');
+				}
+			//<% } %>
+			return actions.join('');
+		}}
+	],
+	// 加载成功后执行事件
+	ajaxSuccess: function(data){
+		
+	}
+});
+</script>

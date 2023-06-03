@@ -1,0 +1,198 @@
+<% layout('/layouts/default.html', {title: '彩票期号管理', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-notebook"></i> ${text('彩票期号管理')}
+			</div>
+			<div class="box-tools pull-right">
+				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+				<% if(hasPermi('lotterycore:issue:edit')){ %>
+					<a href="${ctx}/lotterycore/issue/form" class="btn btn-default btnTool" title="${text('新增彩票期号')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+				<% } %>
+				<a href="#" class="btn btn-default" id="btnSetting" title="${text('设置')}"><i class="fa fa-navicon"></i></a>
+			</div>
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" model="${issue}" action="${ctx}/lotterycore/issue/listData" method="post" class="form-inline hide"
+					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+				<div class="form-group">
+					<label class="control-label">${text('所属游戏代码')}：</label>
+					<div class="control-inline">
+						<#form:input path="gameCode" maxlength="255" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('期数')}：</label>
+					<div class="control-inline">
+						<#form:input path="issueNum" maxlength="64" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('开奖日期')}：</label>
+					<div class="control-inline">
+						<#form:input path="lotteryDate_gte" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm" data-done="lotteryDate_lte.click()"/>
+						&nbsp;-&nbsp;
+						<#form:input path="lotteryDate_lte" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('开奖号码')}：</label>
+					<div class="control-inline">
+						<#form:input path="lotteryNum" maxlength="255" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('开奖时间')}：</label>
+					<div class="control-inline">
+						<#form:input path="lotteryTime_gte" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm" data-done="lotteryTime_lte.click()"/>
+						&nbsp;-&nbsp;
+						<#form:input path="lotteryTime_lte" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('开始时间')}：</label>
+					<div class="control-inline">
+						<#form:input path="startTime_gte" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm" data-done="startTime_lte.click()"/>
+						&nbsp;-&nbsp;
+						<#form:input path="startTime_lte" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('结束时间')}：</label>
+					<div class="control-inline">
+						<#form:input path="endTime_gte" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm" data-done="endTime_lte.click()"/>
+						&nbsp;-&nbsp;
+						<#form:input path="endTime_lte" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('期号状态')}：</label>
+					<div class="control-inline">
+						<#form:input path="state" maxlength="255" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('开奖同步时间')}：</label>
+					<div class="control-inline">
+						<#form:input path="syncTime_gte" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm" data-done="syncTime_lte.click()"/>
+						&nbsp;-&nbsp;
+						<#form:input path="syncTime_lte" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('结算时间')}：</label>
+					<div class="control-inline">
+						<#form:input path="settlementTime_gte" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm" data-done="settlementTime_lte.click()"/>
+						&nbsp;-&nbsp;
+						<#form:input path="settlementTime_lte" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('自动开奖')}：</label>
+					<div class="control-inline">
+						<#form:checkbox path="automaticLottery" dictType="sys_yes_no" class="form-control"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('自动结算')}：</label>
+					<div class="control-inline">
+						<#form:checkbox path="automaticSettlement" dictType="sys_yes_no" class="form-control"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('期数')}：</label>
+					<div class="control-inline">
+						<#form:input path="issueNumInner" maxlength="18" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('业务状态')}：</label>
+					<div class="control-inline">
+						<#form:input path="bizStatus" maxlength="64" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('数据状态')}：</label>
+					<div class="control-inline width-120">
+						<#form:select path="status" dictType="sys_search_status" blankOption="true" class="form-control isQuick"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('备注')}：</label>
+					<div class="control-inline">
+						<#form:input path="remarks" maxlength="512" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+					<button type="reset" class="btn btn-default btn-sm isQuick">${text('重置')}</button>
+				</div>
+			</#form:form>
+			<table id="dataGrid"></table>
+			<div id="dataGridPage"></div>
+		</div>
+	</div>
+</div>
+<% } %>
+<script>
+// 初始化DataGrid对象
+$('#dataGrid').dataGrid({
+	searchForm: $("#searchForm"),
+	columnModel: [
+		{header:'${text("所属游戏代码")}', name:'gameCode', index:'a.game_code', width:150, align:"left", frozen:true, formatter: function(val, obj, row, act){
+			return '<a href="${ctx}/lotterycore/issue/form?id='+row.id+'" class="btnList" data-title="${text("编辑彩票期号")}">'+(val||row.id)+'</a>';
+		}},
+		{header:'${text("期数")}', name:'issueNum', index:'a.issue_num', width:150, align:"left"},
+		{header:'${text("开奖日期")}', name:'lotteryDate', index:'a.lottery_date', width:150, align:"center"},
+		{header:'${text("开奖号码")}', name:'lotteryNum', index:'a.lottery_num', width:150, align:"left"},
+		{header:'${text("开奖时间")}', name:'lotteryTime', index:'a.lottery_time', width:150, align:"center"},
+		{header:'${text("开始时间")}', name:'startTime', index:'a.start_time', width:150, align:"center"},
+		{header:'${text("结束时间")}', name:'endTime', index:'a.end_time', width:150, align:"center"},
+		{header:'${text("期号状态")}', name:'state', index:'a.state', width:150, align:"left"},
+		{header:'${text("开奖同步时间")}', name:'syncTime', index:'a.sync_time', width:150, align:"center"},
+		{header:'${text("结算时间")}', name:'settlementTime', index:'a.settlement_time', width:150, align:"center"},
+		{header:'${text("自动开奖")}', name:'automaticLottery', index:'a.automatic_lottery', width:150, align:"center", formatter: function(val, obj, row, act){
+			return js.getDictLabel(${@DictUtils.getDictListJson('sys_yes_no')}, val, '${text("未知")}', true);
+		}},
+		{header:'${text("自动结算")}', name:'automaticSettlement', index:'a.automatic_settlement', width:150, align:"center", formatter: function(val, obj, row, act){
+			return js.getDictLabel(${@DictUtils.getDictListJson('sys_yes_no')}, val, '${text("未知")}', true);
+		}},
+		{header:'${text("期数")}', name:'issueNumInner', index:'a.issue_num_inner', width:150, align:"center"},
+		{header:'${text("业务状态")}', name:'bizStatus', index:'a.biz_status', width:150, align:"left"},
+		{header:'${text("数据状态")}', name:'status', index:'a.status', width:150, align:"center", formatter: function(val, obj, row, act){
+			return js.getDictLabel(${@DictUtils.getDictListJson('sys_search_status')}, val, '${text("未知")}', true);
+		}},
+		{header:'${text("修改时间")}', name:'updateDate', index:'a.update_date', width:150, align:"center"},
+		{header:'${text("备注")}', name:'remarks', index:'a.remarks', width:150, align:"left"},
+		{header:'${text("操作")}', name:'actions', width:120, formatter: function(val, obj, row, act){
+			var actions = [];
+			//<% if(hasPermi('lotterycore:issue:edit')){ %>
+				actions.push('<a href="${ctx}/lotterycore/issue/form?id='+row.id+'" class="btnList" title="${text("编辑彩票期号")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+				if (row.status == Global.STATUS_NORMAL){
+					actions.push('<a href="${ctx}/lotterycore/issue/disable?id='+row.id+'" class="btnList" title="${text("停用彩票期号")}" data-confirm="${text("确认要停用该彩票期号吗？")}"><i class="glyphicon glyphicon-ban-circle"></i></a>&nbsp;');
+				} else if (row.status == Global.STATUS_DISABLE){
+					actions.push('<a href="${ctx}/lotterycore/issue/enable?id='+row.id+'" class="btnList" title="${text("启用彩票期号")}" data-confirm="${text("确认要启用该彩票期号吗？")}"><i class="glyphicon glyphicon-ok-circle"></i></a>&nbsp;');
+				}
+			//<% } %>
+			return actions.join('');
+		}}
+	],
+	// 加载成功后执行事件
+	ajaxSuccess: function(data){
+		
+	}
+});
+</script>

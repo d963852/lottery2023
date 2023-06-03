@@ -1,0 +1,177 @@
+<% layout('/layouts/default.html', {title: '期号生成规则管理', libs: ['validate']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header with-border">
+			<div class="box-title">
+				<i class="fa icon-note"></i> 【${game.gameName}】 ${text(issueGenerateRule.isNewRecord ? '新增期号生成规则' : '编辑期号生成规则')}
+			</div>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			</div>
+		</div>
+		<#form:form id="inputForm" model="${issueGenerateRule}" action="${ctx}/lotterycore/issueGenerateRule/save" method="post" class="form-horizontal">
+			<div class="box-body">
+				<div class="form-unit">${text('基本信息')}</div>
+				<#form:hidden path="id"/>
+				<#form:hidden name="gameId" value="${game.id}"/>
+				<#form:hidden name="gameCode" value="${game.gameCode}"/>
+				<div class="row">
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required hide">*</span> ${text('开始时间')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input path="startTime" maxlength="255" class="form-control laydate"  defaultValue="00:00:00"
+								dataFormat="time" data-type="time" data-format="HH:mm:ss"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('时间间隔（分钟）')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input path="timeInterval" maxlength="9" class="form-control number required " min="0"  dataFormat="number2" defaultValue="1"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required hide">*</span> ${text('生成期数')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input path="issueCount" maxlength="5" class="form-control digits required "/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="form-unit">${text('期号格式设置')}</div>
+				<div class="row">
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="格式类似yyyymmdd-，yymmdd，yymmdd等">
+								<span class="required hide">*</span> ${text('日期部分格式')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input path="dateFormat" maxlength="255" class="form-control"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="类似”-“">
+								<span class="required hide">*</span> ${text('分隔符')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input path="separator" maxlength="10" class="form-control"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="格式类似dddd等">
+								<span class="required hide">*</span> ${text('期号部分格式')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input path="issueFormat" maxlength="255" class="form-control required"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required">*</span> ${text('起始期号')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input path="issueBeginNumber" maxlength="15" class="form-control digits required" defaultValue="1"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required hide">*</span> ${text('期号起始日期')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input path="issueBeginDate" maxlength="15" class="form-control laydate"
+								dataFormat="date" data-type="date" data-format="yyyy-MM-dd"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('是否跨天')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:radio path="nextDay" dictType="sys_yes_no" class="form-control required" defaultValue="0"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="form-unit">${text('其他设置')}</div>
+				<div class="row">
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('投注截止时长（秒）')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:input path="betCutOffTime" maxlength="5" class="form-control digits required "  defaultValue="5"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('自动开奖')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:radio path="automaticLottery" dictType="sys_yes_no" class="form-control required" defaultValue="1"/>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-6">
+						<div class="form-group">
+							<label class="control-label col-sm-4" title="">
+								<span class="required ">*</span> ${text('自动结算')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-8">
+								<#form:radio path="automaticSettlement" dictType="sys_yes_no" class="form-control required" defaultValue="1"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<div class="form-group">
+							<label class="control-label col-sm-2" title="">
+								<span class="required hide">*</span> ${text('备注')}：<i class="fa icon-question hide"></i></label>
+							<div class="col-sm-10">
+								<#form:textarea path="remarks" rows="4" maxlength="512" class="form-control"/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="box-footer">
+				<div class="row">
+					<div class="col-sm-offset-2 col-sm-10">
+						<% if (hasPermi('lotterycore:issueGenerateRule:edit')){ %>
+							<button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i> ${text('保 存')}</button>&nbsp;
+						<% } %>
+						<button type="button" class="btn btn-sm btn-default" id="btnCancel" onclick="js.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> ${text('关 闭')}</button>
+					</div>
+				</div>
+			</div>
+		</#form:form>
+	</div>
+</div>
+<% } %>
+<script>
+$("#inputForm").validate({
+	submitHandler: function(form){
+		js.ajaxSubmitForm($(form), function(data){
+			js.showMessage(data.message);
+			if(data.result == Global.TRUE){
+				js.closeCurrentTabPage(function(contentWindow){
+					contentWindow.page();
+				});
+			}
+		}, "json");
+    }
+});
+</script>

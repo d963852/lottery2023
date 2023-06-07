@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.jeesite.common.tests.BaseInitDataTests;
-import com.jeesite.modules.Application;
+import com.jeesite.modules.AdminApplication;
 
 /**
  * 初始化数据表
@@ -17,7 +17,7 @@ import com.jeesite.modules.Application;
  * @version 2020-5-26
  */
 @ActiveProfiles("test")
-@SpringBootTest(classes=Application.class)
+@SpringBootTest(classes= AdminApplication.class)
 public class InitData extends BaseInitDataTests {
 	
 	@Test

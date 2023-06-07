@@ -1,6 +1,8 @@
 package com.jeesite.modules.lotterycore.service.game;
 
+import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import com.jeesite.common.service.BaseService;
 import com.jeesite.modules.lotterycore.common.exception.BizError;
 import com.jeesite.modules.lotterycore.common.exception.BizException;
@@ -42,8 +44,22 @@ public class GenerateLocalLotteryNumberService extends BaseService {
 
         List<String> resultList = new ArrayList<>();
         String lotteryNumberResult = "";
-        for (int i = 0; i < gameSC.getLotteryNumberCount(); i++) {
-            resultList.add(String.valueOf(RandomUtil.randomInt(gameSC.getLotteryNumberMin(), gameSC.getLotteryNumberMax())));
+        // 在开奖号码列表中随机取数，注意否可重复
+        if(StrUtil.isEmpty(gameSC.getLotteryNumberList())){
+            throw new BizException(BizError.参数异常.getCode(), "没有开奖号码列表");
+        }
+        String[] codeList = gameSC.getLotteryNumberList().split(",");
+        boolean canRepeat = "1".equals(gameSC.getLotteryNumberRepeat());
+        while (resultList.size() < gameSC.getLotteryNumberCount()) {
+            // 从开奖号码清单中获取一个随机号码
+            String number = codeList[RandomUtil.randomInt(0,codeList.length)];
+            if(!canRepeat){
+                // 判断是否有重复的
+                if(resultList.contains(number)){
+                    continue;
+                }
+            }
+            resultList.add(number);
         }
         if (resultList.size() > 0) {
             lotteryNumberResult = String.join(",", resultList);

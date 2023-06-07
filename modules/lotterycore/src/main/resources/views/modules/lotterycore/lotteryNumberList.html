@@ -26,6 +26,12 @@
 					</div>
 				</div>
 				<div class="form-group">
+					<label class="control-label">${text('状态')}：</label>
+					<div class="control-inline width-120">
+						<#form:select path="state" dictType="lottery_issue_status" blankOption="true" blankOptionLabel="请选择" defaultValue="2" class="form-control width-120" />
+					</div>
+				</div>
+				<div class="form-group">
 					<label class="control-label">${text('开奖日期')}：</label>
 					<div class="control-inline">
 						<#form:input path="lotteryDate_gte" readonly="true" maxlength="20" class="form-control laydate width-datetime"
@@ -51,9 +57,8 @@
 $('#dataGrid').dataGrid({
 	searchForm: $("#searchForm"),
 	columnModel: [
-		{header:'${text("游戏")}', name:'gameCode', index:'a.game_code', width:150, align:"center", frozen:true, formatter: function(val, obj, row, act){
-			return '<a href="${ctx}/lotterycore/issue/form?id='+row.id+'" class="btnList" data-title="${text("编辑彩票期号")}">'+(val||row.id)+'</a>';
-		}},
+		{header:'${text("游戏名称")}', name:'gameName', index:'a.game_name', width:150, align:"center"},
+		{header:'${text("游戏代码")}', name:'gameCode', index:'a.game_code', width:150, align:"center"},
 		{header:'${text("期号")}', name:'issueNum', index:'a.issue_num', width:150, align:"center"},
 		{header:'${text("开奖日期")}', name:'lotteryDate', index:'a.lottery_date', width:150, align:"center",
 			formatter:"date",
@@ -61,6 +66,16 @@ $('#dataGrid').dataGrid({
 		},
 		{header:'${text("开奖号码")}', name:'lotteryNum', index:'a.lottery_num', width:150, align:"center"},
 		{header:'${text("开奖时间")}', name:'lotteryTime', index:'a.lottery_time', width:150, align:"center"},
+		{header:'${text("开奖来源")}', name:'lotterySource', index:'a.lottery_source', width:150, align:"left",formatter: function(val, obj, row, act){
+				if(val===null || val==="" || val===undefined) {
+					return "";
+				}else if(val==="local") {
+					return "本地";
+				}else{
+					return '<a href="'+val+'" class="btnList" >'+(val)+'</a>';
+				}
+		}},
+		{header:'${text("同步时间")}', name:'syncTime', index:'a.sync_time', width:150, align:"center"},
 		{header:'${text("操作")}', name:'actions', width:120, formatter: function(val, obj, row, act){
 			var actions = [];
 			//<% if(hasPermi('lotterycore:issue:edit')){ %>

@@ -6,7 +6,7 @@ package com.jeesite.test;
 
 import com.jeesite.common.collect.ListUtils;
 import com.jeesite.common.tests.BaseSpringContextTests;
-import com.jeesite.modules.Application;
+import com.jeesite.modules.AdminApplication;
 import com.jeesite.modules.test.dao.TestDataDao;
 import com.jeesite.modules.test.entity.TestData;
 import org.junit.Test;
@@ -22,7 +22,7 @@ import java.util.List;
  * @version 2019年10月28日
  */
 @ActiveProfiles("test")
-@SpringBootTest(classes=Application.class)
+@SpringBootTest(classes= AdminApplication.class)
 public class InsertBatchTest extends BaseSpringContextTests {
 
 	@Autowired

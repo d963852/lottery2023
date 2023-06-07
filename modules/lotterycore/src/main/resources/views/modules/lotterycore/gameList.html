@@ -95,6 +95,7 @@ $('#dataGrid').dataGrid({
 		{header:'${text("游戏类别")}', name:'gameCategoryId', index:'a.game_category_id', width:80, align:"center", formatter: function(val, obj, row, act){
 				return js.getDictLabel(${@DictUtils.getDictListJson('lottery_game_category')}, val, '${text("未知")}', true);
 		}},
+		{header:'${text("开奖延迟")}', name:'lotteryDelaySecond', index:'a.lottery_delay_second', width:80, align:"center"},
 		{header:'${text("是否热门")}', name:'hotGameFlag', index:'a.hot_game_flag', width:80, align:"center", formatter: function(val, obj, row, act){
 			return js.getDictLabel(${@DictUtils.getDictListJson('sys_yes_no')}, val, '${text("未知")}', true);
 		}},

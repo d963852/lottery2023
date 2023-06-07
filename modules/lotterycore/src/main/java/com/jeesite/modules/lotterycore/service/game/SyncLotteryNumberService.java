@@ -15,7 +15,9 @@ import com.jeesite.modules.lotterycore.common.utils.DuocaiUtils;
 import com.jeesite.modules.lotterycore.common.utils.ThreadPoolUtils;
 import com.jeesite.modules.lotterycore.constants.Constant;
 import com.jeesite.modules.lotterycore.dao.IssueDao;
+import com.jeesite.modules.lotterycore.entity.Game;
 import com.jeesite.modules.lotterycore.entity.Issue;
+import com.jeesite.modules.lotterycore.service.GameService;
 import com.jeesite.modules.lotterycore.service.IssueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +45,9 @@ public class SyncLotteryNumberService extends CrudService<IssueDao, Issue> {
     @Autowired
     private GenerateLocalLotteryNumberService generateLocalLotteryNumberService;
 
+    @Autowired
+    private GameService gameService;
+
     /**
      * 开奖
      *
@@ -68,25 +73,39 @@ public class SyncLotteryNumberService extends CrudService<IssueDao, Issue> {
     }
 
     /**
-     * 多线程多渠道开奖，最后从本地开奖
+     * 多线程多渠道开奖
+     * 如果lottery_url为local，则直接本地开奖
+     * 否则就多彩开奖：如果LotteryLocalInstead设置为1，则多彩开奖失败后本地开奖替代。否则不替代。
      *
      * @return 开奖结果
      */
     private Issue getLotteryNumberResultFromMultipleWays(Issue issue) {
         List<Issue> issueList = ListUtils.newArrayList();
-//        issueList.add(getLotteryNumberWithDuocai(issue));
-//        issueList.add(getLotteryNumberLocal(issue));
-
-        CountDownLatch countlatch = new CountDownLatch(2);
         List<Future<Issue>> futures = ListUtils.newArrayList();
-        futures.add(ThreadPoolUtils.getSyncLotteryThreadPool().submit(() -> {
-            logger.info("启动多彩线程");
-            return getLotteryNumberWithDuocai(issue);
-        }));
-        futures.add(ThreadPoolUtils.getSyncLotteryThreadPool().submit(() -> {
-            logger.info("启动本地线程");
-            return getLotteryNumberLocal(issue);
-        }));
+        // 获取对应Game
+        Game game = new Game();
+        game.setGameCode(issue.getGameCode());
+        List<Game> gameList = gameService.findList(game);
+        if (gameList.size() > 0) {
+            game = gameList.get(0);
+        }
+        String duocaiGameCode = game.getDuocaiGameCode();
+
+        if (!"local".equals(game.getLotteryUrl())) {
+            futures.add(ThreadPoolUtils.getSyncLotteryThreadPool().submit(() -> {
+                logger.info("启动多彩线程");
+                return getLotteryNumberWithDuocai(issue, duocaiGameCode);
+            }));
+        }
+        if ("local".equals(game.getLotteryUrl()) || "1".equals(game.getLotteryLocalInstead())) {
+            //本地可替代，则启动本地线程
+            futures.add(ThreadPoolUtils.getSyncLotteryThreadPool().submit(() -> {
+                logger.info("启动本地线程");
+                return getLotteryNumberLocal(issue);
+            }));
+        }
+
+        CountDownLatch countlatch = new CountDownLatch(futures.size());
         for (Future<Issue> future : futures) {
             try {
                 Issue issueVO = future.get(20, TimeUnit.SECONDS);
@@ -125,23 +144,23 @@ public class SyncLotteryNumberService extends CrudService<IssueDao, Issue> {
      *
      * @return 多彩网获取开采数据
      */
-    private Issue getLotteryNumberWithDuocai(Issue issue) {
+    private Issue getLotteryNumberWithDuocai(Issue issue, String duocaiGameCode) {
         logger.info("开始尝试多彩采集...");
         Issue resultIssue = new Issue();
-        String url = StrUtil.format(Global.getProperty("duocai.url", "http://vip.manycai.com/{}/{}/{}.json"), DuocaiUtils.getUserkey(), issue.getIssueNum(), issue.getGameCode());
+        String url = StrUtil.format(Global.getProperty("duocai.url", "http://vip.manycai.com/{}/{}/{}.json"), DuocaiUtils.getUserkey(), issue.getIssueNum(), duocaiGameCode);
         try {
             String duocaiData = HttpUtil.get(url);
-            logger.warn("第1次，多彩网返回值为："+duocaiData);
-            if (!duocaiData.startsWith("[{\"issue\":\"" + issue.getIssueNum())) {
+            logger.warn("第1次采集" + url + "，多彩网返回值为：" + duocaiData);
+            for (int i = 2; i < 11 && !duocaiData.startsWith("[{\"issue\":\"" + issue.getIssueNum()); i++) {
                 logger.warn("休眠2秒后重试");
                 // 2秒后再试一次
                 Thread.sleep(2 * 1000);
                 duocaiData = HttpUtil.get(url);
-                logger.warn("第2次尝试,多彩返回值为："+duocaiData);
+                logger.warn("第" + i + "次尝试" + url + ",返回值为：" + duocaiData);
             }
 
             if (!duocaiData.startsWith("[{\"issue\":\"" + issue.getIssueNum())) {
-                throw new BizException(BizError.参数异常.getCode(), "多彩网不可用");
+                throw new BizException(BizError.参数异常.getCode(), url+"多彩网不可用");
             }
 
             JSONArray array = JSONUtil.parseArray(duocaiData);

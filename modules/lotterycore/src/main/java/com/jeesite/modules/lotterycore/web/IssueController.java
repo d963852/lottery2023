@@ -166,7 +166,7 @@ public class IssueController extends BaseController {
     }
 
     /**
-     * 开奖列表数据
+     * 开奖数据列表
      */
     @RequiresPermissions("lotterycore:issue:view")
     @RequestMapping(value = "lotteryNumberListData")

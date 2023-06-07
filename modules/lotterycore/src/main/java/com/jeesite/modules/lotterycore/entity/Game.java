@@ -22,7 +22,10 @@ import javax.validation.constraints.Size;
         @Column(name = "lottery_number_count", attrName = "lotteryNumberCount", label = "开奖结果数字个数", isUpdateForce = true),
         @Column(name = "lottery_number_min", attrName = "lotteryNumberMin", label = "开奖结果最小数字", isUpdateForce = true),
         @Column(name = "lottery_number_max", attrName = "lotteryNumberMax", label = "开奖结果最大数字", isUpdateForce = true),
+        @Column(name = "lottery_number_list", attrName = "lotteryNumberList", label = "开奖号码列表", isUpdateForce = true),
+        @Column(name = "lottery_number_repeat", attrName = "lotteryNumberRepeat", label = "开奖号码是否能重复", isUpdateForce = true),
         @Column(name = "lottery_delay_second", attrName = "lotteryDelaySecond", label = "开奖延迟秒数", isUpdateForce = true),
+        @Column(name = "duocai_game_code", attrName = "duocaiGameCode", label = "对应多彩游戏代码", isUpdateForce = true),
         @Column(name = "lottery_url", attrName = "lotteryUrl", label = "开奖地址", queryType = QueryType.LIKE, isUpdateForce = true),
         @Column(name = "lottery_local_instead", attrName = "lotteryLocalInstead", label = "是否本地开奖代替", queryType = QueryType.EQ, isUpdateForce = true),
         @Column(name = "state", attrName = "state", label = "状态,启用", comment = "状态,启用:1;禁用:0", isQuery = false),
@@ -47,6 +50,7 @@ public class Game extends DataEntity<Game> {
     private Integer lotteryNumberMin;        // 开奖结果最小数字
     private Integer lotteryNumberMax;        // 开奖结果最大数字
     private Integer lotteryDelaySecond;        // 开奖延迟秒数
+    private String duocaiGameCode;        // 对应多彩游戏代码
     private String lotteryUrl;        // 开奖地址
     private String lotteryLocalInstead;        // 是否本地开奖代替
     private String state;        // 状态,启用:1;禁用:0
@@ -57,6 +61,8 @@ public class Game extends DataEntity<Game> {
     private String bizStatus;        // 业务状态
     private String deleted;        // 是否删除
     private String tenantId;        // 租户编号
+    private String lotteryNumberList;        // 开奖号码列表
+    private String lotteryNumberRepeat;        // 开奖号码是否能重复
 
 
     public Game() {
@@ -211,5 +217,29 @@ public class Game extends DataEntity<Game> {
 
     public void setLotteryLocalInstead(String lotteryLocalInstead) {
         this.lotteryLocalInstead = lotteryLocalInstead;
+    }
+
+    public String getDuocaiGameCode() {
+        return duocaiGameCode;
+    }
+
+    public void setDuocaiGameCode(String duocaiGameCode) {
+        this.duocaiGameCode = duocaiGameCode;
+    }
+
+    public String getLotteryNumberList() {
+        return lotteryNumberList;
+    }
+
+    public void setLotteryNumberList(String lotteryNumberList) {
+        this.lotteryNumberList = lotteryNumberList;
+    }
+
+    public String getLotteryNumberRepeat() {
+        return lotteryNumberRepeat;
+    }
+
+    public void setLotteryNumberRepeat(String lotteryNumberRepeat) {
+        this.lotteryNumberRepeat = lotteryNumberRepeat;
     }
 }

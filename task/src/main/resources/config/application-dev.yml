@@ -1,0 +1,57 @@
+
+# 使用环境配置，只需 JVM 参数里加：-Dspring.profiles.active=prod
+
+server:
+
+  port: 8025
+  servlet:
+    context-path: /
+
+# 数据库连接
+jdbc: 
+  
+  # Mysql 数据库配置
+  type: mysql
+  driver: com.mysql.cj.jdbc.Driver
+  url: jdbc:mysql://127.0.0.1:3306/lottery2023_js?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=Asia/Shanghai
+  username: root
+  password: SwG1sZlhrr5sUTyvwSa
+  testSql: SELECT 1
+
+  # 数据库连接池配置
+  pool:
+  
+    # 初始化连接数
+    init: 1
+    # 最小连接数
+    minIdle: 3
+    # 最大连接数
+    maxActive: 20
+
+  # 多数据源名称列表，多个用逗号隔开，使用方法：@MyBatisDao(dataSourceName="ds2")
+  dataSourceNames: bet
+
+  # 默认数据源的从库01
+  bet:
+    type: mysql
+    driver: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/lottery2023_bet?useSSL=false&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=CONVERT_TO_NULL&serverTimezone=Asia/Shanghai
+    username: root
+    password: SwG1sZlhrr5sUTyvwSa
+    testSql: SELECT 1
+    pool:
+      init: 1
+      minIdle: 3
+      maxActive: 20
+
+# 日志配置
+logging:
+  config: classpath:config/logback-spring.xml
+
+# MyBatis 相关
+mybatis:
+
+  # Mapper文件刷新线程
+  mapper:
+    refresh:
+      enabled: false

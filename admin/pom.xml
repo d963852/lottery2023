@@ -10,7 +10,7 @@
 		<relativePath>../parent/pom.xml</relativePath>
 	</parent>
 	
-	<artifactId>jeesite-web</artifactId>
+	<artifactId>admin</artifactId>
 	<packaging>war</packaging>
 	
 	<description>admin</description>
@@ -22,7 +22,7 @@
 	<properties>
 		
 		<finalName>admin</finalName><!-- war or jar 包的名称 -->
-		<start-class>com.jeesite.modules.Application</start-class>
+		<start-class>com.jeesite.modules.AdminApplication</start-class>
 		
 		<!-- environment setting -->
 		<eclipse-plugin-download-sources>false</eclipse-plugin-download-sources>
@@ -56,12 +56,12 @@
 			<version>${project.parent.version}</version>
 		</dependency>
 
-		<!-- 定时任务模块 -->
+		<!-- 定时任务模块
 		<dependency>
 			<groupId>com.jeesite</groupId>
 			<artifactId>jeesite-module-quartz</artifactId>
 			<version>${project.parent.version}</version>
-		</dependency>
+		</dependency> -->
 
 		<!-- 移动端模块 
 		<dependency>

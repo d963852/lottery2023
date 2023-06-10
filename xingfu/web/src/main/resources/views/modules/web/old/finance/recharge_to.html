@@ -1,0 +1,452 @@
+<style>
+
+</style>
+
+<?php
+$this->freshSession();
+$mBankId = $args[0]['mBankId'];
+$sql = "select mb.*, b.name bankName, b.logo bankLogo, b.home bankHome from {$this->prename}sysadmin_bank mb, {$this->prename}bank_list b where b.isDelete=0 and mb.id=$mBankId and mb.bankId=b.id";
+$memberBank = $this->getRow($sql);
+if ($memberBank['bankId'] == 3) {
+?>
+    <form action="/Finance/Rechargeok" method="post" target="ajax" onajax="RechargeSet" call="RechargeTips" dataType="html">
+
+        <div class="finance">
+            <div class="finance_list">
+                <div class="uhleft left">充值方式：</div>
+                <div class="uhright left"><input type="text" name="value" value="<?= $memberBank['bankName'] ?>" autocomplete="off" class="readonly" readonly></div>
+            </div>
+            <div class="finance_list">
+                <div class="uhleft left">充值金额：</div>
+                <div class="uhright left"><input type="text" name="value" value="<?= $args[0]['amount'] ?>" autocomplete="off" class="readonly" readonly></div>
+            </div>
+            <div class="finance_list">
+                <div class="uhleft left">收款户名：</div>
+                <div class="uhright left"><input type="text" name="value" value="<?= $memberBank["username"] ?>" autocomplete="off" class="readonly" readonly></div>
+            </div>
+            <div class="finance_list">
+                <div class="uhleft left">收款账号：</div>
+                <div class="uhright left"><input type="text" name="value" value="<?= $memberBank["account"] ?>" autocomplete="off" class="readonly" readonly></div>
+            </div>
+            <div class="finance_list">
+                <div class="uhleft left">充值编号：</div>
+                <div class="uhright left"><input type="text" name="attach" value="<?= $args[0]['rechargeId'] ?>" autocomplete="off" class="readonly" readonly></div>
+            </div>
+            <div class="finance_list bbnone">
+                <div class="uhleft left fz0">操作：</div>
+                <div class="uhright left"><input type="submit" name="submit" value="请尽快进行充值!!" class="btn"></div>
+            </div>
+        </div>
+    </form>
+<?
+} else if ($memberBank['bankId'] == 2) {
+?>
+    <form action="/hipay/pay.php" method="post" target="_blank">
+        <div class="finance">
+            <div class="finance_list">
+                <div class="uhleft left">充值方式：</div>
+                <div class="uhright left"><input type="text" name="type" value="微信扫码<? //=$memberBank['bankName']
+                                                                                    ?>" autocomplete="off" class="readonly" readonly></div>
+            </div>
+            <div class="finance_list">
+                <div class="uhleft left">充值金额：</div>
+                <div class="uhright left"><input type="text" name="value" value="<?= $args[0]['amount'] ?>" autocomplete="off" class="readonly" readonly></div>
+            </div>
+            <!--
+<div class="finance_list">
+<div class="uhleft left">扫码支付：</div>
+<div class="uhright left"><img id="qrimage" src="/zfb.png">
+</div> -->
+            <div class="finance_list">
+                <div class="uhleft left">充值编号：</div>
+                <div class="uhright left"><input type="text" name="attach" value="<?= $args[0]['rechargeId'] ?>" autocomplete="off" class="readonly" readonly></div>
+            </div>
+            <div class="finance_list bbnone">
+                <div class="uhleft left fz0">操作：</div>
+                <div class="uhright left"><input type="submit" name="submit" value="点击充值!!" class="btn"></div>
+            </div>
+        </div>
+    </form>
+<?
+} else if ($memberBank['bankId'] == 1) {
+?>
+    <form action="/hipay/pay.php" method="post" target="_blank">
+        <div class="finance">
+            <div class="finance_list">
+                <div class="uhleft left">充值方式：</div>
+                <div class="uhright left"><input type="text" name="type" value="<?= $memberBank['bankName'] ?>" autocomplete="off" class="readonly" readonly></div>
+            </div>
+            <div class="finance_list">
+                <div class="uhleft left">充值金额：</div>
+                <div class="uhright left"><input type="text" name="value" value="<?= $args[0]['amount'] ?>" autocomplete="off" class="readonly" readonly></div>
+            </div>
+            <!--
+<div class="finance_list">
+<div class="uhleft left">扫码支付：</div>
+<div class="uhright left"> <img id="qrimage" src="/zfb.png">
+</div> -->
+            <div class="finance_list">
+                <div class="uhleft left">充值编号：</div>
+                <div class="uhright left"><input type="text" name="attach" value="<?= $args[0]['rechargeId'] ?>" autocomplete="off" class="readonly" readonly></div>
+            </div>
+            <div class="finance_list bbnone">
+                <div class="uhleft left fz0">操作：</div>
+                <div class="uhright left"><input type="submit" name="submit" value="点击充值!!" class="btn"></div>
+            </div>
+        </div>
+    </form>
+<?
+} else if ($memberBank['bankId'] == 13) {
+?>
+    <form action="/hipay/pay.php" method="post" target="_blank">
+        <div class="finance">
+            <div class="finance_list">
+                <div class="uhleft left">充值方式：</div>
+                <div class="uhright left"><input type="text" name="type" value="<?= $memberBank['bankName'] ?>" autocomplete="off" class="readonly" readonly></div>
+            </div>
+            <div class="finance_list">
+                <div class="uhleft left">充值金额：</div>
+                <div class="uhright left"><input type="text" name="value" value="<?= $args[0]['amount'] ?>" autocomplete="off" class="readonly" readonly></div>
+            </div>
+            <!--
+<div class="finance_list">
+<div class="uhleft left">扫码支付：</div>
+<div class="uhright left"> <img id="qrimage" src="/zfb.png">
+</div> -->
+            <div class="finance_list">
+                <div class="uhleft left">充值编号：</div>
+                <div class="uhright left"><input type="text" name="attach" value="<?= $args[0]['rechargeId'] ?>" autocomplete="off" class="readonly" readonly></div>
+            </div>
+            <div class="finance_list bbnone">
+                <div class="uhleft left fz0">操作：</div>
+                <div class="uhright left"><input type="submit" name="submit" value="点击充值!!" class="btn"></div>
+            </div>
+        </div>
+    </form>
+<?
+} else if ($memberBank['bankId'] == 14) {
+?>
+    <form action="/hipay/pay.php" method="post" target="_blank">
+        <div class="finance">
+            <div class="finance_list">
+                <div class="uhleft left">充值方式：</div>
+                <div class="uhright left"><input type="text" name="type" value="<?= $memberBank['bankName'] ?>" autocomplete="off" class="readonly" readonly></div>
+            </div>
+            <div class="finance_list">
+                <div class="uhleft left">充值金额：</div>
+                <div class="uhright left"><input type="text" name="value" value="<?= $args[0]['amount'] ?>" autocomplete="off" class="readonly" readonly></div>
+            </div>
+            <!--
+<div class="finance_list">
+<div class="uhleft left">扫码支付：</div>
+<div class="uhright left"> <img id="qrimage" src="/zfb.png">
+</div> -->
+            <div class="finance_list">
+                <div class="uhleft left">充值编号：</div>
+                <div class="uhright left"><input type="text" name="attach" value="<?= $args[0]['rechargeId'] ?>" autocomplete="off" class="readonly" readonly></div>
+            </div>
+            <div class="finance_list bbnone">
+                <div class="uhleft left fz0">操作：</div>
+                <div class="uhright left"><input type="submit" name="submit" value="点击充值!!" class="btn"></div>
+            </div>
+        </div>
+    </form>
+<?
+} else if ($memberBank['bankId'] == 11) {
+?>
+    <div class="finance">
+        <div class="finance_list">
+            <div class="uhleft left">充值方式：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $memberBank['bankName'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">充值金额：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $args[0]['amount'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">收款户名：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $memberBank["username"] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">收款账号：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $memberBank["account"] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">充值编号：</div>
+            <div class="uhright left"><input type="text" name="attach" value="<?= $args[0]['rechargeId'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list bbnone">
+            <div class="uhleft left fz0">操作：</div>
+            <div class="uhright left"><input type="submit" name="submit" value="请尽快进行充值!!" class="btn"></div>
+        </div>
+    </div>
+    </form>
+<?
+} else if ($memberBank['bankId'] == 12) {
+?>
+    <div class="finance">
+        <div class="finance_list">
+            <div class="uhleft left">充值方式：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $memberBank['bankName'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">充值金额：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $args[0]['amount'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">收款户名：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $memberBank["username"] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">收款账号：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $memberBank["account"] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">充值编号：</div>
+            <div class="uhright left"><input type="text" name="attach" value="<?= $args[0]['rechargeId'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list bbnone">
+            <div class="uhleft left fz0">操作：</div>
+            <div class="uhright left"><input type="submit" name="submit" value="请尽快进行充值!!" class="btn"></div>
+        </div>
+    </div>
+    </form>
+<?
+} else if ($memberBank['bankId'] == 6) {
+?>
+    <div class="finance">
+        <div class="finance_list">
+            <div class="uhleft left">充值方式：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $memberBank['bankName'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">充值金额：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $args[0]['amount'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">收款户名：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $memberBank["username"] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">收款账号：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $memberBank["account"] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">充值编号：</div>
+            <div class="uhright left"><input type="text" name="attach" value="<?= $args[0]['rechargeId'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list bbnone">
+            <div class="uhleft left fz0">操作：</div>
+            <div class="uhright left"><input type="submit" name="submit" value="请尽快进行充值!!" class="btn"></div>
+        </div>
+    </div>
+    </form>
+<?
+} else if ($memberBank['bankId'] == 5) {
+?>
+    <div class="finance">
+        <div class="finance_list">
+            <div class="uhleft left">充值方式：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $memberBank['bankName'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">充值金额：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $args[0]['amount'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">收款户名：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $memberBank["username"] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">收款账号：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $memberBank["account"] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">充值编号：</div>
+            <div class="uhright left"><input type="text" name="attach" value="<?= $args[0]['rechargeId'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list bbnone">
+            <div class="uhleft left fz0">操作：</div>
+            <div class="uhright left"><input type="submit" name="submit" value="请尽快进行充值!!" class="btn"></div>
+        </div>
+    </div>
+    </form>
+<?
+} else if ($memberBank['bankId'] == 4) {
+?>
+    <div class="finance">
+        <div class="finance_list">
+            <div class="uhleft left">充值方式：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $memberBank['bankName'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">充值金额：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $args[0]['amount'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">收款户名：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $memberBank["username"] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">收款账号：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $memberBank["account"] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">充值编号：</div>
+            <div class="uhright left"><input type="text" name="attach" value="<?= $args[0]['rechargeId'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list bbnone">
+            <div class="uhleft left fz0">操作：</div>
+            <div class="uhright left"><input type="submit" name="submit" value="请尽快进行充值!!" class="btn"></div>
+        </div>
+    </div>
+    </form>
+<?
+} else if ($memberBank['bankId'] == 7) {
+?>
+    <div class="finance">
+        <div class="finance_list">
+            <div class="uhleft left">充值方式：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $memberBank['bankName'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">充值金额：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $args[0]['amount'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">收款户名：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $memberBank["username"] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">收款账号：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $memberBank["account"] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">充值编号：</div>
+            <div class="uhright left"><input type="text" name="attach" value="<?= $args[0]['rechargeId'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list bbnone">
+            <div class="uhleft left fz0">操作：</div>
+            <div class="uhright left"><input type="submit" name="submit" value="请尽快进行充值!!" class="btn"></div>
+        </div>
+    </div>
+    </form>
+<?
+} else if ($memberBank['bankId'] == 8) {
+?>
+    <div class="finance">
+        <div class="finance_list">
+            <div class="uhleft left">充值方式：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $memberBank['bankName'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">充值金额：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $args[0]['amount'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">收款户名：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $memberBank["username"] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">收款账号：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $memberBank["account"] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">充值编号：</div>
+            <div class="uhright left"><input type="text" name="attach" value="<?= $args[0]['rechargeId'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list bbnone">
+            <div class="uhleft left fz0">操作：</div>
+            <div class="uhright left"><input type="submit" name="submit" value="请尽快进行充值!!" class="btn"></div>
+        </div>
+    </div>
+    </form>
+<?
+} else if ($memberBank['bankId'] == 9) {
+?>
+    <div class="finance">
+        <div class="finance_list">
+            <div class="uhleft left">充值方式：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $memberBank['bankName'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">充值金额：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $args[0]['amount'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">收款户名：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $memberBank["username"] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">收款账号：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $memberBank["account"] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">充值编号：</div>
+            <div class="uhright left"><input type="text" name="attach" value="<?= $args[0]['rechargeId'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list bbnone">
+            <div class="uhleft left fz0">操作：</div>
+            <div class="uhright left"><input type="submit" name="submit" value="请尽快进行充值!!" class="btn"></div>
+        </div>
+    </div>
+    </form>
+<?
+} else if ($memberBank['bankId'] == 17) {
+?>
+    <div class="finance">
+        <div class="finance_list">
+            <div class="uhleft left">充值方式：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $memberBank['bankName'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">充值金额：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $args[0]['amount'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">TRC20地址：</div>
+            <div class="uhright left"><?= $memberBank["account"] ?></div>
+        </div>
+        <div>
+            <img src="/public/images/trc20.jpg" style="width: 150px;" />
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">充值编号：</div>
+            <div class="uhright left"><input type="text" name="attach" value="<?= $args[0]['rechargeId'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list bbnone">
+            <div class="uhleft left fz0">操作：</div>
+            <div class="uhright left"><input type="submit" name="submit" value="请尽快进行充值!!" class="btn"></div>
+        </div>
+    </div>
+    </form>
+<?
+} else if ($memberBank['bankId'] == 18) {
+?>
+    <div class="finance">
+        <div class="finance_list">
+            <div class="uhleft left">充值方式：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $memberBank['bankName'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">充值金额：</div>
+            <div class="uhright left"><input type="text" name="value" value="<?= $args[0]['amount'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">ERC20地址：</div>
+            <div class="uhright left"><?= $memberBank["account"] ?></div>
+        </div>
+        <div>
+            <img src="/public/images/erc20.jpg" style="width: 150px;" />
+        </div>
+        <div class="finance_list">
+            <div class="uhleft left">充值编号：</div>
+            <div class="uhright left"><input type="text" name="attach" value="<?= $args[0]['rechargeId'] ?>" autocomplete="off" class="readonly" readonly></div>
+        </div>
+        <div class="finance_list bbnone">
+            <div class="uhleft left fz0">操作：</div>
+            <div class="uhright left"><input type="submit" name="submit" value="请尽快进行充值!!" class="btn"></div>
+        </div>
+    </div>
+    </form>
+<?php } ?>

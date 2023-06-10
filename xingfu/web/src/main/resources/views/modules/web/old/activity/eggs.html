@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="renderer" content="webkit" />
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="IE=EmulateIE8" http-equiv="X-UA-Compatible" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta content="IE=EmulateIE8" http-equiv="X-UA-Compatible" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>砸金蛋_<?= $this->settings['webName'] ?></title>
+<meta content="origin-when-cross-origin" name="referrer" />
+<meta content="telephone=no" name="format-detection" />
+<?php $this->display('global/skin.php'); ?>
+<link href="/public/css/main_box.css" rel="stylesheet" type="text/css" />
+<link href="/public/css/activity.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/public/layer/layer.js"></script>
+<script type="text/javascript" src="/public/js/onload.js"></script>
+<script type="text/javascript" src="/public/js/function.js"></script>
+<script type="text/javascript" src="/public/js/main.js"></script>
+<script type="text/javascript" src="/public/js/soundBox.js"></script>
+</head>
+</head>
+<body>
+<div class="Ccenter">
+<?php $this->display('global/user_header.php'); ?>
+<div class="box-left">
+<?php $this->display('global/user_menu.php'); ?>
+</div>
+<div class="box-right h777">
+<div class="eggs">
+    <h2>砸金蛋 赢888元现金</h2>
+	<div class="surplus">今日剩余<span><?=$this->dbqbsettings['num']?></span>个金蛋</div>
+  <div class="eggs_info">
+    <ul class="eggs_info_eggs" >
+      <li mode="2"><span mode="2"></span></li>
+    </ul>
+    <em><a datatype="json" call="MsgTips" target="ajax" href="/Activity/EggSet">单击锤子或这里砸金蛋</a></em>
+    <a datatype="json" call="MsgTips" target="ajax" href="/Activity/EggSet" class="eggs_hammer"></a> 
+	</div>
+  <div class="eggs_explain">
+    <div class="eggs_explain_info">
+      <h4>砸金蛋规则</h4>
+      <p>1, 每天<?=$this->dbqbsettings['allnum']?>个金蛋，砸完为止，每个用户一天只能砸一次；</p>
+      <p>2, 当天消费必须满元，否则无法参加活动；</p>
+      <p>3, 参与活动的账户，帐户余额达到<?=$this->dbqbsettings['scoin']?>元以上（包含<?=$this->dbqbsettings['scoin']?>元）。</p>
+      <p class="mt10">温馨提示：</p>
+      <p>1, 每次当您投注量达到<?=$this->dbqbsettings['xcoin']?>元时，即可获得一次砸金蛋机会，最高奖金888元；</p>
+      <p>2, 活动需要在当天（23:59之前）完成领取，隔天无效；</p>
+      <p>3, 任何的无风险投注，对冲，对打均不计算有效投注且失去当日砸蛋机会。有效投注定义：玩法投注不得超过该玩法投注最大注数的70%，即定位胆不得超过7注，二星不得超过70注，三星不得超过700注，四星不得超过7000注，五星不得超过70000注。如发现利用活动存在对冲等恶意套利行为，<?= $this->settings['webName'] ?>有权扣除违规所得；</p>
+      <p>4, 平台保有修改活动以及解释活动之权利。</p>
+      <div> </div>
+      </p>
+    </div>
+    <div class="eggs_roll">
+      <div class="eggs_roll_bg">幸运播报 <em></em> </div>
+      <ul>
+        <marquee direction="up" scrolldelay="50" scrollamount="1" height="200">
+		<?php 
+		$data=$this->getRows("select s.*,u.username from {$this->prename}eggs_configure s, {$this->prename}members u where s.uid=u.uid order by s.swapTime desc");
+		foreach($data as $var){
+        echo '<li>'.mb_substr(htmlspecialchars($var['username']),0,2,'utf-8').'***'.'<span class="right">获得'.$var['coin'].'元现金</span></li>';
+		}
+		?>
+        </marquee>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+<?php $this->display('global/user_footer.php'); ?>
+<script type="text/javascript">
+$(document).ready(function(){
+    //没有开放导航弹窗提示
+    var NoDagin = true;
+    $(".v-NoDagin").click(function(){
+   		if(NoDagin){
+	    	NoDagin = false;
+	    	$("#v-dalog").fadeIn(200,function(){
+	    	}).delay(2000).fadeOut(200,function(){
+	    		NoDagin = true;
+	    	});
+    	}
+    });
+ 
+});
+</script>
+<script>
+function indexdbqb(err, data){
+	if(err){
+		layer.msg(err);
+	}else{
+		reloadMemberInfo();
+		layer.msg(data);
+	}
+} 
+</script>
+</body>
+</html>

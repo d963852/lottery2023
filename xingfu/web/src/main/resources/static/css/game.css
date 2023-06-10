@@ -1,0 +1,111 @@
+﻿/*选号区域*/
+.game-main{/*margin-top:-16px;*/background:#fff;margin-bottom:60px}
+.game-main .game-btn{background:#e2e0dd}
+.game-main .game-btn .ul-li{cursor:pointer;display:inline;float:left;height:45px;line-height:45px;position:relative}
+.game-main .game-btn .ul-li a{font-size:14px;color:#4d4d4d;padding:0 20px}
+.game-main .game-btn .ul-li a:hover{color:#a93737;border-bottom:2px solid #a93737}
+.game-main .game-btn .ul-li.current{background:#e95959}
+.game-main .game-btn .ul-li.current a{color:#fff}
+.game-main .game-cont .game-btn2{clear:both;padding-bottom:10px;margin-left:5px;margin-top:10px}
+/*
+.game-main .game-cont .game-btn2 .ul-li{margin:0 -9px 0 0;display:inline;float:left;line-height:20px;font-size:15px;color:#2d2a2a;padding:0 5px;cursor:pointer;-moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;background:0 0}
+*/
+.game-main .game-cont .game-btn2 .ul-li a{margin-left:15px;margin-bottom:10px;display:inline;float:left;line-height:20px;font-size:14px;color:#303030;padding:5px;cursor:pointer}
+.game-main .game-cont .game-btn2 .ul-li a:hover{background-position:right -610px;color:#e95959;border-bottom:3px solid #e95959}
+.game-main .game-cont .game-btn2 .ul-li.current a{border-bottom:3px solid #e95959;color:#e95959;text-shadow: 0 0px 0px #B8B6B6}
+.game-main .game-cont .game-btn2 #game-helptips{margin-top:2px}
+.game-main .game-cont textarea{border:4px solid #ccc;width:510px;height:90px;padding:10px;font-size:24px;border-radius:2px;outline:none;resize:none}
+.game-main .game-cont .num-table{padding:10px 15px;width:1113px;border-top: 1px solid #d7d1d1;margin-top:20px}
+.game-main .game-cont .num-table .pp{clear:both;height:100%;line-height:40px;padding:5px 0;overflow:hidden}
+.game-main .game-cont .num-table .pp .title{float:left;width:110px;height:32px;line-height:32px;text-align:center;color:#555;border:1px solid #c7c6c6;font-size:14px;margin-top:10px;margin-right:25px;border-radius:4px;background: #ddd;letter-spacing:2px;font-style:oblique;font-weight: bold}
+.game-main .game-cont .num-table .pp .title.bgfff{background:#fff;border:1px solid #fff}
+.game-main .game-cont .num-table .pp .title2{display:inline-block;line-height:38px;width:80px;margin-top:5px;overflow:hidden;margin-right:20px}
+#num-select{overflow:hidden;height:100%;}
+.showhelp{height:19px;line-height:18px}
+.showhelp a,.showhelp h5,.showhelp span{float:left;display:block;padding-left:3px}
+.showhelp h5{color:#737373;font-size:12px}
+.showhelp .methodexample{background:#3a90b2;padding:1px 10px 2px 10px;border-radius:3px;color:#fff;font-size:14px;cursor:pointer;margin-left:5px}
+.showhelp .methodhelp{background:#3a90b2;padding:1px 10px 2px 10px;border-radius:3px;color:#fff;font-size:14px;cursor:pointer;margin-left:10px}
+.game_eg{position:absolute;z-index:9999;text-align:left}
+.game_eg .cont{width:260px;padding:10px;background:#3a90b2;line-height:20px;color:#FFF;color:#fff;border-radius:5px}
+.game_eg .cont strong{font-weight:700}
+.select_title_kl8{font-weight:700;text-align:center;cursor:pointer;height:30px;display:inline;font-size:14px;line-height:30px;padding:5px 15px;background:#F4A908;color:#653809;margin:5px 10px 5px 5px;clear:both}
+.select_title_kl8 span{margin:5px;width:50px}
+.game .pp input.code,.game .pp label{float:left;margin-right:5px}
+.game .pp input,.game .pp input.code{text-align:center;cursor:pointer;height:32px;display:inline;float:left;font-size:14px}
+.game .pp input.action,.game .pp input.code{color:#000;margin:5px 2px 5px 0}
+.game .pp input.code,.game .pp label input{float:none;margin-right:2px}
+.game .pp input[type=checkbox]{width:14px;height:14px}
+.game .pp11 input.action,.game .pp11 input.code{line-height:32px;width:32px}
+.game .pp11 input[type=checkbox]{width:14px;height:14px}
+.game .pp input.code{margin-right:6px;margin-bottom:10px;width:45px;height:45px;line-height:45px;color:#2b2a2a;font-size:19px;text-align:center;background:url(../images/main/ball_bg.png) no-repeat -1px -2px}
+.game .pp input.code.checked{background:url(../images/main/ball_bg.png) no-repeat -1px -53px;color:#fff}
+.game .pp input.code.reset{height:38px;line-height:36px;padding:0 10px;width:auto;background-image:none;border:1px solid #CCC;border-radius:8px}
+.game .pp input.code.reset.checked{background-color:#D75959;color:#fff;border:1px solid #D75959}
+.game .pp input.code.reset2{height:45px;line-height:43px;padding:0 15px;width:auto;background-image:none;border:1px solid #CCC;border-radius:25px 0 25px}
+.game .pp input.code.reset2.checked{background-color:#D75959;color:#fff;border:1px solid #D75959}
+.game .pp input.action{float:right;background:0 0;width:34px;height:34px;font-size:14px;line-height:34px;margin-top:10px;margin-right:4px;border:1px solid #ddd;display:inline-block;color:#888;font-size:15px;text-align:center;border-radius:5px}
+.game .pp input.action:hover{border:1px solid #d75959;color:#d75959}
+.game .pp input.action.on,.game .pp input.action:hover{border:1px solid #d75959;color:#D75959}
+.game-main .game-cont .num-table .fandian{height:32px;line-height:32px;margin-top:6px}
+.game-main .game-cont .num-table .fandian span{float:left}
+.game-main .game-cont .num-table .fandian span.spn8{background: #5a5a5a;width:88px;color:#fff;text-align:center;border-radius:4px}
+.game-main .game-cont .num-table .fandian span.spn8.w50{width:50px;margin-right:5px;background:#e95959}
+.game-main .game-cont .num-table .fandian span.spn9{width:54px;overflow-x:visible}
+.game-main .game-cont .num-table .fandian span.spnimg{background:url(../images/main/jifan.png) no-repeat 5px 0;border:1px solid #b62929;padding-left:25px;font-size:12px;width:80px;color:#b62929;text-align:center;border-radius:4px;height:30px;line-height:30px;font-weight:bold}
+.game-main .game-cont .num-table .fandian .fandian-k{height:32px;float:left;width:365px}
+.game-main .game-cont .num-table .fandian .fandian-k .fandian-box{float:left;width:120px;margin-top:14px;position:relative;margin-left:10px}
+.game-main .game-cont .num-table .fandian .fandian-k .fdmoney{font-size:13px;color:#555;font-weight:700}
+.game-main .game-cont .num-table .fandian .fandian-k .fdmoney2{font-size:13px;color:#D75959;font-weight:700}
+.game-main .game-cont .num-table .fandian .danwei input{cursor:pointer}
+.game-main .game-cont .num-table .fandian .beishu{margin-left:10px;height:32px;float:left;display:inline;margin-right:20px}
+.game-main .game-cont .num-table .fandian .beishu span{float:left}
+.game-main .game-cont .num-table .fandian .beishu input.txt{height:22px;width:50px;text-align:center;float:left;font-size:14px;font-weight:700;display:inline-block;position:relative;padding:4px;border-top:1px solid #e95959;border-bottom:1px solid #e95959;border-left:1px solid #e95959;background-color:#fff;border-radius:4px 0 0 4px}
+.game-main .game-cont .num-table .fandian .beishu select{height:32px;width:60px;text-align:center;float:left;font-size:14px;font-weight:700;display:inline-block;position:relative;padding:4px;border:1px solid #e95959;background-color:#e95959;color:#fff;border-radius:0 4px 4px 0}
+.game-main .game-cont .num-table .fandian .beishu .surbeishu{float:left;display:inline-block;width:32px;height:32px;line-height:32px;text-align:center;margin:0;border-radius:5px 0 0 5px;cursor:pointer;font-size:20px;font-family:arial;border:1px solid #caced1;color:#a8aeb3;background-color:#f4f4f4;background-image:linear-gradient(to bottom,#f4f4f4,#e9ebec);box-shadow:inset 0 1px 1px #fff;text-shadow:0 1px 1px #fff}
+.game-main .game-cont .num-table .fandian .beishu .addbeishu{float:left;display:inline-block;width:32px;height:32px;line-height:32px;text-align:center;margin:0;border-radius:0 5px 5px 0;cursor:pointer;font-size:20px;font-family:arial;border:1px solid #caced1;color:#a8aeb3;background-color:#f4f4f4;background-image:linear-gradient(to bottom,#f4f4f4,#e9ebec);box-shadow:inset 0 1px 1px #fff;text-shadow:0 1px 1px #fff}
+input.beishu{height:20px;width:35px;text-align:center;border:1px solid #CCC;font-size:13px}
+.game-main .game-cont .num-table .fandian .btn-preserve{height:23px;width:62px;background-position:-347px -450px;float:left;margin-left:15px;line-height:23px;margin-top:2px;text-align:center;font-weight:700;cursor:pointer}
+.game-main .game-cont .num-table .fandian .btn-preserve:hover{background-position:-347px -481px;color:#000}
+.game-main .game-cont .num-table .fandian .tz-top-btn{margin-top:2px;float:right;height:26px;border-radius:10px;line-height:26px;cursor:pointer;border:1px solid #fff;background:none repeat scroll 0 0 #F4A908;color:#653809;font-weight:700;font-weight:700;margin-right:10px;text-align:center;overflow:hidden;padding:0 5px}
+.game-main .game-cont .num-table .fandian .tz-top-btn:hover{background:#9F110A;cursor:pointer;color:#E1C4C2}
+.game-main .game-cont .num-table .fandian .tz-top-btn[disabled]{background-position:0 -38px;color:#999}
+/*投注*/
+.sendChoose a{background:#b62929;border-radius:5px;display:block;padding:0 20px;text-align:center;color:#fff;font-size:16px}
+.sendChoose a:hover{background:#982222}
+.touzhu-bottom{overflow:hidden;padding:10px 0 10px 20px}
+.tz-tongji p{font-size:14px;color:#737373;float:left;display:inline}
+.tz-tongji .num{font-weight:700;font-size:18px;color:#737373}
+.tz-tongji .orange{color:#D75959}
+/*元模式*/
+.num-table{color:#333;width:100%;height:40px;line-height:40px;margin:0;position:relative}
+.num-table .fl{float:left;display:inline}
+.num-table .fr{float:right;display:inline}
+.num-table .max,.num-table .min{display:none}
+.num-table strong{font-weight:400}
+.num-table .fdmoney{color:red;margin-left:10px;display:inline-block}
+.num-table .fdmoney2{color:red;margin-left:10px;display:inline-block}
+.num-table a img{vertical-align:middle;margin-top:-3px}
+.num-table .mo{padding-left:0}
+.num-table b{font-size:14px;color:#737373;display:inline-block;width:28px;height:28px;line-height:28px;text-align:center;background:#e3e3e3;margin-left:5px;cursor:pointer;border-radius:50%}
+.num-table b.dwon,.num-table b:hover{color:#fff;background:#d75959;border-radius:50%}
+.num-table .bei{padding-left:0;margin-left:0}
+.num-table .addbeishu,.num-table .surbeishu{cursor:pointer;vertical-align:middle;margin-top:-3px}
+.num-table .ge{padding-left:2px}
+.num-table .prompt{position:absolute;right:250px;font-size:14px;max-width:100%;color:#7c7c7c}
+/*Buys*/
+.buys{margin:5px 20px 0 15px}
+.buys input{display: inline;margin-top: 3px;width: 18px;height: 12px;float: left;margin-right: 2px;cursor: pointer}
+.buys b{height: 22px;color: #d75959;font-size: 13px}
+/*MainFooter*/
+.main_footer{position: fixed;bottom: 0;left: 0;height:40px;line-height:40px;font-size:14px;width: 100%;text-align:center;background-color: rgba(63,63,63,.9);color: #fff;z-index:1}
+/*Msg_Tip*/
+#layui-layer-content .msg_tip{padding:9px;font-size:14px;text-align:center;color:#555;text-align:center}
+#layui-layer-content .msg_tip p i{font-size:20px}
+/*PushPrize*/
+.push_prize{position:fixed;right:0;bottom:0;height:30px;line-height:30px;padding:0 35px 0 35px;font-size:12px;background:#e95959;color:#fff;overflow:hidden;z-index:999}
+.push_prize .notice_icon{position:absolute;left:10px;top:5px;width:20px;height:20px;background:url(../images/main/notice.png)}
+.push_prize ul{transition:all .5s;-webkit-transition:all .5s;height:30px;overflow: hidden}
+.push_prize li span{margin:0 3px}
+.push_prize li b{margin:0 3px;font-weight:normal}
+.push_prize .close{position:absolute;display:block;width:15px;height:15px;text-align:center;right:5px;top:5px;line-height:15px;font-family:arial;color:#fff}

@@ -16,6 +16,7 @@
         <module>../modules</module>
         <module>../admin</module>
         <module>../task</module>
+        <module>../xingfu/web</module>
     </modules>
 	
 	<developers>  

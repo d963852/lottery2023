@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="renderer" content="webkit" />
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="IE=EmulateIE8" http-equiv="X-UA-Compatible" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta content="IE=EmulateIE8" http-equiv="X-UA-Compatible" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>信息备注_<?= $this->settings['webName'] ?></title>
+<meta content="origin-when-cross-origin" name="referrer" />
+<meta content="telephone=no" name="format-detection" />
+<link href="/public/css/layout.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="/public/js/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="/public/js/function.js"></script>
+<script type="text/javascript" src="/public/layer/layer.js"></script>
+<script type="text/javascript" src="/public/js/onload.js"></script>
+<?php if($this->settings['pright'] == 1){?>
+<script type="text/javascript">
+$(document).bind('contextmenu', function(){
+	return false;
+});
+</script>
+<?}?>
+</head>
+<body>
+<form action="/Ajax/Remarks" method="post" target="ajax" onajax="safeBeforcare" call="MsgTips">
+<div class="finance">
+<div class="finance_list">
+<div class="uhleft left">备注内容：</div>
+<div class="uhright left"><input type="text" maxlength="18" name="care" value="<?=$this->user['care']?>" placeholder="输入备注内容" /></div>
+</div>
+<div class="finance_list bbnone">
+<div class="uhleft left fz0">操作：</div>
+<div class="uhright left"><input type="submit" value="保存" class="btn"></div>
+</div>
+</div>
+</form>
+</body>
+</html>

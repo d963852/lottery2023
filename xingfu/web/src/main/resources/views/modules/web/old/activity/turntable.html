@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="renderer" content="webkit" />
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="IE=EmulateIE8" http-equiv="X-UA-Compatible" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta content="IE=EmulateIE8" http-equiv="X-UA-Compatible" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>幸运转盘_<?= $this->settings['webName'] ?></title>
+<meta content="origin-when-cross-origin" name="referrer" />
+<meta content="telephone=no" name="format-detection" />
+<?php $this->display('global/skin.php'); ?>
+<link href="/public/css/main_box.css" rel="stylesheet" type="text/css" />
+<link href="/public/css/activity.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/public/layer/layer.js"></script>
+<script type="text/javascript" src="/public/js/onload.js"></script>
+<script type="text/javascript" src="/public/js/function.js"></script>
+<script type="text/javascript" src="/public/js/main.js"></script>
+<script type="text/javascript" src="/public/js/soundBox.js"></script>
+</head>
+</head>
+<body>
+<div class="Ccenter">
+<?php $this->display('global/user_header.php'); ?>
+<div class="box-left">
+<?php $this->display('global/user_menu.php'); ?>
+</div>
+<div class="box-right h777">
+    <div class="turntable">
+        <div class="turntable_content">
+            <div class="turntable_bg"><a class="turntable_turn" id="startbtn" href="javascript:void(0)" onclick="startlott();"></a></div>
+            <div class="left ml10">
+                     <!-- 中奖列表begin -->
+                    <div class="turntable_roll">
+                        <h2>最新中奖播报</h2>
+						<div class="boban">提示：播报栏仅显示奖金，实物系统会发送一封确认函（需3天内填写收获地址，过期作废），需要填写收货地址，实物发放不会收取任何费用，如中得实物请注意查收系统消息。
+						</div>
+                        <div class="turntable_roll_info">
+                            <div class="turntable_roll_scroll">
+                                <marquee direction="up" scrolldelay="0" scrollamount="3" loop="-1" height="340">
+						<?php 
+								         $data=$this->getRows("select s.*,u.username from {$this->prename}turntable_log s, {$this->prename}members u where s.uid=u.uid order by s.swapTime desc");
+										 foreach($data as $var){
+                                            echo '<li><span class="white">恭喜用户【'.mb_substr(htmlspecialchars($var['username']),0,2,'utf-8').'***'.'】，喜中</span><em class="yellow fz20">'.$var['coin'].'</em><em class="white">元现金</em></li>';
+								         }
+								   ?>
+												</marquee>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 中奖列表end -->
+					<div class="turntable_explain">
+ 	               <h3 class="fz16">抽奖活动说明：</h3>
+                     <ul class="mt10">
+					 <li>1、每投注<i>1</i>元获得<i>1</i>积分，积分系统自动发放；</li>
+                        <li>2、每次抽奖需要消耗<i><?=$this->dzpsettings['score']?></i>积分；</li>
+                        <li>3、当前有<i><?=$this->user['score']?></i>积分，可抽奖<i><?=$this->iff($this->user['score']<$this->dzpsettings['score'],0,intval($this->user['score']/$this->dzpsettings['score']))?></i>次；</li>
+                        <li class="bbnone">4、积分不足不能参与抽奖活动，抽奖次数不限。</li>
+                   </ul>
+                </div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<?php $this->display('global/user_footer.php'); ?>
+<script type="text/javascript" src="/public/js/turntable/rotate.js"></script>
+<script type="text/javascript">
+//抽奖询问
+function startlott(){
+layer.confirm('本次需要消耗<?=$this->dzpsettings['score']?>积分，确定抽奖？',
+        function(index)
+        {
+           lottery(); 
+		   layer.close(index);
+        });
+}
+function lottery(){ 
+    $.ajax({ 
+        type: 'POST', 
+        url: '/Activity/TurntableSet', 
+        dataType: 'json', 
+        cache: false, 
+        error: function(){ 
+            layer.msg('抱歉，出现了小问题'); 
+        }, 
+        success:function(json){
+            $("#startbtn").unbind('click').css("cursor","default");
+            var lott = json.angle;
+            var data = json.prize;
+			if(parseInt(lott)==0){
+				layer.msg(data);
+			}else{
+            $("#startbtn").rotate({ 
+                duration:3000,
+                angle: 0, 
+                animateTo:1800+lott,
+                easing: $.easing.easeOutSine, 
+                callback: function(){ 
+					if(data=='谢谢参与' || data=='再接再厉'){
+						layer.msg(data); 
+					}else if(data=='再来一次'){
+						if(layer.msg('再来一次，本次不消耗积分')){ 
+							lottery(); 
+						}}else{
+						layer.msg('恭喜你，中得'+data); 
+						parent.reloadMemberInfo();
+					}
+                } 
+            });
+		   }
+        } 
+    });
+}
+</script>
+</body>
+</html>

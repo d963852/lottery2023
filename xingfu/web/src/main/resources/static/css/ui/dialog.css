@@ -1,0 +1,12 @@
+@charset "utf-8";
+/* CSS Document */
+.blockOverlay,.blockOverlayBox{border:none;position: absolute;z-index: 999;filter:alpha(opacity=70);opacity:0.7;margin:0;padding:0;width:100%;height:100%;top:0;left:0;background-color:#000;cursor:default;}
+#JS_blockPage{ margin-left: -240px;}
+.blockMsg{padding:0;position: absolute;text-align:left;box-shadow:0px 0px 18px #666;background:#D75959;}
+.blockMsg *{padding:0; margin:0;}
+.blockMsg .title { height:42px; line-height:42px; font-family:Microsoft YaHei; font-size:20px; text-align:center; color:#fff;margin:0 auto;}
+.blockMsg .content {text-align:center;background:#fff;width:480px;line-height:30px;font-size:15px; color:#262626;}
+.blockMsg .content .detail { padding:28px 10px 20px; font-family:Microsoft YaHei; max-height:300px; overflow-y:auto; font-size:18px;}
+.blockMsg .content .detail .title { font-size:18px; color:#ed0000; border:0;}
+.blockMsg .bottom { background:#fff; height:50px; padding-top:25px; border-top:1px solid #eee; font-family:Microsoft YaHei; font-size:14px; text-align:center;}
+.blockMsg .submit { width:90px; height:33px; line-height: 33px; font-size: 16px; color: #fff; padding: 0!important; font-family: Microsoft Yahei; margin:0 10px; background:#D75959; border:0!important; cursor:pointer;}

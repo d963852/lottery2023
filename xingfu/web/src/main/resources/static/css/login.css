@@ -1,0 +1,43 @@
+﻿html{height:100%;width:100%;}
+body{background:url(../images/bg.jpg) no-repeat;background-position:center center;background-size:cover;height:100%;width:100%}
+a,a:visited{color:#666;text-decoration:none;}
+input{outline:none}
+.top_tips{position:absolute;width:100%;left:0;bottom:0px;height:40px;line-height:40px;margin:0 auto;background:rgba(0,0,0,0.2);text-align:center;color:#fff;border-top:1px solid #c9686d}
+.top_tips a{color:#ff0000}
+.form_box{position:absolute;left:0;top:50%;width:100%;margin-top:-250px;height:400px}
+.form_login{width: 1000px;margin: auto;background-size:100% 100%;height:494px;width:394px}
+.form_logo{width:100%;background-position:center center;background-repeat:no-repeat;color:#e36d6d;text-align:center;font-size:28px;letter-spacing:1px;line-height:50px;padding-top:50px}
+.form{text-align:center;padding-top:5px;}
+.form div{margin:auto;width:320px}
+.form div input{display:block;height:50px;font-size:16px;color:#fff;width:100%;border-radius:2px;border:1px #ad5454 solid!important;background-color:#e36d6d;transition:all 1s;cursor:pointer}
+.form div input:hover{background-color:#ad5454}
+.form p{width:320px;margin:auto;height:45px;margin-top:10px;margin-bottom:10px;position:relative;font-size:14px;color:#ccc}
+.form p em{font-style:normal;color:#ccc}
+.form p img{position:absolute;right:5px;top:5px;width:105px;height:35px;cursor:pointer;float:right}
+.form p i{position:absolute;left:-5px;display:inline-block;width:60px;text-align:center;height:45px;line-height:45px;vertical-align:middle;color:#e36d6d;font-size:18px}
+.form p input{width:100%;height:45px;box-sizing:border-box;padding-left:50px;border:1px #fff solid!important;border-radius:2px}
+.form a,.form a:visited{display:block;color:#e36d6d;font-size:16px;text-decoration:underline}
+.form a:hover{color:#fff}
+.form_xl a,.form_xl a:visited{color:#e36d6d;font-size:16px;margin-top:15px}
+.form_xl a:hover{color:#fff}
+.footer{width:100%;position:absolute;left:0;height:115px;bottom:41px;text-align:center;background:url(/public/images/top_bg.png)}
+.browser{margin:auto;width:1000px;position:relative}
+.browser_left{width:565px}
+.browser_left .title{color:#e36d6d;padding-top:15px;padding-bottom:10px;font-size:16px}
+.browser_left p{display:table;margin:auto}
+.browser_left p a{display:table-cell;padding-left:20px;padding-top:5px;padding-right:20px}
+.browser_left p a span i{line-height:50px;font-size:32px}
+.browser_left p a span{float:left;width:50px;height:50px;display:inline-block;border-radius:50%}
+.browser_left p a span.bg1{background: url(../images/llq-icon.png) 2px 2px no-repeat}
+.browser_left p a span.bg2{background: url(../images/llq-icon.png) -45px 2px no-repeat}
+.browser_left p a span.bg2 i{color:#ed6c44}
+.browser_left p a span.bg3{background: url(../images/llq-icon.png) -140px 2px no-repeat}
+.browser_left p a strong{text-align:left;font-weight:400;font-size:14px;padding-top:10px;padding-left:5px;color:#fff;float:left}
+.browser_left p a strong em{display:block;font-size:12px;font-style:normal;color:#999}
+.browser_right{float:right;margin-right:50px;margin-top:30px}
+.browser_right a{color:#e36d6d;}
+.browser_right a i{font-size:40px}
+.browser_right a:hover{color:#fff}
+@media screen and (max-width:960px){body{overflow-x:hidden}
+.footer, .top_tips{display:none}
+}

@@ -1,0 +1,77 @@
+<?php
+	$sql="select count(id) from {$this->prename}message_receiver where to_uid=? and is_readed=0 and is_deleted=0";
+	$num=$this->getValue($sql,$this->user['uid']);
+?>
+<div class="user_left_box">
+<?php if (0) { ?>
+<div class="userbox">
+<ul class="stc_1 clear">
+<li class="mane">
+<span class="stc_t">账号：</span>
+<span class="stc_c"><?=$this->user['username']?></span>
+<a href="/Member/Information" class="ui-mgs-tip-box" id="msg"><?=$this->ifs($num,'0')?></a>
+<a href="/User/Logout" class="" id="msg">退出</a>
+</li>
+<li class="balance">
+<span class="stc_t">余额：</span>
+<a href="javascript:void(0);" id="RefreshMoney" title="刷新余额"><i class="icon icon-646 fz16"></i></a>
+<span id="ExhibitionMoney" class="stc_c"></span>
+</li>
+</ul>
+</div>
+<?php } ?>
+	  <div class="user_menu_box">
+	  <div class="user_menu">
+      <div class="user_menu_title">信息记录</div>
+      <div class="user_menu_info ">
+        <li><a href="/Member/Record">投注记录</a></li>
+        <li><a href="/Member/Change">帐变记录</a></li>
+		<li><a href="/Member/Profit">盈亏报表</a></li>
+		<li><a href="/Member/RechargeLog">充值记录</a></li>
+		<li><a href="/Member/DrawingLog" class="bbnone">提现记录</a></li>
+      </div>
+      <div class="user_menu_title">资料管理</div>
+      <div class="user_menu_info">
+	  <?php if($this->user['mLetterStatus']==0){?>
+        <li><a href="javascript:void(0)" onclick="TestUser();">登入密码</a></li>
+		<li><a href="javascript:void(0)" onclick="TestUser();">资金密码</a></li>
+        <li><a href="javascript:void(0)" onclick="TestUser();">提款信息</a></li>
+		<?php }else{ ?>
+		<li><a href="/Member/Passwd">登入密码</a></li>
+		<li><a href="/Member/SapitalPasswd">资金密码</a></li>
+        <li><a href="/Member/Dinding" class="bbnone">提款信息</a></li>
+		<?php }?>
+      </div>
+	  <!--div class="user_menu_title">互动娱乐</div>
+      <div class="user_menu_info">
+        <li><a href="/Activity/Turntable">积分转盘</a></li>
+		<li><a href="/Activity/Animals">飞禽走兽</a></li>
+		<li><a href="/Activity/Eggs" class="bbnone">幸运砸蛋</a></li>
+      </div-->
+	  </div>
+    </div>
+</div>
+<script type="text/javascript">
+    (function () {
+        var active = '';
+        var url = document.location.href.toLowerCase();
+        $(".user_menu").find("a").each(function (a, b) {
+            var thisEle = $(this);
+            var thisUrl = thisEle.attr("href").toLowerCase();
+            if (/editpwd|secretquestion|emails|contact/g.test(url)) {
+                thisEle.parent().parent().parent().parent().show();
+            }
+            if (active != '') {
+                if (new RegExp(active.toLowerCase()).test(thisUrl)) {
+                    thisEle.parent().parent().show();
+                    thisEle.parent().addClass("active");
+                }
+            } else {
+                if (url.match(thisUrl)) {
+                    thisEle.parent().parent().show();
+                    thisEle.parent().addClass("active");
+                }
+            }
+        });
+    })();
+</script>

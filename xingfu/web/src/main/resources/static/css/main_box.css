@@ -1,0 +1,145 @@
+﻿body {min-height:800px;background-attachment: fixed;height:100%;background: -webkit-linear-gradient(left top, #6a4238 , #e0c693);background: -o-linear-gradient(bottom right, #3d1f1d , #ebe0c4);background: -moz-linear-gradient(bottom right, #3d1f1d , #ebe0c4);background: linear-gradient(to bottom right, #3d1f1d , #ebe0c4)}
+.clear:before, .clear:after{content:"";display:table;}
+.clear:after{clear:both;}
+.clear{*zoom: 1;}
+.Ccenter{width:1342px;margin:0 auto;}
+div.top{height:115px;margin-bottom:0;width:100%;padding:5px 0 0 0;}
+.top_in {width:1342px;height:115px; position:relative;z-index:99;}
+.top_in .user_banner{float:left;font-size:0;margin-left:240px;margin-top:30px;width:225px;height:54px;background: url("../images/user/banner.png") no-repeat 0 0}
+.game_mane {width:285px;height:50px;margin-left:115px;*float: left;*margin-left:12px;*width:256px;}
+.top_in .top_menu{position:absolute;right:10px;width:auto;height:40px;top:25px;}
+.top_in .top_menu a{ width:111px;height:40px;float:left;position:relative;z-index:98}
+.game_info{float:left;width:385px;height:95px;padding:9px 0 9px 5px;}
+.game_ico{width:97px;height:97px;float:left;padding:0 8px 0 10px;*padding:0;}
+.game_ico image{width:100%;height:100%;}
+.container{position:relative;width:1342px;height:100%;margin-bottom:30px;}
+.container .side{width:198px;float:left;}
+.container .ui-main{width:1140px;margin:0 0 0 202px;position:relative;padding-bottom:9px;}
+.container .rightbar{position:absolute;right:0;top:0;width:234px;height:39px;}
+/*UserLogo*/
+.top_in .user_logo{float:left;color:#fff;height:116px;line-height:116px;width:200px;text-align:center;background:rgba(0,0,0,0.2) url("../images/user/logo_user.png") no-repeat 0 0}
+.top_in .agent_logo{float:left;color:#fff;height:116px;line-height:116px;width:200px;text-align:center;background:rgba(0,0,0,0.2) url("../images/user/logo_agent.png") no-repeat 0 0}
+.top_in .user_logo a, .top_in .agent_logo a{font-size:0;height:116px;width:200px;}
+/*Links*/
+.acc-links{padding:5px 0 10px 0}
+.acc-links a{ width:65px;float:left;height:60px;line-height:15px;margin:5px 0 1px 1px;font-size:13px;text-align:center;}
+.acc-links a span{display:block;padding-top:40px;}
+/*kjHistory*/
+.kjhistory_box{margin-top: 0;border-right: 1px solid #959595}
+.kjhistory {width:100%;min-height:269px;background: #fff;font-family:Tahoma,"\5FAE\8F6F\96C5\9ED1"}
+.kjhistory .title {height: 40px;line-height:40px;color: #555; background:#ddd;font-size:15px;padding:0 10px}
+.kjhistory .title.f_b{font-weight: bold}
+.kjhistory .title a{float:right;color:#888;font-size:12px;margin-top:1px}
+.kjhistory ul { border: none}
+.kjhistory li{padding:10px;color: #555; border-bottom: 1px solid #e4e1e1; background: #fff;font-size:13px}
+.kjhistory li .hao{color:#555;font-size:12px;font-weight:bold;margin-left:20px}
+.kjhistory li.pk10{padding:5px}
+.kjhistory li:last-child { border-bottom: none}
+.kjhistory li:first-child { border-bottom: 1px solid #e4e1e1}
+.kjhistory li p{color:#555;font-size:12px;text-align:center;font-weight:bold}
+/*Top*/
+.top_in { width:100%; height: 116px; }
+.container .side { width: 199px; }
+.container .ui-main { margin: 0 0 0 199px; width: 1143px; }
+.side_menu .sidem_item .active-item-link a:hover span, .side_menu .sidem_item .active-item-link a.active span { box-shadow: none; }
+.side_menu .sidem_item .active-item-link { border-radius: 0; }
+.side_menu .sidem_item .active-item-link a { font-weight: 700; border-radius: 0; }
+.side_menu .sidem_item li a span { text-align: right; padding-right: 20px; }
+div.top { width: 1342px; height: 116px; background: #b62929 url(../images/user/topbg_user.png); padding:0; }
+div.top.agent{background:#bb642a url(../images/user/topbg_agent.png)}
+.openinfo { height: 36px; padding-top: 7px; width: 255px; float: left;background-position: 0 -780px; margin-left: 16px}
+.top_in .top_menu a { width: 52px; margin: 0 14px;background: url(../images/top_menu_icos.png) no-repeat;}
+.top_in .top_menu a span{ display: block; font-size: 12px; text-align: center; padding-top: 48px; letter-spacing:1px;color: #fff}
+.top_in .top_menu .home { background-position: 4px 0}
+.top_in .top_menu .user { background-position: 4px -100px}
+.top_in .top_menu .buys { background-position: 4px -200px}
+.top_in .top_menu .message { background-position: 4px -300px}
+.top_in .top_menu .service { background-position: 4px -400px}
+.top_in .top_menu .notices { background-position: 4px -500px}
+.top_in .top_menu .trend { background-position: 4px -600px}
+.top_in .top_menu .home:hover { background-position: -49px 0}
+.top_in .top_menu .user:hover { background-position: -49px -100px}
+.top_in .top_menu .buys:hover { background-position: -49px -200px}
+.top_in .top_menu .message:hover { background-position: -49px -300px}
+.top_in .top_menu .service:hover { background-position: -49px -400px}
+.top_in .top_menu .notices:hover { background-position: -49px -500px}
+.top_in .top_menu .trend:hover { background-position: -49px -600px}
+.game_info { width: 396px;padding-left: 10px; }
+.acc-links{ margin-bottom: 0;background: #f2f2f2; }
+.acc-links { border-right: 1px solid #959595; }
+.user_left_box { padding-top: 8px; border-right: 1px solid #959595;background: #f2f2f2}
+.userbox li { height: 34px; margin-left: 4px; color: #fff; background: url(../images/user_bg.png) no-repeat; }
+.userbox.agent li { height: 34px; margin-left: 4px; color: #fff; background: url(../images/user_agent_bg.png) no-repeat; }
+.userbox li.mane { margin-bottom: 4px; padding-top: 9px;background-position: -10px -11px; }
+.userbox.agent li.mane { background-position: -10px -11px; }
+.userbox li.balance { background-position: -10px -54px; padding-top: 12px; }
+.userbox.agent li.balance { background-position: -10px -54px}
+.userbox li.balance a {position:absolute;float:right;margin-top:5px;margin-left:75px;color:#b62929}
+.userbox.agent li.balance a{color:#a55018}
+.userbox li .stc_t { padding-left: 46px; line-height: 26px; *zoom: 1; float: left;color: #3e3c3c; }
+.userbox li .stc_c { font-weight: bold; line-height: 26px;color: #848383;font-size:12px}
+.userbox li .ui-mgs-tip-box { top: 14px;background-color:#b62929;color:#fff;border-radius:100%;font-size:12px;padding:0 5px }
+.userbox.agent li .ui-mgs-tip-box {background-color:#a55018;color:#fff}
+.userbox li a{color: #e95959;font-weight:bold}
+.userbox.agent li a{color: #a55018}
+.userbox li.balance a:hover, .acc-links a:hover {color: #B62929}
+.acc-links a span { background: url(../images/user_bg.png) no-repeat;}
+.acc-links .btn-navacc-deposit span { background-position:0 -120px; }
+.acc-links .btn-navacc-withdraw span { background-position: -71px -119px; }
+.acc-links .btn-navacc-mail span { background-position: -139px -119px; }
+.acc-links .btn-navacc-current span { background-position: -139px -180px; }
+.acc-links .btn-navacc-history span { background-position: -71px -180px; }
+.acc-links .btn-navacc-center span { background-position: 0 -180px; }
+.container { background: url(../images/side-bd.png?91a839d734) repeat-y 198px 0 #fff; }
+/*GameSwitch*/
+.game_switch{position: absolute;top:85px;left:128px;background:#e07070;border-radius:10px;height:24px;line-height:23px;width:80px;text-align:center;color:#fff;border:1px solid #962a2a;cursor: pointer;}
+.game_flash a{position: absolute;top:85px;left:395px;background:#888;border-radius:10px;height:24px;line-height:23px;width:80px;text-align:center;color:#fff;border:1px solid #555;cursor: pointer;z-index:999}
+.game_flash a:hover{background:#555;color:#fff}
+.game_switch.user_game{left:110px}
+.game_switch.user_game.agent{background:#d4783a}
+.game_switch_box { position: absolute; top:111px; left:128px;width: 1000px; *min-height: 564px; margin: 0 5px; padding: 5px 1px 1px 1px; z-index: 9999;zoom: 1}
+.game_switch_info { padding: 15px 34px 0; }
+.game_switch_box .game_switch_info {background-color:rgba(0,0,0,0.9); padding-bottom: 20px;border-bottom:4px solid #b62929}
+.game_switch_info_cai { border-right: 1px solid #2b2b2b; display: inline-block; width: 464px; zoom: 1; font-size: 0; float: left; }
+.game_switch_info_cai.brnone{border-right:0;}
+.game_switch_title { border-bottom: 1px solid #2b2b2b; width:100%; display: block; margin: 8px 0 0 0; padding-bottom: 8px; }
+.game_switch_box h1 { height: 20px; font-size: 16px; display: inline-block; margin-left: 10px; margin-top: 5px; float: left; color: #fff; }
+.game_switch_box h1.l{margin-left:25px}
+.game_switch_wrap { width: 464px; height: auto; float: none; }
+.game_switch_info .gamelist_l { margin-left: 0; }
+.game_switch_box ul { min-height: 62px; padding: 11px 0; width: 464px; }
+.game_switch_wrap ul { float: none; }
+.game_switch_box li { float: left; line-height: 28px; margin: 5px 0; height: 104px;position: relative; text-align: center; width:80px;margin-right:12px}
+.game_switch_box li a { display: block;text-align: center; background: #e95959; overflow: hidden;border-radius:50%;width:80px;height:80px}
+.game_switch_box li a img { display: block; width: 80%; height: 80%; margin: 10%; }
+.game_switch_box li span { font-size: 12px; display: block; color: #fff; position: absolute; left: 0; bottom: 0; width: 100%; height: 28px; line-height: 28px; overflow: hidden; }
+.game_switch_box li a:hover, .gamelist_more li a:hover { background: #b62929;}
+.game_switch_list { display: inline-block; width: 467px; zoom: 1; font-size: 0; /*margin-left: -4px;*/ float: left; }
+.game_switch_info .gamelist_r { margin-left: 15px; }
+.game_switch_back, .game_switch_back2 { width: 26px; height: 19px; position: absolute; background: url(../images/index/triangles_back.png) no-repeat; left:34px; top: -7px; }
+.gamelist_more li a{background:#afafaf}
+/*UserHome*/
+.user_home{font-size:16px;padding:20px 50px;background:#fff}
+.user_home_list{width:500px;height:60px;line-height:60px;border-bottom:1px solid #ddd}
+.user_home_list.bbnone{border-bottom:none}
+.user_home_list .uhleft{width:100px}
+.user_home_list .uhright{width:400px}
+.user_home_list .uhright a{background:#e95959;color:#fff;height:30px;line-height:30px;padding:0 20px;border-radius:5px}
+.user_home_list .uhright a.agent{background:#bb642a}
+.user_home_list .uhright a:hover{background:#a02727}
+.user_home_list .uhright a.agent:hover{background:#a55018}
+/*UserHomeRight*/
+.user_home .right_list{width:120px;padding:80px 150px 100px 150px;background: -webkit-linear-gradient(left top, #f7e8e8 , #fff);background: -o-linear-gradient(bottom right, #f7e8e8 , #fff);background: -moz-linear-gradient(bottom right, #f7e8e8 , #fff);background: linear-gradient(to bottom right, #f7e8e8 , #fff);border-radius:5px;box-shadow: 0 2px 1px rgba(0,0,0,0.4)}
+.user_home .right_list a{background:#e95959;font-size:16px;height:40px;line-height:40px;width:120px;text-align:center;color:#fff;border-radius:5px;margin-top:20px}
+.user_home .right_list a:hover{background:#a02727}
+/*AgentHomeRight*/
+.user_home .right_list_agent{width:400px;border:1px solid #ddd;padding-bottom:10px;margin-bottom:20px}
+.user_home .right_list_agent h2{background:#ddd;padding:10px 20px;color:#715454}
+.user_home .right_list_agent p{padding:0 20px;font-size:14px}
+.user_home .right_list_agent p.titleinfo{font-size:16px}
+.user_home .right_list_agent .user_list{padding:20px 0}
+.user_home .right_list_agent .user_list a{background:#e95959;font-size:16px;height:40px;line-height:40px;width:170px;text-align:center;color:#fff;border-radius:5px;margin-left:20px}
+.user_home .right_list_agent .user_list a:hover{background:#a02727}
+/*Footer*/
+.footer{background:rgba(0,0,0,0.8);height:90px;line-height:90px;color:#fff;text-align:center;font-size:14px;border-top:4px solid #b62929}
+.footer.agent{border-top:4px solid #a55018}

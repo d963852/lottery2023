@@ -1,0 +1,34 @@
+<?php 
+$sql="select simpleInfo, info, example  from {$this->prename}played where id=?";
+$playeds=$this->getRows($sql, $args[0]);
+?>
+<?=$playeds[0]["simpleInfo"]?>
+<a class="gamr_tip" title="<?=$playeds[0]["example"]?>">玩法示例</a>
+<a class="gamr_tip" title="<?=$playeds[0]["info"]?>">玩法帮助</a>
+<script type="text/javascript">
+$(function () {
+	jQuery("a,img,i,input").each(function() {
+		jQuery("#Drop-title").remove();
+		if (this.title) {
+			var a = this.title;
+			jQuery(this).mouseover(function(b) {
+				this.title = "";
+				jQuery("body").append('<div id="Drop-title">' + a + "</div>");
+				jQuery("#Drop-title").css({
+					left: b.pageX - 15 + "px",
+					top: b.pageY + 30 + "px",
+					opacity: "0.9"
+				}).fadeIn(250)
+			}).mouseout(function() {
+				this.title = a;
+				jQuery("#Drop-title").remove()
+			}).mousemove(function(b) {
+				jQuery("#Drop-title").css({
+					left: b.pageX - 15 + "px",
+					top: b.pageY + 30 + "px"
+				})
+			})
+		}
+	})
+})
+</script>

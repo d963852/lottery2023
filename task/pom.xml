@@ -22,7 +22,7 @@
 	<properties>
 		
 		<finalName>task</finalName><!-- war or jar 包的名称 -->
-		<start-class>com.jeesite.modules.TaskApplication</start-class>
+		<start-class>com.jeesite.modules.Application</start-class>
 		
 		<!-- environment setting -->
 		<eclipse-plugin-download-sources>false</eclipse-plugin-download-sources>

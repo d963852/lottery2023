@@ -1,0 +1,8 @@
+<?php
+$sql="select time, number, data from {$this->prename}data where type={$this->type} order by number desc,time desc limit 10";
+if($data=$this->getRows($sql)) foreach($data as $var){?>
+<li data="<?=$var['data']?>">
+<span><?=$var['number']?></span>
+<span class="hao"><?=preg_replace('/\,/', ' ', $var['data'])?></span>
+</span>
+<? } ?>

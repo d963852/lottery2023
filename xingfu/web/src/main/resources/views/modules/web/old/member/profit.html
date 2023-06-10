@@ -1,0 +1,179 @@
+<?php
+	$para=$_GET;
+	// 时间限制
+	if($para['fromTime'] && $para['toTime']){
+		$fromTime=strtotime($para['fromTime']);
+		$toTime=strtotime($para['toTime']);
+		$betTimeWhere="and actionTime between $fromTime and $toTime";
+		$cashTimeWhere="and c.actionTime between $fromTime and $toTime";
+		$rechargeTimeWhere="and r.actionTime between $fromTime and $toTime";
+		$fanDiaTimeWhere="and actionTime between $fromTime and $toTime";
+		$fanDiaTimeWhere2="and l.actionTime between $fromTime and $toTime";
+		$brokerageTimeWhere=$fanDiaTimeWhere2;
+	}elseif($para['fromTime']){
+		$fromTime=strtotime($para['fromTime']);
+		$betTimeWhere="and b.actionTime >=$fromTime";
+		$cashTimeWhere="and c.actionTime >=$fromTime";
+		$rechargeTimeWhere="and r.actionTime >=$fromTime";
+		$fanDiaTimeWhere="and actionTime >= $fromTime";
+		$fanDiaTimeWhere2="and l.actionTime >= $fromTime";
+		$brokerageTimeWhere=$fanDiaTimeWhere2;
+	}elseif($para['toTime']){
+		$toTime=strtotime($para['toTime']);
+		$betTimeWhere="and b.actionTime < $toTime";
+		$cashTimeWhere="and c.actionTime < $toTime";
+		$rechargeTimeWhere="and r.actionTime < $toTime";
+		$fanDiaTimeWhere="and actionTime < $toTime";
+		$fanDiaTimeWhere2="and l.actionTime < $toTime";
+		$brokerageTimeWhere=$fanDiaTimeWhere2;
+	}else{
+		if($GLOBALS['fromTime'] && $GLOBALS['toTime']){
+		$betTimeWhere="and actionTime between {$GLOBALS['fromTime']} and {$GLOBALS['toTime']}";
+		$cashTimeWhere="and c.actionTime between {$GLOBALS['fromTime']} and {$GLOBALS['toTime']}";
+		$rechargeTimeWhere="and r.actionTime between {$GLOBALS['fromTime']} and {$GLOBALS['toTime']}";
+		$fanDiaTimeWhere="and actionTime between {$GLOBALS['fromTime']} and {$GLOBALS['toTime']}";
+		$fanDiaTimeWhere2="and l.actionTime between {$GLOBALS['fromTime']} and {$GLOBALS['toTime']}";
+		$brokerageTimeWhere=$fanDiaTimeWhere2;
+		}
+	}
+	// 用户限制
+	$uid=$this->user['uid'];
+	$userWhere="and u.uid=$uid";
+	$userWhere3="and concat(',', u.parents, ',') like '%,$uid,%'";
+	$sql="select u.username, u.coin, u.uid, u.parentId, sum(b.mode * b.beiShu * b.actionNum) betAmount, sum(b.bonus) zjAmount, (select sum(c.amount) from {$this->prename}member_cash c where c.`uid`=u.`uid` and c.state=0 $cashTimeWhere) cashAmount,(select sum(r.amount) from {$this->prename}member_recharge r where r.`uid`=u.`uid` and r.state in(1,2,9) $rechargeTimeWhere) rechargeAmount, (select sum(l.coin) from {$this->prename}coin_log l where l.`uid`=u.`uid` and l.liqType in(50,51,52,53,56) $brokerageTimeWhere) brokerageAmount from {$this->prename}members u left join {$this->prename}bets b on u.uid=b.uid and b.isDelete=0 $betTimeWhere where 1 $userWhere";
+	$this->pageSize-=1;
+	if($this->action!='countSearch') $this->action='countSearch';
+	$list=$this->getPage($sql .' group by u.uid', $this->page, $this->pageSize);
+	if(!$list['total']) {
+		$uParentId2=$this->getValue("select parentId from {$this->prename}members where uid=?",intval($para['parentId']));
+		$list=array(
+			'total' => 1,
+			'data'=>array(array(
+				'parentId'=>$uParentId2,
+				'uid'=>$para['parentId'],
+				'username'=>'没有用户'
+			))
+		);
+		$noChildren=true;
+	}$params=http_build_query($_REQUEST, '', '&');
+	$count=array();
+	$sql="select sum(coin) from {$this->prename}coin_log where uid=? and liqType in(2,3) $fanDiaTimeWhere";
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="renderer" content="webkit" />
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="IE=EmulateIE8" http-equiv="X-UA-Compatible" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta content="IE=EmulateIE8" http-equiv="X-UA-Compatible" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>盈亏报表_<?= $this->settings['webName'] ?></title>
+<meta content="origin-when-cross-origin" name="referrer" />
+<meta content="telephone=no" name="format-detection" />
+<?php $this->display('global/skin.php'); ?>
+<link href="/public/css/member.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="/public/datetime/jquery.datetimepicker.css" />
+<script type="text/javascript" src="/public/layer/layer-v3.1.1.js"></script>
+<script type="text/javascript" src="/public/js/onload.js"></script>
+<script type="text/javascript" src="/public/js/function.js"></script>
+<script type="text/javascript" src="/public/js/main.js"></script>
+<script type="text/javascript" src="/public/js/soundBox.js"></script>
+<script type="text/javascript" src="/public/datetime/jquery.datetimepicker.js"></script>
+<!--script type="text/javascript">
+var game={
+	type:<?=json_encode($this->type)?>,
+	played:<?=json_encode($this->played)?>,
+	groupId:<?=json_encode($this->groupId)?>
+},
+user="<?=$this->user['username']?>",
+aflag=<?=json_encode($this->user['admin']==1)?>;
+</script>
+<script type="text/javascript">
+// UserMenu 海东青 20170925
+$(function(){
+$(".user_menu").click(function(){
+$(this).next(".user_menu_info").slideToggle(200).siblings(".user_menu_info").slideUp(200);
+})
+})
+</script--> 
+</head>
+<body style="overflow: auto;">
+    <?php $this->display('global/header.php'); ?>
+<div class="Ccenter">
+<div class="box-left">
+<?php $this->display('global/user_menu.php'); ?>
+</div>
+<div class="box-right h777">
+<form action="/Member/Profit/<?=$this->userType?>">
+      <div id="searchBox">
+        <div class="inlineBlock">
+          <label>时间范围：</label>
+          <input type="text" class="input150" value="<?= $this->iff($_REQUEST['fromTime'], $_REQUEST['fromTime'], date('Y-m-d H:i', $GLOBALS['fromTime'])) ?>" name="fromTime" id="datetimepicker" readonly="readonly" />
+		  </div>
+        <label>至</label>
+        <div class="inlineBlock">
+          <input type="text" class="input150" value="<?= $this->iff($_REQUEST['toTime'], $_REQUEST['toTime'], date('Y-m-d H:i', $GLOBALS['toTime'])) ?>" id="datetimepicker4" name="toTime" readonly="readonly" />
+		  </div>
+		<div class="right">
+        <input type="submit" value="查询" class="formCheck" />
+      </div>
+      </div>
+    </form>
+<div class="display biao-cont">
+	<?php
+		if($list['data']) foreach($list['data'] as $var){
+		if($var['username']!='没有用户'){
+			$var['fanDianAmount']=$this->getValue($sql, $var['uid']);
+			$pId=$var['uid'];
+		}
+		//$count['betAmount']+=$var['betAmount'];
+		$count['zjAmount']+=$var['zjAmount'];
+		$count['fanDianAmount']+=$var['fanDianAmount'];
+		$count['brokerageAmount']+=$var['brokerageAmount'];
+		$count['cashAmount']+=$var['cashAmount'];
+		$count['coin']+=$var['coin'];
+		$count['rechargeAmount']+=$var['rechargeAmount'];
+		
+	?>
+<div class="user_home">
+<div class="user_home_list">
+<div class="uhleft left">充值总额：</div>
+<div class="uhright left"><?=$this->ifs($var['rechargeAmount'], '--')?></div>
+</div>
+<div class="user_home_list">
+<div class="uhleft left">提现总额：</div>
+<div class="uhright left"><?=$this->ifs($var['cashAmount'], '--')?></div>
+</div>
+<div class="user_home_list">
+<div class="uhleft left">投注总额：</div>
+<div class="uhright left"><?=$this->ifs($var['betAmount'], '--')?></div>
+</div>
+<div class="user_home_list">
+<div class="uhleft left">中奖总额：</div>
+<div class="uhright left"><?=$this->ifs($var['zjAmount'], '--')?></div>
+</div>
+<div class="user_home_list">
+<div class="uhleft left">总返点：</div>
+<div class="uhright left"><?=$this->ifs($var['fanDianAmount'], '--')?></div>
+</div>
+<div class="user_home_list">
+<div class="uhleft left">佣金：</div>
+<div class="uhright left"><?=$this->ifs($var['brokerageAmount'], '--')?></div>
+</div>
+<div class="user_home_list">
+<div class="uhleft left">总盈亏：</div>
+<div class="uhright left"><?=$this->ifs($var['zjAmount']-$var['betAmount']+$var['fanDianAmount']+$var['brokerageAmount'], '--')?></div>
+</div>
+</div>
+<?php } ?>
+  </div>
+</div>
+</div>
+    <?php $this->display('global/footer.php'); ?>
+<script type="text/javascript" src="/public/datetime/date.js"></script>
+</body>
+</html>

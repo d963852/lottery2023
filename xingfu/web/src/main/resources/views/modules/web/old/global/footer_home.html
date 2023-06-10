@@ -1,0 +1,78 @@
+<link href="/public/swiper/swiper.css" rel="stylesheet" />
+<script src="/public/swiper/swiper.min.js"></script>
+<script>
+    $(function () {
+        $('.hot_game_toggle a').click(function () {
+            var index = $(this).index();
+            $('.hotgame_con div').eq(index).show().siblings().hide();
+            $(this).addClass('active').siblings().removeClass('active')
+        });
+        var bannerItems = $('.swiper-container .swiper-slide');
+        //只有一张图片时不操作
+        if (bannerItems.length > 1) {
+            //轮播图
+            if (window.Swiper) {
+                var mySwiper = new Swiper('.swiper-container', {
+                    //pagination: '.swiper-pagination',
+                    loop: true,
+                    grabCursor: true,
+                    paginationClickable: true,
+                    autoplay: 3000,
+                    autoplayDisableOnInteraction: false,
+                    speed: 300
+                })
+                $('#prev_btn').on('click', function (e) {
+                    e.preventDefault();
+                    mySwiper.swipePrev();
+                })
+                $('#next_btn').on('click', function (e) {
+                    e.preventDefault();
+                    mySwiper.swipeNext();
+                });
+            }
+        } else {
+            $(".controller,.swiper-pagination").hide();
+        }
+    });
+</script>
+            <div class="footer">
+                <div class="bottom-info-main">
+                    <div class="footer_main clear">
+                        <div class="bottom-info">
+                            <div class="new-box">
+                                <h1><em>合作伙伴</em><span>Cooperation</span></h1>
+                                <div class="new-con clear">
+                                    <div class="footer_logo"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bottom-info browser">
+                            <div class="new-box">
+                                <h1><em>推荐浏览器</em><span>Browser</span></h1>
+                                <div class="new-con browser">
+                                        <ul class="browser-list commonlist notitle clear">
+                                            <li>
+                                                <a target="_blank" href="http://rj.baidu.com/soft/detail/14917.html"><i class="icon icon-browser icon-browserIE"></i><span>IE浏览器</span></a>
+                                            </li>
+                                            <li>
+                                                <a target="_blank" href="http://rj.baidu.com/soft/detail/14744.html?ald"><i class="icon icon-browser icon-browserFF"></i><span>谷歌浏览器</span></a>
+                                            </li>
+                                            <li>
+                                                <a target="_blank" href="http://rj.baidu.com/soft/detail/11843.html"><i class="icon icon-browser icon-browserGL"></i><span>火狐浏览器</span></a>
+                                            </li>
+                                        </ul>
+                                        <div class="browser-tip">
+                                            <p>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <!-- footer -->
+                <div class="main clear">
+                    <div class="copyright">未满18周岁禁止购买，Copyright © 2020-2030 香港寰宇科技公司保留所有权利</div>
+                    <a href="#" class="btn btn-gotop"><i class="icon icon-gotop"></i></a>
+                </div>
+            </div>

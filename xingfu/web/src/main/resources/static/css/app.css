@@ -1,0 +1,37 @@
+﻿div.mq .mq-mask { display: none; }
+
+body {background-color: #3c4045;background-position: center top;background:url(../images/app/mobile_bg.png) repeat!important;}
+.main_top { width:100%; height:689px; background:url(../images/app/main_top_bg.jpg) no-repeat;float: left; }
+.main_style {width:1014px;height:618px;margin:42px auto 0;}
+.mobile_icon { width: 542px; height:634px;float:left; background: url(../images/app/mobile_icon.png) no-repeat; display: inline-block; margin-left: 20px; }
+.download_s { width: 410px; height: 510px; float:left; background: url(../images/app/download_s_bg.png) no-repeat; display: inline-block; vertical-align: top; margin-top: 40px; margin-left: 38px; }
+.download_s h2 { font-size: 24px; font-family: 'Microsoft YaHei'; color: #fff; display: block; font-weight: normal; line-height: 24px; margin-top: 46px; margin-bottom: 38px; text-align: center; }
+.mobile_p { }
+.mobile_p p { color: #fff; font-size: 14px; margin-top: 4px; text-align: center; }
+.download_s .down { margin:24px auto 0;width:302px;height:86px;}
+.download_s .down .apple,.down .android,.down .browser,.icon_1 { width:86px;height:86px;margin-right:22px;float:left;background: url("../images/app/mobile_download_icon.png") no-repeat; }
+.download_s .down .apple { background-position: 0 0; }
+.download_s .down .android { background-position: 0 -103px; }
+.download_s .down .browser { background-position: 0 -206px;margin-right:0;}
+.download_s .down span a { width:86px; height:86px;display:block;}
+.d_s {width:268px;margin-top:14px;margin-bottom:20px;}
+.d_s .line {width:92px;height:1px;background:#fefefe;display:inline-block;vertical-align:super;*float:left;*margin-top:12px; }
+.d_s p {font-size:18px;color:#fefefe;line-height:18px;*line-height:22px;display:inline-block;*float:left;vertical-align:top; }
+.mobile_erweima {width:274px;}
+.mobile_erweima .erweima_android {display:inline-block;margin-right:32px;float:left; }
+.mobile_erweima .erweima_android p,.mobile_erweima .erweima_ios p {color:#fefefe;font-size:14px;text-align:center;margin-top:2px;}
+.mobile_erweima .erweima_ios {display:inline-block;float:left; }
+.main_bottom {width:100%;height:728px;display: inline-block;}
+.main_characteristic {width:1314px;height:728px;margin:0 auto;}
+.characteristic_matter {width:520px;height:100%;display:inline-block;margin-left:230px;vertical-align:top;float:left; }
+.matter_box {width:260px;height:364px;float:left;}
+.icon_1,.icon_2 ,.icon_3 ,.icon_4 {width:158px;height:158px;float:left;background: url("../images/app/mobile_download_icon.png") no-repeat;margin-left:51px;}
+.matter_box h2 {font-size:26px;font-weight:normal;line-height:26px;*line-height:32px;color:#080808;float:left;text-align:center;display:block;width:100%;margin-top:28px;margin-bottom:6px;}
+.matter_box p {font-size:14px;line-height:14px;*line-height:18px;color:#868686;float:left;text-align:center;width:100%;margin-top:4px;}
+.icon_1 {background-position: 0 -309px;}
+.icon_2 {background-position: 0 -508px;}
+.icon_1,.icon_2 {margin-top:66px;}
+.icon_3 {background-position: 0 -707px;}
+.icon_4 {background-position: 0 -906px;}
+.icon_3,.icon_4 {margin-top:22px;}
+.characteristic_icon {width:560px;height:580px;float:left; display:inline-block;background: url("../images/app/characteristic_icon.png") no-repeat;margin-top:94px;}

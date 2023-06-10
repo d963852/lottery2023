@@ -1,0 +1,230 @@
+<?php
+if ($this->type) {
+    $row = $this->getRow("select * from {$this->prename}type where id={$this->type}");
+    if (!$row['enable']) {
+        header('Location:/Index/E404');
+    }
+    $this->game = $row;
+}
+$types = $this->getTypes();
+$sql = "select count(id) from {$this->prename}message_receiver where to_uid=? and is_readed=0 and is_deleted=0";
+$num = $this->getValue($sql, $this->user['uid']);
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta name="renderer" content="webkit" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="IE=EmulateIE8" http-equiv="X-UA-Compatible" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta content="IE=EmulateIE8" http-equiv="X-UA-Compatible" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>投注大厅_<?= $this->settings['webName'] ?></title>
+    <?php $this->display('global/skin.php'); ?>
+    <link href="/public/css/game_new.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="/public/layer/layer-v3.1.1.js"></script>
+    <script type="text/javascript" src="/public/js/onload.js"></script>
+    <script type="text/javascript" src="/public/js/ui/jquery.dialog.js"></script>
+    <script type="text/javascript" src="/public/js/jquery-slides.js"></script>
+    <script type="text/javascript" src="/public/js/function.js"></script>
+    <script type="text/javascript" src="/public/jqueryui/custom.js"></script>
+    <script type="text/javascript" src="/public/js/main.js"></script>
+    <script type="text/javascript" src="/public/js/soundBox.js"></script>
+    <script type="text/javascript" src="/public/js/nouislider.min.js"></script>
+    <script type="text/javascript" src="/public/js/game.js"></script>
+    <script type="text/javascript" src="/public/js/jquery.cookie.js"></script>
+    <script type="text/javascript">
+        var game = {
+                type: <?= json_encode($this->type) ?>,
+                played: <?= json_encode($this->played) ?>,
+                groupId: <?= json_encode($this->groupId) ?>
+            },
+            user = "<?= $this->user['username'] ?>",
+            aflag = <?= json_encode($this->user['admin'] == 1) ?>;
+    </script>
+</head>
+
+<body style="overflow: auto;">
+    <?php $this->display('global/header.php'); ?>
+    <div class="Ccenter">
+        <div class="top">
+            <div class="top_in clear">
+                <?php $this->display('game/current.php'); ?>
+            </div>
+        </div>
+        <div class="bet-area">
+            <div class="box-left">
+                <div class="side">
+                    <?php if (0) { ?>
+                        <div class="user_left_box">
+                            <div class="userbox">
+                                <ul class="stc_1 clear">
+                                    <li class="mane">
+                                        <span class="stc_t">账号：</span>
+                                        <span class="stc_c"><?= $this->user['username'] ?></span>
+                                        <a href="javascript:;" class="ui-mgs-tip-box" id="msg"><?= $this->ifs($num, '0') ?></a>
+                                    </li>
+                                    <li class="balance">
+                                        <span class="stc_t">余额：</span>
+                                        <a href="javascript:void(0);" id="RefreshMoney" title="刷新余额"><i class="icon icon-646 fz16"></i></a>
+                                        <span id="ExhibitionMoney" class="stc_c"></span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    <?php } ?>
+                    <div class="acc-links clear" id="OpenNewWindow">
+                        <?php if ($this->user['mLetterStatus'] == 0) { ?>
+                            <a class="btn-navacc btn-navacc-deposit" href="javascript:void(0);" onclick="TestUser();"><span>账户充值</span></a>
+                            <a class="btn-navacc btn-navacc-withdraw" href="javascript:void(0);" onclick="TestUser();"><span>账户提现</span></a>
+                            <a class="btn-navacc btn-navacc-history" href="javascript:void(0);" onclick="TestUser();"><span>密码管理</span></a>
+                        <?php } else { ?>
+                            <a class="btn-navacc btn-navacc-deposit" href="javascript:void(0);" onclick="Recharge2('<?= $this->user['username'] ?>');"><span>账户充值</span></a>
+                            <a class="btn-navacc btn-navacc-withdraw" href="javascript:void(0);" onclick="Withdrawals();"><span>账户提现</span></a>
+                            <a class="btn-navacc btn-navacc-history" href="/Member/Passwd"><span>密码管理</span></a>
+                        <?php } ?>
+                        <a class="btn-navacc btn-navacc-center" href="/Member/Index"><span>会员中心</span></a>
+                        <a class="btn-navacc btn-navacc-current" href="/Member/Record"><span>投注记录</span></a>
+                        <a class="btn-navacc btn-navacc-mail" href="/Member/Change"><span>帐变记录</span></a>
+                    </div>
+                    <div class="kjhistory_box">
+                        <div class="kjhistory">
+                            <div class="title f_b">近期开奖<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="recycle" class="svg-inline-fa" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="margin: -4px 4px;width: 15px;height: 15px;">
+                                    <path fill="currentColor" d="M184.561 261.903c3.232 13.997-12.123 24.635-24.068 17.168l-40.736-25.455-50.867 81.402C55.606 356.273 70.96 384 96.012 384H148c6.627 0 12 5.373 12 12v40c0 6.627-5.373 12-12 12H96.115c-75.334 0-121.302-83.048-81.408-146.88l50.822-81.388-40.725-25.448c-12.081-7.547-8.966-25.961 4.879-29.158l110.237-25.45c8.611-1.988 17.201 3.381 19.189 11.99l25.452 110.237zm98.561-182.915l41.289 66.076-40.74 25.457c-12.051 7.528-9 25.953 4.879 29.158l110.237 25.45c8.672 1.999 17.215-3.438 19.189-11.99l25.45-110.237c3.197-13.844-11.99-24.719-24.068-17.168l-40.687 25.424-41.263-66.082c-37.521-60.033-125.209-60.171-162.816 0l-17.963 28.766c-3.51 5.62-1.8 13.021 3.82 16.533l33.919 21.195c5.62 3.512 13.024 1.803 16.536-3.817l17.961-28.743c12.712-20.341 41.973-19.676 54.257-.022zM497.288 301.12l-27.515-44.065c-3.511-5.623-10.916-7.334-16.538-3.821l-33.861 21.159c-5.62 3.512-7.33 10.915-3.818 16.536l27.564 44.112c13.257 21.211-2.057 48.96-27.136 48.96H320V336.02c0-14.213-17.242-21.383-27.313-11.313l-80 79.981c-6.249 6.248-6.249 16.379 0 22.627l80 79.989C302.689 517.308 320 510.3 320 495.989V448h95.88c75.274 0 121.335-82.997 81.408-146.88z"></path>
+                                </svg>
+                                <a href="/Trend/<?= $row['trend'] ?>/?T=<?= $this->type ?>" target="_blank">走势图
+                                    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chart-bar" class="svg-inline-fa" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="margin: -4px 4px;width: 15px;height: 15px;">
+                                        <path fill="currentColor" d="M332.8 320h38.4c6.4 0 12.8-6.4 12.8-12.8V172.8c0-6.4-6.4-12.8-12.8-12.8h-38.4c-6.4 0-12.8 6.4-12.8 12.8v134.4c0 6.4 6.4 12.8 12.8 12.8zm96 0h38.4c6.4 0 12.8-6.4 12.8-12.8V76.8c0-6.4-6.4-12.8-12.8-12.8h-38.4c-6.4 0-12.8 6.4-12.8 12.8v230.4c0 6.4 6.4 12.8 12.8 12.8zm-288 0h38.4c6.4 0 12.8-6.4 12.8-12.8v-70.4c0-6.4-6.4-12.8-12.8-12.8h-38.4c-6.4 0-12.8 6.4-12.8 12.8v70.4c0 6.4 6.4 12.8 12.8 12.8zm96 0h38.4c6.4 0 12.8-6.4 12.8-12.8V108.8c0-6.4-6.4-12.8-12.8-12.8h-38.4c-6.4 0-12.8 6.4-12.8 12.8v198.4c0 6.4 6.4 12.8 12.8 12.8zM496 384H64V80c0-8.84-7.16-16-16-16H16C7.16 64 0 71.16 0 80v336c0 17.67 14.33 32 32 32h464c8.84 0 16-7.16 16-16v-32c0-8.84-7.16-16-16-16z"></path>
+                                    </svg></a>
+                            </div>
+                            <ul id="HistoryRefresh">
+                                <?php if (
+                                        $this->type == 12
+                                    || $this->type == 20
+                                    || $this->type == 21
+                                    || $this->type == 26
+                                    || $this->type == 28
+                                    || $this->type == 29
+                                    || $this->type == 33
+                                    || $this->type == 54
+                                    || $this->type == 55
+									|| $this->type == 64
+                                ) { ?>
+                                    <?php $this->display('game/history/lottery_10.php'); ?>
+                                <?php } else if ($this->type == 10) { ?>
+                                    <?php $this->display('game/history/lottery_sh11x5.php'); ?>
+                                <?php } else { ?>
+                                    <?php $this->display('game/history/lottery.php'); ?>
+                                <?php } ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box-right">
+                <!--?php if($this->type==12 || $this->type==20 || $this->type==21) { ?>
+<div class="game_flash">
+<a id="game_flash_false" sp="0" onclick="GameFlash()">隐藏动画</a>
+<div id="game_flash_true">
+<iframe scrolling="no" src="http://www.pk8810.com/video/pk10/index.html" width="100%" height="650" frameborder="0"></iframe>
+</div>
+</div>
+<-?php } ?-->
+                <div id="mainbody">
+                    <div class="warp lotteryBox">
+                        <div class="game">
+                            <?php $this->display('game/main.php'); ?>
+                        </div>
+                        <?php if ($this->settings['switchDLBuy'] == 0) { ?>
+                            <input name="wjdl" type="hidden" value="<?= $this->ifs($this->user['type'], 1) ?>" id="AgentOn" />
+                        <?php } ?>
+                    </div>
+                </div>
+                <!--div class="push_prize" style="overflow: hidden">
+	<a href="javascript:;" class="close">X</a>
+	<div class="notice_icon"></div>
+	<ul id="jznotice">
+	<?php
+    $this->getTypes();
+    $prize = $this->getRows("select * from {$this->prename}bets where zjCount>0 and bonus>=? order by id desc limit 5", $this->settings['sbje']);
+    if ($prize) foreach ($prize as $var) { ?>
+	<li>恭喜<?= mb_substr(htmlspecialchars($var['username']), 0, 2, 'utf-8') . '***' ?>在【<?= $this->ifs($this->types[$var['type']]['shortName'], $this->types[$var['type']]['title']) ?>】中奖<b><?= $var['bonus'] ?></b>元</li>
+	<?php } ?>
+	</ul-->
+            </div>
+        </div>
+        <div class="_2CJmac7oU2CVr_XeaPlpS9">
+            <div class="maycai-wrapper"></div>
+            <div class="run-score"></div>
+            <div class="jin-ding"></div>
+            <div class="hipay"></div>
+            <div class="kgame"></div>
+            <div class="Win-gold"></div>
+        </div>
+    </div>
+
+    <div class="_1OpRJUrdnhc8Is86dxwPtA">
+        <div class="lite false">
+            <span class="detail"></span>
+            <span class="resize"></span>
+        </div>
+        <div class="lite1 false1" style="display:none"></div>
+    </div>
+    <?php $this->display('global/footer.php'); ?>
+    <script src="/public/js/game_switch.js"></script>
+    <script type="text/javascript">
+        function detail(sel) {
+            document.getElementById('beishu').value = sel.options[sel.selectedIndex].value;
+        }
+        //中奖滚动
+        vMarq = function(id, tag, heigh, speed, delay) {
+            var me = this;
+            me.EL = document.getElementById(id);
+            me.PA = 0;
+            me.TI = null;
+            me.LH = heigh;
+            me.SP = speed;
+            me.DY = delay;
+            me.exec = function() {
+                if (me.PA) return;
+                me.EL.scrollTop += 2;
+                if (me.EL.scrollTop % me.LH <= 1) {
+                    clearInterval(me.TI);
+                    me.EL.appendChild(me.EL.getElementsByTagName(tag)[0]);
+                    me.EL.scrollTop = 0;
+                    setTimeout(me.start, me.DY * 1000);
+                }
+            };
+            me.start = function() {
+                if (me.EL.scrollHeight - me.EL.offsetHeight >= me.LH) me.TI = setInterval(me.exec, me.SP);
+            };
+            me.EL.onmouseover = function() {
+                me.PA = 1
+            };
+            me.EL.onmouseout = function() {
+                me.PA = 0
+            };
+            setTimeout(me.start, me.DY * 1000);
+        };
+        new vMarq("jznotice", "li", 30, 40, 5);
+        //关闭滚动
+        (function() {
+            var pormpt = getCookie("sex")
+            if (pormpt == "true") {
+                $(".push_prize").hide(0);
+            } else {
+                $(".push_prize").show(0);
+            }
+            $(".push_prize a").on("click", function() {
+                setCookie("sex", "true");
+                $(".push_prize").hide();
+            })
+        })();
+    </script>
+</body>
+
+</html>

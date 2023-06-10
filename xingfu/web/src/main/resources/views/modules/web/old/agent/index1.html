@@ -1,0 +1,250 @@
+<?php
+$uid = $this->user['uid'];
+$userWhere3 = "and concat(',', u.parents, ',') like '%,$uid,%'";
+$teamAll = $this->getRow("select sum(u.coin) coin, count(u.uid) count from {$this->prename}members u where u.isDelete=0 and concat(',', u.parents, ',') like '%,{$this->user['uid']},%'");
+$teamAll2 = $this->getRow("select count(u.uid) count from {$this->prename}members u where u.isDelete=0 and u.parentId={$this->user['uid']}");
+$home_uid = $this->user['uid'];
+$childrenarr = $this->getRows("SELECT username,coin,parents,uid,dayrate,bonus FROM {$this->prename}members where concat(',',parents,',') like '%,{$home_uid},%' and uid!=?", $home_uid);
+$Uid = $this->getValue("select uid from {$this->prename}members where username='{$this->user['username']}'");
+$Agent = "and concat(',', u.parents, ',') like '%,$Uid,%'";
+//每日工资
+// $Timegz = strtotime('00:00') - 24 * 3600;
+// $Timegz2 = strtotime('00:00');
+
+$hourtime1 = strtotime(date("Y-m-d H:00:00", strtotime("-1 hour")));
+$hourtime2 = strtotime(date("Y-m-d H:59:59", strtotime("-1 hour")));
+
+$TimeWhere = "and b.actionTime >= $hourtime1 and b.actionTime <= $hourtime2";
+
+$Sql = "select sum(b.mode * b.beiShu * b.actionNum) betAmount, sum(b.bonus) zjAmount from blast_members u left join blast_bets b on b.isDelete=0  $TimeWhere $Agent and u.uid=b.uid";
+
+$totalWages = 0;
+// 计算自己总投注
+$sqlOwnBet = "select sum(b.mode * b.beiShu * b.actionNum) betAmount, sum(b.bonus) zjAmount from blast_members u left join blast_bets b on b.isDelete=0  $TimeWhere and u.uid=$uid and u.uid=b.uid";
+$ownBet = $this->getRow($sqlOwnBet);
+// 计算下级所有时薪率总和
+$sqlSubArray = "SELECT dayrate FROM blast_members u WHERE u.parentId=$uid";
+$subArray = $this->getRows($sqlSubArray);
+$subDayrateSum = 0;
+foreach ($subArray as $sub1) {
+	$subDayrateSum += $sub1["dayrate"];
+}
+$totalWages += $this->ifs($ownBet['betAmount']) * ($this->user['dayrate'] - $subDayrateSum) / 100;
+// 计算下级的总投注
+foreach ($childrenarr as $sub) {
+	$sqlSubBet = "select sum(b.mode * b.beiShu * b.actionNum) betAmount, sum(b.bonus) zjAmount from blast_members u left join blast_bets b on b.isDelete=0  $TimeWhere and concat(',', u.parents, ',') like '%,{$sub['uid']},%' and u.uid=b.uid";
+	$subBet = $this->getRow($sqlSubBet);
+	$totalWages += $this->ifs($subBet['betAmount']) * ($this->user['dayrate'] - $sub['dayrate']) / 100;
+}
+
+$Wages = $this->getRow($Sql);
+$DayWages = $this->ifs($Wages['betAmount']) * $this->user['dayrate'] / 100;
+//亏损分红
+$TimeDay = strtotime(date('Y-m-d ', $this->time) . '');
+$Time1 = strtotime(date('Y-m-01 ', $this->time) . '00:00');
+$Time2 = strtotime(date('Y-m-16 ', $this->time) . '00:00');
+$Time3 = strtotime(date('Y-' . $this->settings['BonusMonth'] . '-16 ', $this->time) . '00:00');
+$Time4 = strtotime(date('Y-' . $this->settings['BonusMonth'] . '-31 ', $this->time) . '23:59');
+$TimeWhere1 = "and b.actionTime > $Time1 and b.actionTime < $Time2";
+$TimeWhere2 = "and l.actionTime > $Time1 and l.actionTime < $Time2";
+$TimeWhere3 = "and b.actionTime > $Time3 and b.actionTime < $Time4";
+$TimeWhere4 = "and l.actionTime > $Time3 and l.actionTime < $Time4";
+if ($TimeDay >= $Time2) {
+	$sql2 = "select sum(b.mode * b.beiShu * b.actionNum) betAmount, sum(b.bonus) zjAmount from {$this->prename}members u left join {$this->prename}bets b on u.uid=b.uid and b.isDelete=0 $TimeWhere1 $Agent";
+	$all = $this->getRow($sql2);
+	//返点
+	$all['fanDianAmount'] = $this->getValue("select sum(l.coin) from {$this->prename}coin_log l, {$this->prename}members u where l.liqType between 2 and 3 and l.uid=u.uid $TimeWhere2 $Agent");
+	//活动赠送等
+	$all['brokerageAmount'] = $this->getValue("select sum(l.coin) from {$this->prename}coin_log l, {$this->prename}members u where l.liqType in(50,51,52,53,56) and l.uid=u.uid $TimeWhere2 $Agent");
+} else {
+	$sql2 = "select sum(b.mode * b.beiShu * b.actionNum) betAmount, sum(b.bonus) zjAmount from {$this->prename}members u left join {$this->prename}bets b on u.uid=b.uid and b.isDelete=0 $TimeWhere3 $Agent";
+	$all = $this->getRow($sql2);
+	//返点
+	$all['fanDianAmount'] = $this->getValue("select sum(l.coin) from {$this->prename}coin_log l, {$this->prename}members u where l.liqType between 2 and 3 and l.uid=u.uid $TimeWhere4 $Agent");
+	//活动赠送等
+	$all['brokerageAmount'] = $this->getValue("select sum(l.coin) from {$this->prename}coin_log l, {$this->prename}members u where l.liqType in(50,51,52,53,56) and l.uid=u.uid $TimeWhere4 $Agent");
+}
+$Loss = $all['zjAmount'] - $all['betAmount'] + $all['fanDianAmount'] + $all['brokerageAmount'];
+$Money = preg_replace('/\-/', '', $Loss) * $this->user['bonus'] / 100;
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta name="renderer" content="webkit" />
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<meta content="IE=EmulateIE8" http-equiv="X-UA-Compatible" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta content="IE=EmulateIE8" http-equiv="X-UA-Compatible" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>代理首页_<?= $this->settings['webName'] ?></title>
+	<meta content="origin-when-cross-origin" name="referrer" />
+	<meta content="telephone=no" name="format-detection" />
+	<?php $this->display('global/skin.php'); ?>
+	<link href="/public/css/member.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="/public/layer/layer-v3.1.1.js"></script>
+	<script type="text/javascript" src="/public/js/onload.js"></script>
+	<script type="text/javascript" src="/public/js/function.js"></script>
+	<script type="text/javascript" src="/public/js/main.js"></script>
+	<script type="text/javascript" src="/public/js/soundBox.js"></script>
+</head>
+
+<body style="overflow: auto;">
+	<?php $this->display('global/header.php'); ?>
+	<div class="Ccenter">
+		<div class="box-left">
+			<?php $this->display('global/agent_menu.php'); ?>
+		</div>
+		<div class="box-right h777">
+			<div class="user_home">
+				<!--div class="right right_list_agent">
+<h2>分红说明</h2>
+<p class="mt10 red titleinfo">投注返点</p>
+<p class="mt5">下线会员或自己每次投注得到相应的返点佣金；</p>
+<p class="mt5">返点佣金=代理返点-下线返点（如代理返点12%，下线会员返点10%，代理每次返点佣金为2%）。</p>
+<p class="mt10 red titleinfo">亏损分红</p>
+<p class="mt5">下线会员或自己亏损得到相应的亏损分红；</p>
+<p class="mt5">亏损分红=团队亏损-累积分红（如亏损100000*分红利率30%实的30000，累积分红5000，本次分红25000）。</p>
+<p class="mt10 red titleinfo">签约代理</p>
+<p class="mt5">A1~A6为签约代理；</p>
+<p class="mt5">首次拿卡对等额度即可成为签约代理；</p>
+<p class="mt5">下线会员充值必须走代理渠道；</p>
+<p class="mt5">平台不会向签约代理下线会员提供充值服务；</p>
+<p class="mt5">平台会对优秀签约代理派送节日红包。</p>
+<p class="mt10 red titleinfo">分红比例</p>
+<div class="mt5 ml10 mr10">
+<table width="100%" border="0" cellspacing="1" cellpadding="0" class="grayTable mt10">
+	<thead>
+		<tr class="table_b_th">
+			<td>级别</td>
+            <td>分红</td>
+            <td>额度</td>
+			<td>折扣</td>
+		</tr>
+	</thead>
+	<tbody class="table_b_tr">
+		<tr>
+			<td>A0</td>
+            <td>2%</td>
+			<td>0</td>
+			<td>98</td>
+		</tr>
+		<tr>
+			<td>A1</td>
+            <td>5%</td>
+			<td>10000</td>
+			<td>97</td>
+		</tr>
+		<tr>
+			<td>A2</td>
+            <td>10%</td>
+			<td>18000</td>
+			<td>96</td>
+		</tr>
+		<tr>
+			<td>A3</td>
+            <td>15%</td>
+			<td>26000</td>
+			<td>95</td>
+		</tr>
+		<tr>
+			<td>A4</td>
+            <td>20%</td>
+			<td>34000</td>
+			<td>94</td>
+		</tr>
+		<tr>
+			<td>A5</td>
+            <td>25%</td>
+			<td>42000</td>
+			<td>93</td>
+		</tr>
+		<tr>
+			<td style="border-bottom:0;padding-bottom:0">A6</td>
+            <td style="border-bottom:0;padding-bottom:0">30%</td>
+			<td style="border-bottom:0;padding-bottom:0">60000</td>
+			<td style="border-bottom:0;padding-bottom:0">92</td>
+		</tr>
+	</tbody>
+</table>
+</div>
+</div-->
+				<div class="user_home_list">
+					<div class="uhleft left">我的账号：</div>
+					<div class="uhright left"><?= $this->user['username'] ?></div>
+				</div>
+				<div class="user_home_list">
+					<div class="uhleft left">账号类型：</div>
+					<div class="uhright left"><?= $this->iff($this->user['type'], '代理', '会员') ?></div>
+				</div>
+				<div class="user_home_list">
+					<div class="uhleft left">用户昵称：</div>
+					<div class="uhright left"><?= $this->user['nickname'] ?></div>
+				</div>
+				<div class="user_home_list">
+					<div class="uhleft left">可用余额：</div>
+					<div class="uhright left">￥<?= $this->user['coin'] ?></div>
+				</div>
+				<div class="user_home_list">
+					<div class="uhleft left">团队余额：</div>
+					<div class="uhright left">￥<?= $teamAll['coin'] ?></div>
+				</div>
+				<?php if ($this->user['dayrate'] > 0) { ?>
+					<div class="user_home_list">
+						<div class="uhleft left">时薪率：</div>
+						<div class="uhright left"><?= $this->user['dayrate'] ?>%<span class="ml10 mr10 ash"> | 上期【</span><?= date("H:00:00", strtotime("-1 hour")) ?>-<?= date("H:59:59", strtotime("-1 hour")) ?>】总投注：￥<?= $this->ifs($Wages['betAmount'], '0') ?></div>
+					</div>
+					<div class="user_home_list">
+						<div class="uhleft left">待领时薪：</div>
+						<div class="uhright left">￥<?= $totalWages ?><a datatype="json" call="MsgTips" target="ajax" href="/Finance/ReceiveWages" class="ml10 red fz16 agent">领取<?= date("H:00:00", strtotime("-1 hour")) ?>-<?= date("H:59:59", strtotime("-1 hour")) ?>时薪</a><span class="ml10 mr10 ash fz12"></span></div>
+					</div>
+				<? } ?>
+				<?php if ($this->user['bonus'] > 0) { ?>
+					<div class="user_home_list">
+						<div class="uhleft left">分红利率：</div>
+						<div class="uhright left"><?= $this->user['bonus'] ?>%<span class="ml10 mr10 ash"> | </span>上期<?php if ($Loss > 0) { ?><i class="green">盈利</i><?= $Loss ?>元<?php } else { ?><?= preg_replace('/\-/', '<i class="red">亏损</i>', $Loss) ?>元<?php } ?></div>
+					</div>
+					<div class="user_home_list">
+						<div class="uhleft left">待领分红：</div>
+						<div class="uhright left">￥<?php if ($Loss > 0) { ?>0<?php } else { ?><?= $Money ?><?php } ?><a datatype="json" call="MsgTips" target="ajax" href="/Finance/BonusDay" class="ml10 red fz16 agent">领取分红</a><span class="ml10 mr10 ash fz12"></span></div>
+					</div>
+				<? } ?>
+				<div class="user_home_list">
+					<div class="uhleft left">直属下级：</div>
+					<div class="uhright left"><?= $teamAll2['count'] ?> 人</div>
+				</div>
+				<div class="user_home_list">
+					<div class="uhleft left">所有下级：</div>
+					<div class="uhright left"><?= ($teamAll['count'] - 1) ?> 人</div>
+				</div>
+				<?php
+				$onlineNum = 0;
+				foreach ($childrenarr as $var) {
+					$login = $this->getRow("select * from {$this->prename}member_session where uid=? order by id desc limit 1", $var['uid']);
+					if ($login['isOnLine'] && ($this->time - $login['accessTime'] < 900)) {
+						$parents = explode(',', $var['parents']);
+						rsort($parents);
+						$index = 1;
+						foreach ($parents as $key => $var2) {
+							$index++;
+						}
+				?>
+				<?php
+						$onlineNum++;
+					}
+				}
+				?>
+				<div class="user_home_list bbnone">
+					<div class="uhleft left">在线人数：</div>
+					<div class="uhright left"><?= $onlineNum ?> 位<a href="javascript:void(0);" onclick="MemberOnline();" class="ml10 red fz16 agent">查看</a></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<?php $this->display('global/footer.php'); ?>
+</body>
+
+</html>

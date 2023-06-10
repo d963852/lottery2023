@@ -1,0 +1,155 @@
+/*彩种倒计时显示及余额容器*/
+.lottery_head {overflow: hidden; }
+.lottery_head:after {display: block; content: "clear"; height: 0; clear: both; overflow: hidden; visibility: hidden;}
+/*彩种信息相关内容部分*/
+.lottery_con { border-right:0px}
+/*彩种图标容器*/
+.lottery_type { width: 97px; margin-top:10px;margin-left:10px}
+.lottery_type div { width:97px; height: 97px; margin: 0px auto; }
+.game_icon_1{background: url(../images/main/1.png) no-repeat}
+.game_icon_2{background: url(../images/main/2.png) no-repeat}
+.game_icon_3{background: url(../images/main/3.png) no-repeat}
+.game_icon_4{background: url(../images/main/4.png) no-repeat}
+.game_icon_5{background: url(../images/main/5.png) no-repeat}
+.game_icon_6{background: url(../images/main/6.png) no-repeat}
+.game_icon_7{background: url(../images/main/7.png) no-repeat}
+.game_icon_8{background: url(../images/main/8.png) no-repeat}
+.game_icon_9{background: url(../images/main/9.png) no-repeat}
+.game_icon_10{background: url(../images/main/10.png) no-repeat}
+.game_icon_11{background: url(../images/main/11.png) no-repeat}
+.game_icon_12{background: url(../images/main/12.png) no-repeat}
+.game_icon_13{background: url(../images/main/13.png) no-repeat}
+.game_icon_14{background: url(../images/main/14.png) no-repeat}
+.game_icon_15{background: url(../images/main/15.png) no-repeat}
+.game_icon_16{background: url(../images/main/16.png) no-repeat}
+.game_icon_17{background: url(../images/main/17.png) no-repeat}
+.game_icon_18{background: url(../images/main/18.png) no-repeat}
+.game_icon_19{background: url(../images/main/19.png) no-repeat}
+.game_icon_20{background: url(../images/main/20.png) no-repeat}
+.game_icon_21{background: url(../images/main/21.png) no-repeat}
+.game_icon_22{background: url(../images/main/22.png) no-repeat}
+.game_icon_23{background: url(../images/main/23.png) no-repeat}
+.game_icon_24{background: url(../images/main/24.png) no-repeat}
+.game_icon_25{background: url(../images/main/25.png) no-repeat}
+.game_icon_26{background: url(../images/main/26.png) no-repeat}
+.game_icon_27{background: url(../images/main/27.png) no-repeat}
+.game_icon_28{background: url(../images/main/28.png) no-repeat}
+.game_icon_29{background: url(../images/main/29.png) no-repeat}
+.game_icon_30{background: url(../images/main/30.png) no-repeat}
+.game_icon_31{background: url(../images/main/31.png) no-repeat}
+.game_icon_32{background: url(../images/main/32.png) no-repeat}
+.game_icon_33{background: url(../images/main/33.png) no-repeat}
+.game_icon_34{background: url(../images/main/34.png) no-repeat}
+.game_icon_35{background: url(../images/main/35.png) no-repeat}
+/*彩种倒计时容器*/
+.lottery_timer { width: 380px; overflow: hidden;margin-top:12px}
+.lottery_issue { width: 160px; padding-left: 20px; padding-top: 22px; font-size:14px; position: relative; }
+.lottery_issue p { line-height: 23px; color: #d4d4d4; }
+.lottery_issue .soundBtn { cursor: pointer; position: absolute; width: 20px; height: 20px; right: 15px; top: 46px; }
+.lottery_issue .soundon { background: url(../images/sound_on.png) no-repeat; }
+.lottery_issue .soundoff { background: url(../images/sound_off.png) no-repeat; }
+
+/*彩种倒计时数字相关*/
+.lottery_timeBox { width: 180px; height:60px; overflow: hidden; padding-top: 23px; }
+.timeBox { position: relative; width: 40px; height: 36px; display: inline; float: left; border: 4px solid #b57676; -moz-border-radius:2px; -webkit-border-radius:2px; border-radius:2px; background: #5c5c5c; }
+.num_left,.num_right { width: 20px; height: 36px; line-height: 36px; float: left; display: inline; position: relative; }
+.num { font-size: 26px; color: #fff; text-align:center; }
+.num div { background: #5c5c5c; }
+.num_left .num { text-align: right; }
+.num_right .num { text-align: left; }
+.num_t,.num_b,.num_next_b { z-index: 100;}
+.time_line { position: absolute; z-index: 101; background: url(../images/time_line.png) no-repeat center center; width: 40px; height: 9px; top: 14px; }
+.num_next_t { z-index: 50; z-index: 200\9;}
+.num_next_b div { -moz-transform:rotateX(-90deg); -webkit-transform:rotateX(-90deg); transform:rotateX(-90deg); }
+.num_t,.num_next_t { width: 20px; height: 18px; overflow: hidden; position: absolute; left: 0px; top:0px; height: 36px\9;}
+.num_b,.num_next_b { width: 20px; height: 18px; overflow: hidden; position: absolute; left: 0px; top:18px; }
+.num_b div,.num_next_b div { position: absolute; top:-18px; width: 20px; }
+.dianBox { width: 18px; height: 44px; display: inline; float: left; background: url(../images/t.png) no-repeat 5px center;}
+
+/*彩种号码容器*/
+.lottery_num { width:490px; height: 104px; padding:12px 20px 0 20px;border-left:1px solid rgba(255,255,255,0.2);border-right:1px solid rgba(255,255,255,0.2)}
+.lottery_history_issue { font-size: 14px; color: #d4d4d4; padding-top: 7px; margin-bottom: 5px; text-align:center}
+.lottery_num_box { overflow: hidden; height: 65px; padding-top: 3px; }
+.lottery_num_box ul { position: relative; margin: 0px auto; }
+.lottery_num_box ul li { position: relative; border-radius:50%;color: #b62929; font-size: 24px; font-weight: bold; overflow: hidden; margin:0 5px; float: left; display: inline; width: 49px; height:47px; line-height:45px; text-align: center; background: url(../images/yuan.png) no-repeat;text-shadow: 0 1px 1px #5E5A5A;}
+}
+.lottery_num_box ul li span { display: inline-block; width: 100%; height: auto; position: relative; font-weight: bold; }
+.lottery_num_box ul.lhc li { width: 28px; height: 28px; line-height: 28px; font-size: 14px; margin-right: 3px; color: #fff; font-weight: normal; }
+.lottery_num_box ul.lhc li.red { background: url(../images/lottery/rgb.png) no-repeat left top; }
+.lottery_num_box ul.lhc li.green { background: url(../images/lottery/rgb.png) no-repeat left center; }
+.lottery_num_box ul.lhc li.blue { background: url(../images/lottery/rgb.png) no-repeat left bottom; }
+/*.lottery_num_box ul.lhc li.empty { background: url(../images/rgb_empty.png) no-repeat left bottom; }*/
+.lottery_num_box ul.lhc li.and { background: url(../images/rgb_and.png) no-repeat left bottom; }
+.lottery_num_box ul.lhc li.and span { text-indent: -9999px; }
+.lottery_num_box ul.k8 li { width: 43px; height:25px; line-height:25px; font-size: 14px; margin-right: 1px; margin-bottom: 2px; color: #b62929; background:url(../images/yuan.png) left bottom no-repeat;text-shadow: 0 1px 1px #5e5a5a}
+.lottery_num_box ul.klsf{width:460px}
+.lottery_num_box ul.klsf li {width: 49px;height: 47px;line-height: 47px;font-size: 24px;color: #b62929;margin-right:3px;background: url(../images/yuan.png) left bottom no-repeat;}
+/*
+.lottery_num_box ul.k3 li { width: 51px; height: 45px; line-height: 45px; margin: 0px; background: none; }
+.lottery_num_box ul.k3 li span { width: 50px; height: 44px; display: block; overflow: hidden; margin-top: 4px; }
+.lottery_num_box ul.k3 li span.empty { background: url(../images/shaizi_empty.jpg) no-repeat; }
+.lottery_num_box ul.k3 li span.num_1 { background: url(../images/shaizi.png) no-repeat left top; }
+.lottery_num_box ul.k3 li span.num_2 { background: url(../images/shaizi.png) no-repeat center top; }
+.lottery_num_box ul.k3 li span.num_3 { background: url(../images/shaizi.png) no-repeat right top; }
+.lottery_num_box ul.k3 li span.num_4 { background: url(../images/shaizi.png) no-repeat left bottom; }
+.lottery_num_box ul.k3 li span.num_5 { background: url(../images/shaizi.png) no-repeat center bottom; }
+.lottery_num_box ul.k3 li span.num_6 { background: url(../images/shaizi.png) no-repeat right bottom; }
+.lottery_num_box ul.k3 li span.num_r0 { margin: 0px; background: url(../images/sz0.gif) no-repeat right bottom; }
+.lottery_num_box ul.k3 li span.num_r1 { margin: 0px; background: url(../images/sz1.gif) no-repeat right bottom; }
+.lottery_num_box ul.k3 li span.num_r2 { margin: 0px; background: url(../images/sz2.gif) no-repeat right bottom; }
+*/
+.pk10_ul { }
+.lottery_num_box .pk10_ul li {width:41px;height: 41px;margin:0 4px;border-radius:25px 0 25px 0}
+.pk10_ul li.car01 { background:#cba300 url("../images/lottery/pk10_bg.png") no-repeat -49px -43px}
+.pk10_ul li.car02 { background:#158fb2 url("../images/lottery/pk10_bg.png") no-repeat -98px -43px}
+.pk10_ul li.car03 { background:#4e4e4e url("../images/lottery/pk10_bg.png") no-repeat -147px -43px}
+.pk10_ul li.car04 { background:#d05200 url("../images/lottery/pk10_bg.png") no-repeat -197px -43px}
+.pk10_ul li.car05 { background:#11a291 url("../images/lottery/pk10_bg.png") no-repeat -246px -43px}
+.pk10_ul li.car06 { background:#3368b1 url("../images/lottery/pk10_bg.png") no-repeat -246px 8px}
+.pk10_ul li.car07 { background:#9e9e9e url("../images/lottery/pk10_bg.png") no-repeat -197px 8px}
+.pk10_ul li.car08 { background:#de0b5d url("../images/lottery/pk10_bg.png") no-repeat -147px 8px}
+.pk10_ul li.car09 { background:#ec434d url("../images/lottery/pk10_bg.png") no-repeat -98px 8px}
+.pk10_ul li.car10 { background:#279a00 url("../images/lottery/pk10_bg.png") no-repeat -49px 8px}
+/*充值、提款、投注记录*/
+.tools { width: 164px; background: #fff; height: 77px;}
+.tools a{width:50%;text-align:center;color:#555;padding:18px 0}
+.tools a:hover{color:#D75959}
+/*投注记录查看区域*/
+.lotteryHistory {width:570px;min-height: 271px;max-height: 271px;overflow: auto;background: #f5f5f5;}
+.lotteryHistory table {padding:5px 100px; }
+.lotteryHistory table th { height: 45px; text-align: center; font-size: 15px; color: #4d4d4d; background: #e2e0dd;}
+.lotteryHistory table tr{ height: 45px;border-bottom: 1px dashed #e2e1df;}
+.lotteryHistory table tr.bbnone{border-bottom:0}
+.lotteryHistory table td {text-align: center; font-size: 14px; color: #4d4d4d;}
+.lotteryHistory .blue { color: #044291; cursor: pointer; }
+.lotteryHistory .green { color: green; }
+.lotteryHistory .orange { color: #f26634 !important; }
+.lotteryHistory a.deoor{font-style: normal;display: inline-block;width:200px;color:#b62929}
+.lotteryHistory i{font-weight:bold}
+.lotteryHistoryBody {  min-height:0px; max-height: 242px; overflow: hidden; }
+.lotteryHistoryBody a { color:#91317b;}
+.lotteryHistoryBody a:hover { color:#ff632c;}
+.getMore {margin-top:10px;text-align:center}
+.getMore a { display:inline-block;font-size: 15px; color: #555;border:1px solid #555;height:26px;line-height:26px;padding:0 20px;border-radius:5px}
+.getMore a:hover {color:#e95959;border:1px solid #e95959}
+.lotteryHistory::-webkit-scrollbar{width:8px;background:#555}
+.lotteryHistory::-webkit-scrollbar-thumb{background:#b62929}
+/*iframe区域*/
+.lottery_iframe { width: 980px; margin-bottom: 10px; }
+.lottery_iframe iframe { width: 980px; }
+
+/*投注记录中的详情*/
+.task_div { right:auto!important; font-family: "Microsoft Yahei"; background-color: #a96b94; border: 1px solid #a96b94; color: #FFF; position: absolute; width: 290px!important; line-height: 24px;z-index:9;}
+.task_div a,.task_div a:hover {color: #fff!important; margin-left:10px; }
+.task_div textarea {width: 99%; font-size: 14px; text-align: center; font-weight: 700; color: #a96b94; border: 0!important; padding: 1px; min-height: 100px; resize: vertical; white-space: normal;}
+
+.no-open_award { width:100%; height:200px; padding-top:200px; margin-bottom:12px; text-align:center; font-size:24px; color:#3f3e3e; font-weight:bold; background:#fff url(/images/nsc/icon_no-open_award.png) no-repeat center 120px; 
+-moz-box-shadow: 0px 0px 5px #ddd; -webkit-box-shadow: 0px 0px 5px #ddd; box-shadow: 0px 0px 5px #ddd; }
+
+/* 优化V1.4 期号调整颜色 */
+#current_issue { color:#fff;}
+.lottery_history_issue span{color:#fff;}
+
+/* 推送二期优化*/
+.push_issue span { width:115px; display:block; white-space: nowrap; overflow:hidden; text-overflow:ellipsis; text-align:center; margin:0 auto;}
+.lotteryHistory table .push_issue span.active{position:absolute;width:202px; white-space: normal; text-align:center;top:2px;background:#a96b94;padding:5px 15px;border-radius:8px;-webkit-border-radius:8px;-moz-border-radius:8px;z-index:88; color:#FFFFFF;}

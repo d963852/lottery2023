@@ -1,0 +1,67 @@
+/*Activity*/
+.activity{padding:20px}
+.activity li{background:#fff;width:1100px;height:200px;margin-bottom:20px}
+.activity li.turntablebg{background:url(../images/activity/turntable.jpg) no-repeat 0 0}
+.activity li.eggsbg{background:url(../images/activity/eggs.jpg) no-repeat 0 0}
+.activity li.integralbg{background:url(../images/activity/integral.jpg) no-repeat 0 0}
+.activity li a{background:#a02727;width:120px;height:35px;line-height:35px;text-align:center;color:#fff;margin-top:160px;margin-left:500px;border-radius:4px}
+.activity li a:hover{background:#e07070}
+/*Turntable*/
+.turntable{ margin:0 auto; overflow:hidden;background:#e53030;padding:20px;height:760px}
+.turntable_content{padding-top:25px; position:relative}
+.turntable_bg{ background:url(../images/activity/zp/bg.png) no-repeat 0 0; height:572px; width:572px; float:left; position:relative;margin-top:-25px}
+.turntable_turn{ width:104px; height:255px; position:absolute; top:157px; left:237px; background:url(../images/activity/zp/turn.png) no-repeat 0 0; cursor:pointer}
+.turntable_explain{color: #FFF;width: 329px;font-size: 13px;float: left;padding:10px;border:1px solid #fff}
+.turntable_explain li{height:30px;line-height:30px;border-bottom:1px dashed #ddd}
+.turntable_explain li.bbnone{border-bottom:none}
+.turntable_explain li i{background:#598c53;margin:0 5px;padding:0 5px;border-radius:5px}
+.turntable_roll{border-radius:12px}
+.turntable_roll h2{height:43px; line-height:40px; font-size: 20px; color:#fff; border-radius: 9px;font-weight: bold;}
+.turntable_roll .boban{width:450px;color:#fff;border:1px dashed #ddd;padding:5px 10px}
+.turntable_roll_info{padding:15px}
+.turntable_roll_scroll{overflow:hidden}
+/*Integral*/
+.integral{padding:20px 10px}
+.integral li{float:left;width:300px;background:#fff;padding:0 10px;margin:20px 25px 20px 25px}
+.integral li img{width:300px;height:200px}
+.integral li h4{font-size:18px;margin-top:5px}
+.integral li h4 span{background:#ddd;color:#888;height:25px;line-height:25px;padding:0 10px;border-radius:5px}
+.integral li p{font-size:16px;margin-top:5px;color:#868686}
+.integral li p a{background:#e95959;width:300px;height:35px;line-height:35px;text-align:center;color:#fff;margin-top:5px;border-radius:5px;font-size:16px}
+.integral li p a.end{background:#909090}
+.integral li p a:hover{background:#a02727}
+/*Eggs*/
+.eggs{width:1143px;margin:0;background:linear-gradient(#d63535, #91ec4c)}
+.eggs h2{color:#fff;font-weight:400;font-size:30px;line-height:85px;text-align:center}
+.eggs .surplus{text-align:center;color:#fff;font-size:16px}
+.eggs .surplus span{display:inline-block;background:url(../images/activity/eggs/surplus.png) center center no-repeat;background-size:100%;font-size:40px;margin:0 5px;width:50px;text-shadow: 0 1px 4px #000}
+.eggs_info{height:330px;padding:50px 0 20px 0;margin:0 auto;position:relative}
+.eggs_info ul.eggs_info_eggs{width:265px;margin:0 auto;overflow:hidden}
+.eggs_info ul.eggs_info_eggs li{width:274px;height:300px;float:left;background:url(../images/activity/eggs/eggs.png) center center no-repeat;cursor:pointer}
+.eggs_info ul.eggs_info_eggs li span{display:block;width:178px;height:216px;margin:42px auto}
+.eggs_info em a{display:block;width:200px;height:40px;line-height:40px;margin:0 auto;background:rgba(229,48,48,0.5);border-radius:5px;color:#fff;font-size:16px;text-align:center;border: 1px dashed #fff;}
+.eggs_info em a:hover{background:rgba(160,39,39,0.5)}
+.eggs_hammer{width:160px;height:140px;display:block;background:url(../images/activity/eggs/crack_egg_icon.png) -13px -85px no-repeat;position:absolute;left:650px;top:125px;animation:hammer linear 2s infinite;-webkit-animation:hammer linear 2s infinite;-moz-animation:hammer linear 2s infinite;cursor:pointer}
+.eggs_explain{height:300px;background:#e53030;margin-top:20px;color:#fff}
+.eggs_explain_info{width:480px;height:280px;margin:10px 10px 10px 0;float:left;overflow:auto}
+.eggs_explain_info::-webkit-scrollbar{width:8px;background:#ea5959;border-radius:5px;-webkit-border-radius:5px;-moz-border-radius:5px}
+.eggs_explain_info::-webkit-scrollbar-thumb{background:#ffbf0a;border-radius:5px;-webkit-border-radius:5px;-moz-border-radius:5px}
+.eggs_explain_info h4{font-size:24px;padding:15px 20px 10px;font-weight:400}
+.eggs_explain_info p{padding:0 10px 0 20px;line-height:24px;font-size:14px}
+.eggs_roll{width:650px;float:left;height:300px;border-left:1px solid #ea5959}
+.eggs_roll .eggs_roll_bg{padding:22px 0 25px 97px;height:21px;border-bottom:1px solid #ea5959;font-size:16px;position:relative;}
+.eggs_roll .eggs_roll_bg li span{margin-left:25px}
+.eggs_roll .eggs_roll_bg em{display:block;width:63px;height:60px;background:url(../images/activity/eggs/crack_egg_icon.png) -16px -15px no-repeat;position:absolute;top:-2px;left:20px}
+.eggs_roll ul{overflow:hidden;width:600px;margin:0 auto;padding:10px}
+.eggs_roll li{font-size:14px;line-height:24px}
+.eggs_roll li span{margin-left:22px}
+@keyframes hammer{0,100%{top:100px;left:520px;}50%{top:125px;left:600px;}}
+/*Balance*/
+.balances{background:#fff;padding:20px}
+.balances a{width:160px;height:40px;line-height:40px;border-radius:5px;color:#fff;font-size:16px;text-align:center}
+.balances a.c{background:#ff632c}
+.balances a.q{background:#d30000}
+.balances a.c:hover{background:#e25a2a}
+.balances a.q:hover{background:#bb0a0a}
+.balances_title {font-size:16px}
+.balances p{margin-top:10px;font-size:16px}

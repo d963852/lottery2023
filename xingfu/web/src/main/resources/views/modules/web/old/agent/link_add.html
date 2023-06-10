@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="renderer" content="webkit" />
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="IE=EmulateIE8" http-equiv="X-UA-Compatible" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta content="IE=EmulateIE8" http-equiv="X-UA-Compatible" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>添加链接_<?= $this->settings['webName'] ?></title>
+<meta content="origin-when-cross-origin" name="referrer" />
+<meta content="telephone=no" name="format-detection" />
+<?php $this->display('global/skin.php'); ?>
+<link href="/public/css/member.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/public/layer/layer-v3.1.1.js"></script>
+<script type="text/javascript" src="/public/js/onload.js"></script>
+<script type="text/javascript" src="/public/js/function.js"></script>
+<script type="text/javascript" src="/public/js/main.js"></script>
+<script type="text/javascript" src="/public/js/soundBox.js"></script>
+<script type="text/javascript">
+function khao(fanDian, bFanDian){
+	$('input[name=fanDian]').val(fanDian);
+	return false;
+}
+</script>
+</head>
+<body style="overflow: auto;">
+    <?php $this->display('global/header.php'); ?>
+<div class="Ccenter">
+<div class="box-left">
+<?php $this->display('global/agent_menu.php'); ?>
+</div>
+<div class="box-right h777">
+<form action="/Ajax/LinkAdd" method="post" target="ajax" onajax="LinkAdd" call="MsgTips" class="form_list">
+<input name="uid" type="hidden" id="uid" value="<?=$this->user['uid']?>" />
+  <table width="100%" border="0" cellspacing="1" cellpadding="5" >
+    <tr>
+      <td class="form_list_left">用户类型：</td>
+      <td class="form_list_right">
+	  <div class="switch_choose">
+			<input type="radio" name="type" id="utype1" value="1" checked="checked" title="代理">
+			<label class="bk_l active" for="utype1">代理</label>
+			<input type="radio" name="type" id="utype2" value="0" title="会员">
+			<label class="bk_r" for="utype2">会员</label>
+			</div>
+        </td>
+    </tr>
+    <tr>
+      <td class="form_list_left">用户返点：</td>
+      <td class="form_list_right"><input type="text" name="fanDian" max="<?=$this->user['fanDian']?>" max="<?=$this->user['fanDian']?>"  fanDianDiff=<?=$this->settings['fanDianDiff']?> maxlength="5" placeholder="请设置返点">
+      <span class="text_font ml10">返点为(0%-<?=$this->user['fanDian']?>%)</span></td>
+    </tr>
+		<tr>
+          <td class="form_list_left"></td>
+          <td class="form_list_right">
+		  <input type="submit" value="生成链接" class="btn agent" />
+            </td>
+        </tr>
+  </table>
+</form>
+</div>
+</div>
+<?php $this->display('global/footer.php'); ?>
+<script type="text/javascript">
+		//radio选择样式
+        $(".switch_choose input[type=radio]").click(function(){
+	        if($(".switch_choose input[type=radio]:checked").val()){
+	       		$(this).next('label').addClass('active').siblings().removeClass('active');
+	       	}
+        })
+</script>
+</body>
+</html>

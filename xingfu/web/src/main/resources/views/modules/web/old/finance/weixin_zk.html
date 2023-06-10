@@ -1,0 +1,127 @@
+ <?php $this->freshSession();
+	//更新级别
+	$ngrade = $this->getValue("select max(level) from {$this->prename}member_level where minScore <= {$this->user['scoreTotal']}");
+	if ($ngrade > $this->user['grade']) {
+		$sql = "update blast_members set grade={$ngrade} where uid=?";
+		$this->update($sql, $this->user['uid']);
+	} else {
+		$ngrade = $this->user['grade'];
+	}
+
+	$date = strtotime('00:00:00');
+	?>
+ <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+ <html xmlns="http://www.w3.org/1999/xhtml">
+
+ <head>
+ 	<meta name="renderer" content="webkit" />
+ 	<meta charset="utf-8">
+ 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+ 	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+ 	<meta content="IE=EmulateIE8" http-equiv="X-UA-Compatible" />
+ 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+ 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+ 	<meta content="IE=EmulateIE8" http-equiv="X-UA-Compatible" />
+ 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+ 	<title>支付宝扫码_<?= $this->settings['webName'] ?></title>
+ 	<meta content="origin-when-cross-origin" name="referrer" />
+ 	<meta content="telephone=no" name="format-detection" />
+ 	<link href="/public/css/layout.css" rel="stylesheet" type="text/css" />
+ 	<script type="text/javascript" src="/public/js/jquery-1.8.0.min.js"></script>
+ 	<script type="text/javascript" src="/public/js/function.js"></script>
+ 	<script type="text/javascript" src="/public/layer/layer.js"></script>
+ 	<script type="text/javascript" src="/public/js/onload.js"></script>
+ 	<script type="text/javascript">
+ 		function RechargeSet() {
+ 			if (!this.amount.value) {
+ 				layer.msg("请输入充值金额");
+ 				return false;
+ 			}
+ 		}
+
+ 		function RechargeTips(err, data) {
+ 			if (err) {
+ 				layer.msg(err);
+ 			} else {
+ 				//layer.msg(''+ data +'');
+ 				$('.RecharegeTo').html(data);
+ 			}
+ 		}
+ 	</script>
+ 	<?php if ($this->settings['pright'] == 1) { ?>
+ 		<script language="javascript" type="text/javascript">
+ 			$(document).bind('contextmenu', function() {
+ 				return false;
+ 			});
+ 		</script>
+ 	<? } ?>
+ </head>
+
+ <body>
+ 	<div class="finance_recharge">
+	 <div class="menu">
+ 			<a href="Recharge">USDT-TRC20</a>
+ 			<a href="ERC20">USDT-ERC20</a>
+ 			<a href="BankPay">银行充值</a>
+ 			<a href="Alipayzk">支付宝转卡</a>
+ 			<a href="weixinzk" class="current">微信转卡</a>
+ 		</div>
+ 		<div class="RecharegeTo">
+ 			<?php
+				$set = $this->getSystemSettings();
+				$sql = "select * from {$this->prename}bank_list b, {$this->prename}sysadmin_bank m where m.admin=1 and m.enable=1 and b.isDelete=0 and b.id=m.bankId and b.id = 12";
+				$banks = $this->getRows($sql);
+				if ($banks) {
+					if ($this->user['coinPassword']) {
+				?>
+ 					<form action="/Finance/RechargeIn" method="post" target="ajax" onajax="RechargeSet" call="RechargeTips" dataType="html">
+ 						<input type="hidden" name="mBankId" value="1">
+ 						<div class="finance">
+ 							<div class="finance_list">
+ 								<div class="uhleft left">处理时间：</div>
+ 								<div class="uhright left"><input type="text" value="60秒快速到账" autocomplete="off" class="readonly" readonly></div>
+ 							</div>
+ 							<tr>
+ 								<td>
+ 									<ul class="bank-list">
+ 										<?php
+											$idx = 0;
+											if ($banks) foreach ($banks as $bank) {
+												if ($idx == 0) {
+													$bnm = $bank['name'];
+												} ?>
+ 											<label><input type="hidden" class="xuan" name="mBankId" cname="<?= $bank['name'] ?>" value="<?= $bank['id'] ?>" <?= $this->iff($idx == 0, 'checked', '') ?> data-bank='<?= json_encode($bank) ?>' /><img src="/<?= $bank['logo'] ?>" alt="" style="height:4.74rem;" /></label>
+
+ 										<?php
+												$idx++;
+											}
+											?>
+ 									</ul>
+ 								</td>
+ 							</tr>
+ 							<div class="finance_list">
+ 								<div class="uhleft left">充值金额：</div>
+ 								<div class="uhright left"><input type="text" name="amount" placeholder="充值<?= $set['rechargeMin1'] ?>~<?= $set['rechargeMax1'] ?>之间"></div>
+ 							</div>
+ 							<div class="finance_list bbnone">
+ 								<div class="uhleft left fz0">操作：</div>
+ 								<div class="uhright left"><input type="submit" name="submit" value="下一步" class="btn"></div>
+ 							</div>
+ 						</div>
+ 					</form>
+ 		</div>
+ 	<?php } else { ?>
+ 		<div class="finance_recharge_tips">
+ 			还没有设置密码，为了您的账户安全，请先设置资金密码
+ 			<p class="mt20"><a href="/Member/SapitalPasswd" target="_top" class="btn btn-red">设定提款密码</a></p>
+ 		</div>
+ 	<?php } ?>
+ <?php } else { ?>
+ 	<div class="finance_recharge_tips">
+ 		对不起，未开通该银行的充值权限，请使用在线充值或其它银行进行充值
+ 	</div>
+ <?php } ?>
+ 	</div>
+ </body>
+
+ </html>

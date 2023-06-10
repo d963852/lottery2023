@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="renderer" content="webkit" />
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="IE=EmulateIE8" http-equiv="X-UA-Compatible" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>手机端_<?= $this->settings['webName'] ?></title>
+<meta content="origin-when-cross-origin" name="referrer" />
+<meta content="telephone=no" name="format-detection" />
+<meta name="keywords" content="【<?= $this->settings['webName'] ?>】官方实时数据，公平公正公开！" />
+<meta name="description" content="" />
+<link rel="stylesheet" href="/public/css/index.css" />
+<link rel="stylesheet" href="/public/css/app.css" />
+<script type="text/javascript" src="/public/js/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="/public/layer/layer.js"></script>
+<script type="text/javascript" src="/public/js/main.js"></script>
+<script src="/public/js/$.ko.js"></script>
+<?php if($this->settings['pright'] == 1){?>
+<script type="text/javascript">
+$(document).bind('contextmenu', function(){
+	return false;
+});
+</script>
+<?}?>
+</head>
+<body class="official-site" x-ms-format-detection="none">
+<!-- container -->
+<div class="container">
+<?php $this->display('global/header_home.php'); ?>
+ <div class="mobile_main">
+     <div class="main_top">
+         <div class="main_style">
+             <div class="mobile_icon"></div>
+             <div class="download_s">
+                 <h2>移动互联网时代，机会一手把握</h2>
+                 <div class="mobile_p">
+                     <p>全面支持苹果APP 安卓APP 手机全部浏览器</p>
+                     <p>移动技术领走在行业尖端</p>
+                 </div>
+                 <div class="down">
+                     <span class="apple"></span>
+                     <span class="android"></span>
+                     <span class="browser"></span>
+                 </div>
+                 <div class="d_s">
+                     <span class="line"></span>
+                     <p>下载方式</p>
+                     <span class="line"></span>
+                 </div>
+                 <div class="mobile_erweima">
+                            <div class="erweima_android">
+                                <a class="mobdm QRcode" href="http://app.hy618.vip/app.apk" target="_blank"><img src="/ewm.png" alt="ANDRIOD" width="98" height="98" class="app_android"></a>
+                                <p>Android扫一扫</p>
+                            </div>
+                            <div class="erweima_ios">
+                                <a class="mobdm QRcode" href="#" target="_blank"><img src="/no.png" alt="ANDRIOD" width="98" height="98" class="app_android"></a>
+                                <p>IOS手机扫一扫</p>
+                            </div>
+                        </div>
+             </div>
+         </div>
+     </div>
+     <div class="main_bottom">
+         <div class="main_characteristic">
+             <div class="characteristic_matter">
+                 <div class="matter_box">
+                     <div class="icon_1"></div>
+                     <h2>更稳定</h2>
+                     <p>实力平台，稳定长久</p>
+                     <p>公平、诚信、共赢的娱乐平台</p>
+                 </div>
+                 <div class="matter_box">
+                     <div class="icon_2"></div>
+                     <h2>更便捷</h2>
+                     <p>7X24小时服务</p>
+                     <p>随时随地 轻松畅玩</p>
+                 </div>
+                 <div class="matter_box">
+                     <div class="icon_3"></div>
+                     <h2>更优秀</h2>
+                     <p>平台会员稳定增长，至今已拥有</p>
+                     <p>超过12000会员，累计为用户</p>
+                     <p>兑换现金超1千7百万元人民币</p>
+                 </div>
+                 <div class="matter_box">
+                     <div class="icon_4"></div>
+                     <h2>更安全</h2>
+                     <p>强大的技术团队后盾</p>
+					 <p>雄厚稳健的资金支持</p>
+					 <p>寰宇科技让你购彩更安心</p>
+                 </div>
+             </div>
+             <div class="characteristic_icon"></div>
+         </div>
+     </div>
+ </div>
+<?php $this->display('global/footer_home.php'); ?>
+</div>
+<?php $this->display('global/seaver.php'); ?>
+<script src="/public/js/game_switch.js"></script>
+</body>
+</html>

@@ -1,0 +1,316 @@
+﻿* { margin: 0 auto; padding: 0; }
+a { color: #555; text-decoration: none !important; outline: none !important; }
+ul, li, ol { margin: 0; padding: 0; list-style: none; }
+body { margin: 0 auto;font-family:"微軟雅黑","Microsoft YaHei";font-size:14px;color: #555 !important; min-width: 1338px; }
+.ui-code-box { margin: 5px 0 0 7px; }
+.fleft { float: left; }
+.left { float: left; }
+.right { float: right; }
+img { border: none; }
+input, button, select, textarea { outline: none; }
+body::-webkit-scrollbar{width:8px;background:#555}
+body::-webkit-scrollbar-thumb{background:#c74141}
+.clear:before, .clear:after{content:"";display:table;}
+.clear:after{clear:both;}
+.clear{*zoom: 1;}
+.landing-paly, .icon-partner, .icon-arrRight, .icon-browser, .icon-gotop { background: url(../images/index/browser_ico.png) no-repeat; }
+body { background-color: #3c4045; background-image: url(../images/index/bg1.jpg) !important; background-repeat: no-repeat; }
+
+/******header start*******/
+.header .main { z-index: 1009; height: 70px; background: #b62929}
+.header-main { position: relative; width: 968px; height: 70px; }
+
+/******Logo start********/
+.logo { position: relative;  width: 210px; height: 70px; }
+.logo a { width: 100%; height: 100%; position: absolute; left: 0; top: 0; z-index: 1; display: block; overflow: hidden}
+/******Logo end*********/
+
+/******导航 start*******/
+.menu-box { position: relative; z-index: 1000; float: left; height: 70px; }
+.menu-box .menu { overflow: hidden; }
+.menu ul { list-style: none; font-size: 0; position: relative; white-space: nowrap; overflow: hidden; }
+.menu-box ul { background-image: none; }
+.menu ul li { width: 128px; height:70px; margin: 0; float: left; font-size: 14px; letter-spacing: normal; word-spacing: normal; line-height: 20px; vertical-align: middle;}
+.menu ul li a { transition: All .3s ease; -webkit-transition: All .3s ease; -moz-transition: All .3s ease; -o-transition: All .3s ease; display: block; width: 128px; height: 44px; line-height: 20px; padding-top:16px;text-align: center; text-shadow: 0 1px 2px #000; color: #fff; }
+.menu ul li.active a, .menu ul > li a:hover { transform: scale(1.1); -webkit-transform: scale(1.1); -moz-transform: scale(1.1); -o-transform: scale(1.1); -ms-transform: scale(1.1); }
+.menu ul li a div { font-size: 14px; margin: 0; }
+.menu ul li a span { transform: scale(0.75); font-size: 12px; text-align: center; display: block; width: 100%; margin: 0 auto; color: #fff; }
+.menu ul li a:hover { color: #fff; }
+.menu ul li a:hover span { color: #fff; }
+.menu ul li:hover { width: 128px;background: #f14a4a; color: #fff; }
+.menu ul li.active { width: 128px; height: 55px; background: #af1313; /* margin:0 10px;*/ margin: 0; }
+/*****导航 end**********/
+
+/****下拉列表 start*****/
+.game_switch_box { position: absolute; top: 42px; width: 1000px; *min-height: 564px;margin: 0 5px; padding:0 1px 1px 1px;z-index: 9999;zoom: 1;left: -223px; margin-top: 28px;}
+.game_switch_info { padding: 20px 34px 0; }
+.game_switch_box .game_switch_info {background-color:rgba(0,0,0,0.9); padding-bottom: 20px;border-bottom:4px solid #b62929}
+.game_switch_info_cai { border-right: 1px solid #2b2b2b; display: inline-block; width: 464px; zoom: 1; font-size: 0; float: left; }
+.game_switch_info_cai.brnone{border-right:0;}
+.game_switch_title { border-bottom: 1px solid #2b2b2b; width: 464px; display: block; margin: 8px 0 0 0; padding-bottom: 8px; }
+.game_switch_box h1 { height: 20px; font-size: 16px; display: inline-block; margin-left: 10px; margin-top: 5px; float: left; color: #fff; }
+.game_switch_box h1.l{margin-left:25px}
+.game_switch_wrap { width: 464px; height: auto; float: none; }
+.game_switch_info .gamelist_l { margin-left: 0; }
+.game_switch_box ul { min-height: 62px; padding: 11px 0; width: 464px; }
+.game_switch_wrap ul { float: none; }
+.game_switch_box li { float: left; line-height: 28px; margin: 5px 0; height: 104px;position: relative; text-align: center; width:80px;margin-right:12px}
+.game_switch_box li a { display: block;text-align: center; background: #e95959; overflow: hidden;border-radius:50%}
+.game_switch_box li a img { display: block; width: 80%; height: 80%; margin: 10%; }
+.game_switch_box li span { font-size: 12px; display: block; color: #fff; position: absolute; left: 0; bottom: 0; width: 100%; height: 28px; line-height: 28px; overflow: hidden; }
+.game_switch_box li a:hover, .gamelist_more li a:hover { background: #b62929;}
+.game_switch_list { display: inline-block; width: 467px; zoom: 1; font-size: 0; /*margin-left: -4px;*/ float: left; }
+.game_switch_info .gamelist_r { margin-left: 15px; }
+.game_switch_back { width: 26px; height: 19px; position: absolute; background: url(../images/index/triangles_back.png) no-repeat; left:270px;top: -13px; }
+.game_switch_back2 { width: 26px; height: 19px; position: absolute; background: url(../images/index/triangles_back.png) no-repeat; left:398px;top: -13px; }
+.gamelist_more li a{background:#afafaf}
+/****下拉列表 end******/
+
+.low_wrap { margin-top: 20px; width: 464px; float: left; width: auto; margin-top: 0; }
+.low_wrap ul { float: left; margin-left: 15px; margin: 0; }
+.low_wrap ul li { float: left; }
+.low_wrap ul li a { font-size: 12px; display: block; color: #fff; }
+.lows_frequency { float: left; font-size: 16px; margin-left: 26px; color: #fff; }
+/*.high_frequency { font-size: 16px; margin-top: 22px; margin-left: 26px; color: #fff; }*/
+.menu-child1 li span img { margin-left: 6px; line-height: 28px; margin-bottom: -2px; }
+.cut { float: left; width: 1px; height: 506px; position: absolute; top: 34px; left: 500px; background-color: rgba(255,255,255,0.15); }
+/****header end*******/
+
+/****轮播图 start*****/
+.main_wrap { position: relative; min-height: 480px; padding-bottom: 20px; }
+.home-con { margin: 0 auto; width: 100%; position: relative; /*z-index: 9;*/ }
+
+/****banner start*****/
+.banner { position: relative; height: 100%; height: 504px; }
+.wrapper { position: absolute; left: 0; top: 0; width: 100%; height: 100%; }
+.banner-img { position: relative; height: 100%; }
+.controller > div { display: block; z-index: 10000; position: absolute; top: 236px; width: 15px; height: 25px; padding: 10px; border-radius: 20px; background: #000; cursor: pointer; }
+.controller > div:hover { background: #747474; }
+.controller > div.prev { left: 142px; }
+.controller > div.next { right: 142px; }
+
+.knobbox { display: none; }
+/****banner end******/
+
+/****跑马灯 start****/
+.mq { cursor: pointer; position: relative; z-index: 10; margin: -54px auto 6px auto; padding: 10px 0; width: 600px; height: 27px;background-color: rgba(0,0,0,0.7);border-radius:25px/* background: url(../images/index/banner_text_box.png) no-repeat 0 0; */}
+.mq .mq-mask {height: 30px; line-height: 28px;color: #fff;font-size:15px;text-align:center/* background-position: -123px 3px; */}
+.mq .mq-mask span{padding:0 20px}
+/****跑马灯 end******/
+/****轮播图 end******/
+
+/***主要内容 start***/
+.more_game { width: 100%; height: 832px; border-top: 56px solid #b62929; }
+.middle_min { height: 891px; min-width: 1338px; margin: 0 auto; background: url(../images/index/middle_min_bg.png) no-repeat top center; }
+.more_game_middle { width: 1004px; margin: 0 auto; position: relative; }
+
+/***热门游戏 彩票百家乐 start***/
+.more_game .columns { width: 1004px; height: 326px; margin: -56px auto 0; }
+.more_game .columns .col_a { width: 640px; height: 326px; float: left; position: relative; background: #b62929; }
+.more_game .columns .col_a .hotgame_tit { height: 56px; background-color: #8e2020; background-color: rgba(0,0,0,0.22); background-image: url("../images/index/game_tit.png"); background-position: 26px -30px; background-repeat: no-repeat; }
+.hot_game_toggle { width: 74px; height: 26px; position: absolute; top: 16px; right: 14px; }
+.hot_game_toggle a { display: inline-block; width: 37px; height: 26px; float: left; }
+.hot_game_toggle .official-btn { background-position: -122px -840px; }
+.hot_game_toggle .credit-btn { background-position: -159px -840px; }
+.hot_game_toggle a.official-btn.active {
+    background-position: -122px -874px
+}
+
+.hot_game_toggle a.credit-btn.active {
+    background-position: -159px -874px;
+}
+/*
+.columns .col_a .hotgame_con { padding: 8px 4px 0; }
+.hotgame_con ul { float: left; width: 500px; padding: 0 2px; *margin-top: 6px; height: 182px; overflow: hidden; }
+.hotgame_con ul li { margin: 0 0 12px 14px; float: left; text-align: left; width: 94px; height: 16px; padding-left: 12px; overflow: hidden; }
+.hotgame_con .official_game { font-size: 16px; text-align: left; width: 462px; margin-bottom: 8px; padding-bottom: 14px; color: #fff; border-bottom: 1px solid #9f2222; }
+.hotgame_con .high_frequency { text-align: left; font-size: 16px; margin: 0 0 14px 14px; width: 386px; color: #fff; }
+.hotgame_con ul li a { font-size: 12px; display: block; color: #fff; }
+.official_games .play_hidden, .credit_games .play_hidden { height: 80px; overflow: hidden; }
+.hotgame_con .low_frequency { text-align: left; font-size: 16px; margin: 0 0 16px 14px; width: 462px; padding-top: 12px; padding-left: 12px; color: #fff; border-top: 1px solid #9f2222; }
+.hotgame_con .credit_game { font-size: 16px; text-align: left; width: 462px; padding-bottom: 14px; margin-bottom: 8px; color: #fff; border-bottom: 1px solid #9f2222; }
+.hotgame_con .caipiao_game { text-align: left; font-size: 16px; margin: 0 0 16px 14px; width: 462px; padding-top: 12px; padding-left: 12px; color: #fff; border-top: 1px solid #9f2222; }
+*/
+.more_game .columns .col_b { width: 364px; height: 326px; float: left; }
+.columns .col_b .baccarat_tit { height: 56px; background: #000 url("../images/index/game_tit.png") no-repeat 26px 18px; }
+.columns .col_b .baccarat_con { height: 270px; background: #302f2f; }
+.jnd28, .azcp, .xy28, .bjkl8, .bjpk10, .dgcp { width: 106px; height: 106px; display: block; }
+.jnd28 a, .azcp a, .xy28 a, .bjkl8 a, .bjpk10 a, .dgcp a { width: 106px; height: 106px; display: block; }
+.baccarat{padding:10px 0 0 4px}
+.baccarat ul li { margin: 0 26px; float: left; width: 106px; }
+.baccarat ul li a { color: #b8b5b5; font-size: 12px; margin-bottom: 22px; text-align: center; width: 106px; height: 106px; display: block; background: url(../images/index/game-icon-bg01.png) no-repeat center center}
+.baccarat ul li a:hover{color:#fff}
+.baccarat ul li span { text-align: center; display: inline-block; width: 100%; padding-top: 108px; }
+.game_icon_1 span{background: url(../images/main/1.png) no-repeat center 5px}
+.game_icon_3 span{background: url(../images/main/3.png) no-repeat center 5px}
+.game_icon_5 span{background: url(../images/main/5.png) no-repeat center 5px}
+.game_icon_15 span{background: url(../images/main/15.png) no-repeat center 5px}
+.game_icon_12 span{background: url(../images/main/12.png) no-repeat center 5px}
+.game_icon_21 span{background: url(../images/main/21.png) no-repeat center 5px}
+.game_icon_10 span{background: url(../images/main/10.png) no-repeat center 5px}
+.game_icon_34 span{background: url(../images/main/34.png) no-repeat center 5px}
+/***热门游戏 彩票百家乐 end****/
+
+/******竞彩足球 start**********/
+.bed, .acml, .beds, .acmls { background: url("../images/index/football_icon.png") no-repeat; }
+.more_game .football { width: 1004px; margin: 0 auto; background: url("../images/index/football_con_bg.png") no-repeat; }
+.more_game .football .football_tit { width: 1004px; height: 33px; padding-top: 14px; background: url("../images/index/football_tit_bg.png") repeat-x; border-bottom: 1px solid #ffe07e; }
+.more_game .football .football_tit .popular { width: 240px; height: 20px; margin: 0 auto; background: url("../images/index/football_tit.png") no-repeat; }
+.more_game .football .football_con { width: 100%; height: 182px; padding: 40px 0 12px; }
+.more_game .football .football_con .col_left { width: 446px; padding-left: 54px; float: left; border-right: 1px solid #fff; }
+.more_game .football .football_con .col_right { padding-left: 46px; float: left; }
+.football_con .col_left > div, .football_con .col_right > div { float: left; width: 106px; }
+.bed { width: 106px; height: 124px; margin-top: 16px; margin-bottom: 12px; display: block; background-position: 0 0; }
+.bed a { width: 106px; height: 124px; display: block; }
+.football_con .col_left > div a, .football_con .col_right > div a { font-size: 12px; display: block; text-align: center; color: #fff; }
+.football_con .col_left .club, .football_con .col_right .club { padding-top: 20px; margin: 0 46px; }
+.club span { font-size: 12px; text-align: center; margin-bottom: 18px; display: block; color: #fff; }
+.club span.vs { font-family: "HelveticaLT Condensed Black"; font-size: 49px; font-weight: bold; color: #fff; }
+.acml { width: 84px; height: 124px; margin: 18px auto 8px; display: block; background-position: -14px -178px; }
+.acml a { width: 84px; height: 124px; display: block; }
+.beds { width: 106px; height: 124px; margin-top: 22px; display: block; background-position: 0 -342px; }
+.beds a { width: 106px; height: 124px; display: block; }
+.acmls { width: 106px; height: 106px; margin-top: 32px; display: block; background-position: 0 -494px; }
+.acmls a { width: 106px; height: 124px; display: block; }
+/******竞彩足球 end**********/
+
+/***服务优势 移动端下载 帮助中心 start****/
+
+/*****服务优势 start********/
+.others { width: 990px; height: 280px; margin: 0 auto; padding-left: 14px; background: #fff; }
+.others .advantages { padding-top: 32px; display: inline-block; width: 312px; height: 246px; margin: 0; float: left; }
+.others .advantages h2 { width: 312px; height: 36px; margin: 0 0 6px 0; background: url("../images/index/others_all.png") no-repeat 0 0; }
+.payment_date { width: 292px; height: 89px; padding: 0 36px 0 10px; }
+.payment_date .payment_date_l { float: left; }
+.payment_date .payment_date_l h3 { font-size: 15px; font-weight: normal; margin-top: 15px; margin-bottom: 8px; color: #565656; }
+.payment_date .payment_date_l p { font-size: 12px; font-weight: normal; color: #949393; }
+.payment_date .payment_date_r { float: right; margin-top:10px; }
+.payment_date .payment_date_r .pay_time { font-size: 30px; display: inline-block; padding: 6px; color: #565656; }
+.payment_date .payment_date_r .pay_time strong { font-size: 12px; font-weight: normal; margin-left: 8px; color: #dfdfdf; }
+.payment_date .time_bar { width: 292px; height: 16px; margin-top: 12px; float: left; position: relative; background:#edebe9;border-radius:10px}
+.time_bar .bar_slide { width: 112px; height: 16px; border-radius: 10px; position: absolute; top: 0; left: 0; background: #ffdf01; }
+.time_bar .bar_slide_n { width: 172px; height: 16px; border-radius: 10px; position: absolute; top: 0; left: 0; background: #e35050; }
+/******服务优势 end********/
+
+/******移动端下载 start***/
+.others .mobile_down { display: inline-block; vertical-align: top; padding-top: 32px; margin: 0 24px 0 22px; width: 312px; height: 248px; float: left; }
+.others .mobile_down h2 { width: 312px; height: 36px; background: url("../images/index/others_all.png") no-repeat 0 -76px; margin-bottom: 32px; }
+.others .mobile_down p { font-size: 12px; text-align: left; margin-top: 8px; color: #858585;text-align:center}
+.others .mobile_down .down { margin-top: 28px; text-align:center}
+.mobile_down .down .apple, .mobile_down .down .android, .mobile_down .down .browser { width: 79px; height: 78px; margin: 0 10px; display: inline-block; }
+.mobile_down .down span a { width: 79px; height: 78px; display: block; }
+.mobile_down .down .apple, .mobile_down .down .apple:hover, .mobile_down .down .android, .mobile_down .down .android:hover, .mobile_down .down .browser, .mobile_down .down .browser:hover { background: url("../images/index/others_all.png") no-repeat; }
+.mobile_down .down .apple { background-position: 0 -334px; }
+.mobile_down .down .apple:hover { background-position: -167px -333px; }
+.mobile_down .down .android { background-position: 0 -427px; }
+.mobile_down .down .android:hover { background-position: -167px -426px; }
+.mobile_down .down .browser { background-position: 0 -520px; }
+.mobile_down .down .browser:hover { background-position: -167px -519px; }
+/******移动端下载 end****/
+
+/******平台公告 start****/
+.others .problem { padding-top: 32px; display: inline-block; vertical-align: top; width: 302px; float: left; }
+.others .problem h2 { width: 302px; height: 36px; background: url("../images/index/others_all.png") no-repeat 0 -152px; }
+.others .problem .common { margin-top: 8px; margin-left: 4px; padding-bottom: 8px; }
+.problem .common ul li { width: 100%;margin-top: 14px; margin-right: 18px; display: inline-block; float: left;}
+.problem .common ul li a { width:190px; height: 22px; font-size: 12px; line-height: 22px; padding-left: 30px; display: block; color: #555; background: url("../images/index/others_all.png") no-repeat 0 -295px; white-space: nowrap; text-overflow: ellipsis; display: inline-block; overflow: hidden;}
+.problem .common ul li a:hover{color:#e35050}
+.problem .common ul li span{float:right;height: 22px; font-size: 12px; line-height: 22px;color:#808080}
+/******平台公告 start****/
+
+/***服务优势 移动端下载 平台公告 end****/
+/******主要内容 end*******/
+
+/********footer start**********/
+.footer { height: 200px; padding-top: 10px; margin: 0 auto; width: 100%; background:#1f1f1f; border-top: 4px solid #b62929; }
+.footer_main { width: 1010px; margin: 0 auto; }
+.bottom-info-main .bottom-info { float: left; width: 680px;}
+.bottom-info-main .bottom-info.browser{width:330px}
+.new-box { border-right: 1px dashed hsla(0,5%,30%,.5); padding-top: 2px; text-align: left; height: 128px; }
+.new-box h1, .new-box h2, .new-box h3 { font-weight: normal; }
+.new-box h1 { color: #fff; margin: 0; height: 30px; line-height: 30px; margin-bottom:5px;margin-left:25px}
+.new-box h1 > em, .new-box h2 > em, .new-box h3 > em { font-style: normal; display: inline-block; vertical-align: bottom; *margin-bottom: 10px; }
+.new-box h1 > em { font-size: 16px; }
+.bottom-info-main span { font-size: 12px; }
+.new-box span { font-size: 12px; }
+.new-box h1 > span, .new-box h2 > span, .new-box h3 > span { display: inline-block; vertical-align: bottom; }
+.new-box h1 > span { font-size: 12px; margin: 0 5px; *margin-bottom: 8px; }
+.new-box .new-con { padding-top: 5px; }
+.new-box .new-con.browser{padding-top: 10px;}
+
+/*******技术支持 start********/
+.footer_logo{width:635px;height: 100px;background: url(../images/index/footer_logo.png) no-repeat center top;margin-left:20px}
+.footer_title { width: 183px; height: 27px;margin-top: 26px; margin-left: 120px; }
+.footer_logo a { width: 112px; height: 100px; display: block; }
+/*******技术支持 end********/
+
+/*******推荐浏览器 start********/
+.bottom-info-main .bottom-info:last-child .new-box { border-right: none; }
+.browser-list.notitle { float: none; }
+.browser-list li { margin-bottom: 5px; }
+.browser-list.notitle li { float: left; font-size: 0; width: 90px; text-align: center; margin: 0 10px; }
+.browser-list.notitle li a { width: 100%; height: 100%; display: block; }
+.icon-browser { width: 46px; height: 49px; }
+.icon-browserIE { background-position: 0 -54px; }
+.browser-list .icon { display: inline-block;vertical-align: middle;}
+.browser-list.notitle li span { color: #fff; display: inline-block; margin-top: 8px; }
+.icon-browserFF { background-position: -46px -54px; }
+.icon-browserGL { background-position: -92px -54px; }
+.icon-browser:hover { background-position-y: -5px; }
+.browser-tip { width: 100%; padding-top: 6px; text-align: center; }
+.browser-tip span { display: inline-block; }
+.copyright { text-align: center; padding-top: 20px; color: #fff; border-top:1px solid #333232;margin-top:10px}
+.guideTable a:hover { color: #FFF; }
+/*******推荐浏览器 end********/
+/********footer end***********/
+
+/* 投注页面新增右侧切换模块 begin */
+.dn { display: none !important; }
+.db { display: inline-block !important; }
+.ui-md-box { width: 124px; height:auto; position: fixed; right: 0; top:12%; z-index: 998;}
+.ui-md-box .mobdm{display:block;width:100%;height:100%;}
+.ui-md-box .QRcode{position: relative;}
+.ui-right-box .app_android{position:absolute;left: 13px;top: 15px;}
+.kefuw-left-01 { display: block; width: 100%; height: 181px; background: url(../images/index/fleft01.png) no-repeat; }
+.kefuw-left-02 { display: block; width: 100%; height: 60px; background: url(../images/index/fleft02.png) no-repeat; }
+.kefuw-left-03 { display: block; width: 100%; height: 82px; background: url(../images/index/fleft03.png) no-repeat; }
+.kefuw-left-04 { display: block; width: 100%; height: 60px; background: url(../images/index/fleft04.png) no-repeat; }
+.kefuw-left-05 { display: block; width: 100%; height: 111px; background: url(../images/index/fleft05.png) no-repeat; }
+.kefuw-left-05 a { display: inline-block; width: 100%; height: 82px; cursor: pointer; }
+.ui-md-box a.cols { display: block; width: 124px; height: 23px; background: url(../images/index/close.png) no-repeat center center; overflow: hidden; text-indent: -1000px; }
+.ui-right-box .kefuw-right-01 { display: block; width: 100%; height: 215px; background: url(../images/index/fright01.png) no-repeat; }
+.ui-right-box .kefuw-right-02 { display: block; width: 100%; height: 52px; background: url(../images/index/fright_02.png) no-repeat; }
+.ui-right-box .kefuw-right-02 em{display: inline-block;color:#f8d955;font-weight:bold;font-size:16px;font-style:normal;text-align:center;width:124px;text-shadow: 0 1px 4px #000;margin-top:32px}
+.ui-right-box .kefuw-right-03 { display: block; width: 100%; height: 52px; background: url(../images/index/fright_03.png) no-repeat; }
+.ui-right-box .kefuw-right-04 { display: block; width: 100%; height: 145px; background: url(../images/index/fright02.png) no-repeat; }
+/* 投注页面新增右侧切换模块 end */
+
+/*轮播*/
+.swiper-slide{background-position: center center;background-repeat:no-repeat;}
+.swiper-pagination {position: absolute;left: 0;right: 0;z-index: 10;bottom: 15px;text-align: center;}
+.swiper-pagination-switch {background-color: #999;display: inline-block;width: 15px;height: 15px;border-radius: 10px;opacity: 0.7;box-shadow: 0px 1px 2px #555 inset;margin: 0 3px;cursor: pointer;}
+.swiper-active-switch {background-color: #fff;}
+.banner .wrapper {height: 100%;}
+.swiper-container, .swiper-slide {height: 100%;width: 100%;background-position:center top;}
+/*Login*/
+.login{padding:25px 25px 0 25px}
+.login img{padding:2px;border-radius:50%;border:2px solid #fff;width:80px;height:80px;margin-bottom:20px}
+.login p{margin-left:15px;font-size:14px;color:#fff;margin-top:10px;}
+.login p a{color:#e35050}
+.login .info{clear:both}
+.login .info ul{border-top:1px solid #949494;padding-top:5px}
+.login .info ul li a{float:left;width:95px;background:#fff;height:40px;line-height:40px;margin-right:14px;text-align:center;margin-top:15px;font-weight:bold;font-size:14px}
+.login .info ul li a:hover{color:#8e2020}
+.login .info ul li a.mrnone{margin-right:0px}
+/*LoginNo*/
+.loginformboxcontent>div{margin:auto;width:320px}
+.loginformboxcontent>div>input{display:block;height:50px;font-size:16px;color:#fff;width:100%;border-radius:2px;border:0;background-color:#b62929;transition:all 1s;font-family:"微軟雅黑","Microsoft YaHei";cursor:pointer;margin-top:25px}
+.loginformboxcontent>div>input:hover{background-color:#bb4040}
+.loginformboxcontent>p{width:320px;margin:auto;height:45px;padding-top:15px;position:relative;font-size:14px;color:#ccc}
+.loginformboxcontent>p>em{font-style:normal;color:#ccc}
+.loginformboxcontent>p>img{height:43px;position:absolute;right:1px;top:16px}
+.loginformboxcontent>p>i{position:absolute;left:-5px;display:inline-block;width:60px;text-align:center;height:45px;line-height:45px;vertical-align:middle;color:#e36d6d;font-size:18px}
+.loginformboxcontent>p>input{width:100%;height:45px;box-sizing:border-box;padding-left:50px;border:0;border-radius:2px;font-family:"微軟雅黑","Microsoft YaHei";background-color: rgba(255,255,255,0.7);}
+.loginformboxcontent>a,.loginformboxcontent>a:visited{display:block;color:#e36d6d;font-size:16px;text-decoration:underline}
+.loginformboxcontent>a:hover{color:#fff}
+

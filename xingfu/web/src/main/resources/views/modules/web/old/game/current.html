@@ -1,0 +1,299 @@
+<?php
+@session_start();
+$lastNo = $this->getGameLastNo($this->type);
+$kjHao = $this->getValue("select data from {$this->prename}data where type={$this->type} and number='{$lastNo['actionNo']}'");
+if ($kjHao) $kjHao = explode(',', $kjHao);
+$actionNo = $this->getGameNo($this->type);
+$types = $this->getTypes();
+$kjdTime = $types[$this->type]['data_ftime'];
+$diffTime = strtotime($actionNo['actionTime']) - $this->time - $kjdTime;
+$kjDiffTime = strtotime($lastNo['actionTime']) - $this->time;
+
+?>
+<div class="lottery_head" id="kaijiang" type="<?= $this->game['id'] ?>" ctype="<?= $types[$this->type]['type'] ?>">
+	<div class="lottery_show left">
+		<div class="lottery_con">
+			<div class="lottery_type left">
+				<div style="background:url(/public/images_new/main/<?= $this->game['id'] ?>.png) no-repeat center"></div>
+			</div>
+			<div class="lottery_timer left">
+				<div class="lottery_issue left">
+					<p style="width:166px;">当前在售 <span id="current_issue"><?= $actionNo['actionNo'] ?></span> 期</p>
+					<p style="width:80px;"><?= $this->game['game_des'] ?></p>
+					<span class="soundBtn soundClickEvent" onclick="voiceKJ();"></span>
+				</div>
+				<div class="lottery_timeBox left">
+					<div class="timeBox">
+						<div class="num_left">
+							<div class="num num_t">
+								<div id="s1s">0</div>
+							</div>
+							<div class="num num_b">
+								<div id="s1x">0</div>
+							</div>
+						</div>
+						<div class="num_right">
+							<div class="num num_t">
+								<div id="s2s">0</div>
+							</div>
+							<div class="num num_b">
+								<div id="s2x">0</div>
+							</div>
+						</div>
+					</div>
+					<div class="dianBox"></div>
+					<div class="timeBox">
+						<div class="num_left">
+							<div class="num num_t">
+								<div id="f1s">0</div>
+							</div>
+							<div class="num num_b">
+								<div id="f1x">0</div>
+							</div>
+						</div>
+						<div class="num_right">
+							<div class="num num_t">
+								<div id="f2s">0</div>
+							</div>
+							<div class="num num_b">
+								<div id="f2x">0</div>
+							</div>
+						</div>
+					</div>
+					<div class="dianBox"></div>
+					<div class="timeBox">
+						<div class="num_left">
+							<div class="num num_t">
+								<div id="m1s">0</div>
+							</div>
+							<div class="num num_b">
+								<div id="m1x">0</div>
+							</div>
+						</div>
+						<div class="num_right">
+							<div class="num num_t">
+								<div id="m2s">0</div>
+							</div>
+							<div class="num num_b">
+								<div id="m2x">0</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<?php if ($types[$this->type]['type'] == 3) { //3D
+			?>
+				<div class="lottery_num left">
+					<p class="lottery_history_issue">第 <span><?= $lastNo['actionNo'] ?></span> 期开奖号码</p>
+					<div class="lottery_num_box">
+						<ul id="num" style="width:210px;">
+							<li><span style="top: 0px;"><?= $kjHao[0] ?></span></li>
+							<li><span style="top: 0px;"><?= $kjHao[1] ?></span></li>
+							<li><span style="top: 0px;"><?= $kjHao[2] ?></span></li>
+						</ul>
+					</div>
+				</div>
+		</div>
+	</div>
+<?php } else if ($types[$this->type]['type'] == 9) { //快3
+?>
+	<div class="lottery_num left">
+		<p class="lottery_history_issue">第 <span><?= $lastNo['actionNo'] ?></span> 期开奖号码</p>
+		<div class="lottery_num_box">
+			<ul id="num" style="width:210px">
+				<li><span style="top: 0px;"><?= $kjHao[0] ?></span></li>
+				<li><span style="top: 0px;"><?= $kjHao[1] ?></span></li>
+				<li><span style="top: 0px;"><?= $kjHao[2] ?></span></li>
+			</ul>
+		</div>
+	</div>
+</div>
+</div>
+<?php } else if ($types[$this->type]['type'] == 11) { //六合彩
+?>
+	<div class="lottery_num left">
+		<p class="lottery_history_issue">第 <span><?= $lastNo['actionNo'] ?></span> 期</p>
+		<div class="lottery_num_box">
+			<ul id="num" class="lhc">
+				<?php
+				$a = array('01', '02', '07', '08', '12', '13', '18', '19', '23', '24', '29', '30', '34', '35', '40', '45', '46');
+				$b = array('03', '04', '09', '10', '14', '15', '20', '25', '26', '31', '36', '37', '41', '42', '47', '48');
+				$c = array('05', '06', '11', '16', '17', '21', '22', '27', '28', '32', '33', '38', '39', '43', '44', '49');
+				for ($i = 0; $i < 7; $i++) {
+					if (in_array($kjHao[$i], $a)) {
+						$color = 'red';
+					} elseif (in_array($kjHao[$i], $b)) {
+						$color = 'blue';
+					} elseif (in_array($kjHao[$i], $c)) {
+						$color = 'green';
+					} else {
+						$color = 'and';
+					}
+					if ($i == 6) {
+						echo "<li class='and'><span>and</span></li>";
+					}
+				?>
+					<li class="<?= $color ?>"><span><?= $kjHao[$i] ?></span></li>
+				<?php } ?>
+			</ul>
+		</div>
+	</div>
+<?php } else if ($types[$this->type]['type'] == 8) { //快乐8
+?>
+	<div class="lottery_num left">
+		<p class="lottery_history_issue">第 <span><?= $lastNo['actionNo'] ?></span> 期开奖号码</p>
+		<div class="lottery_num_box">
+			<ul id="num" class="k8">
+				<li style="top: 0px;"><span><?= $kjHao[0] ?></span></li>
+				<li style="top: 0px;"><span><?= $kjHao[1] ?></span></li>
+				<li style="top: 0px;"><span><?= $kjHao[2] ?></span></li>
+				<li style="top: 0px;"><span><?= $kjHao[3] ?></span></li>
+				<li style="top: 0px;"><span><?= $kjHao[4] ?></span></li>
+				<li style="top: 0px;"><span><?= $kjHao[5] ?></span></li>
+				<li style="top: 0px;"><span><?= $kjHao[6] ?></span></li>
+				<li style="top: 0px;"><span><?= $kjHao[7] ?></span></li>
+				<li style="top: 0px;"><span><?= $kjHao[8] ?></span></li>
+				<li style="top: 0px;"><span><?= $kjHao[9] ?></span></li>
+				<li style="top: 0px;"><span><?= $kjHao[10] ?></span></li>
+				<li style="top: 0px;"><span><?= $kjHao[11] ?></span></li>
+				<li style="top: 0px;"><span><?= $kjHao[12] ?></span></li>
+				<li style="top: 0px;"><span><?= $kjHao[13] ?></span></li>
+				<li style="top: 0px;"><span><?= $kjHao[14] ?></span></li>
+				<li style="top: 0px;"><span><?= $kjHao[15] ?></span></li>
+				<li style="top: 0px;"><span><?= $kjHao[16] ?></span></li>
+				<li style="top: 0px;"><span><?= $kjHao[17] ?></span></li>
+				<li style="top: 0px;"><span><?= $kjHao[18] ?></span></li>
+				<li style="top: 0px;"><span><?= $kjHao[19] ?></span></li>
+			</ul>
+		</div>
+	</div>
+	</div>
+	</div>
+<?php } else if ($types[$this->type]['type'] == 4) { //快乐十分
+?>
+	<div class="lottery_num left">
+		<p class="lottery_history_issue">第 <span><?= $lastNo['actionNo'] ?></span> 期开奖号码</p>
+		<div class="lottery_num_box">
+			<ul id="num" class="klsf">
+				<?php if (isset($kjHao[0]) > 0) { ?>
+					<li style="top: 0px;"><span><?= $kjHao[0] ?></span></li>
+					<li style="top: 0px;"><span><?= $kjHao[1] ?></span></li>
+					<li style="top: 0px;"><span><?= $kjHao[2] ?></span></li>
+					<li style="top: 0px;"><span><?= $kjHao[3] ?></span></li>
+					<li style="top: 0px;"><span><?= $kjHao[4] ?></span></li>
+					<li style="top: 0px;"><span><?= $kjHao[5] ?></span></li>
+					<li style="top: 0px;"><span><?= $kjHao[6] ?></span></li>
+					<li style="top: 0px;"><span><?= $kjHao[7] ?></span></li>
+				<?php } ?>
+			</ul>
+		</div>
+	</div>
+	</div>
+	</div>
+<?php } else if ($types[$this->type]['type'] == 6 || $this->type == 54) { //PK10
+?>
+	<div class="lottery_num left">
+		<p class="lottery_history_issue">第 <span><?= $lastNo['actionNo'] ?></span> 期开奖号码</p>
+		<div class="lottery_num_box">
+			<ul id="num" class="pk10_ul">
+				<?php if (isset($kjHao[0]) > 0) { ?>
+					<li class="car<?= $kjHao[0] ?>"><span><?= $kjHao[0] ?></span></li>
+					<li class="car<?= $kjHao[1] ?>"><span><?= $kjHao[1] ?></span></li>
+					<li class="car<?= $kjHao[2] ?>"><span><?= $kjHao[2] ?></span></li>
+					<li class="car<?= $kjHao[3] ?>"><span><?= $kjHao[3] ?></span></li>
+					<li class="car<?= $kjHao[4] ?>"><span><?= $kjHao[4] ?></span></li>
+					<li class="car<?= $kjHao[5] ?>"><span><?= $kjHao[5] ?></span></li>
+					<li class="car<?= $kjHao[6] ?>"><span><?= $kjHao[6] ?></span></li>
+					<li class="car<?= $kjHao[7] ?>"><span><?= $kjHao[7] ?></span></li>
+					<li class="car<?= $kjHao[8] ?>"><span><?= $kjHao[8] ?></span></li>
+					<li class="car<?= $kjHao[9] ?>"><span><?= $kjHao[9] ?></span></li>
+			</ul>
+		<?php } ?>
+		</div>
+	</div>
+	</div>
+	</div>
+<?php } else if ($types[$this->type]['type'] == 7) { //急速赛马
+?>
+	<div class="lottery_num left">
+		<p class="lottery_history_issue">第 <span><?= $lastNo['actionNo'] ?></span> 期开奖号码</p>
+		<div class="lottery_num_box">
+			<ul id="num" class="pk10_ul">
+				<?php if (isset($kjHao[0]) > 0) { ?>
+					<li class="car<?= $kjHao[0] ?>"><span><?= $kjHao[0] ?></span></li>
+					<li class="car<?= $kjHao[1] ?>"><span><?= $kjHao[1] ?></span></li>
+					<li class="car<?= $kjHao[2] ?>"><span><?= $kjHao[2] ?></span></li>
+					<li class="car<?= $kjHao[3] ?>"><span><?= $kjHao[3] ?></span></li>
+					<li class="car<?= $kjHao[4] ?>"><span><?= $kjHao[4] ?></span></li>
+					<li class="car<?= $kjHao[5] ?>"><span><?= $kjHao[5] ?></span></li>
+					<li class="car<?= $kjHao[6] ?>"><span><?= $kjHao[6] ?></span></li>
+					<li class="car<?= $kjHao[7] ?>"><span><?= $kjHao[7] ?></span></li>
+					<li class="car<?= $kjHao[8] ?>"><span><?= $kjHao[8] ?></span></li>
+					<li class="car<?= $kjHao[9] ?>"><span><?= $kjHao[9] ?></span></li>
+			</ul>
+		<?php } ?>
+		</div>
+	</div>
+	</div>
+	</div>
+<?php } else if ($types[$this->type]['type'] == 2) { //11选5
+?>
+	<div class="lottery_num left">
+		<p class="lottery_history_issue">第 <span><?= $lastNo['actionNo'] ?></span> 期开奖号码</p>
+		<div class="lottery_num_box">
+			<ul id="num" style="width: 350px;">
+				<li><span style="top: 0px;"><?= $kjHao[0] ?></span></li>
+				<li><span style="top: 0px;"><?= $kjHao[1] ?></span></li>
+				<li><span style="top: 0px;"><?= $kjHao[2] ?></span></li>
+				<li><span style="top: 0px;"><?= $kjHao[3] ?></span></li>
+				<li><span style="top: 0px;"><?= $kjHao[4] ?></span></li>
+			</ul>
+		</div>
+	</div>
+	</div>
+	</div>
+<?php } else {  ?>
+	<div class="lottery_num left">
+		<p class="lottery_history_issue">第 <span><?= $lastNo['actionNo'] ?></span> 期开奖号码</p>
+		<div class="lottery_num_box">
+			<ul id="num" style="width: 350px;">
+				<li><span style="top: 0px;"><?= $kjHao[0] ?></span></li>
+				<li><span style="top: 0px;"><?= $kjHao[1] ?></span></li>
+				<li><span style="top: 0px;"><?= $kjHao[2] ?></span></li>
+				<li><span style="top: 0px;"><?= $kjHao[3] ?></span></li>
+				<li><span style="top: 0px;"><?= $kjHao[4] ?></span></li>
+			</ul>
+		</div>
+	</div>
+	</div>
+	</div>
+<?php } ?>
+</div>
+<script type="text/javascript">
+	$(function() {
+		window.S = <?= json_encode($diffTime > 0) ?>;
+		window.KS = <?= json_encode($kjDiffTime > 0) ?>;
+		window.kjTime = parseInt(<?= json_encode($kjdTime) ?>);
+		if ($.browser.msie) {
+			setTimeout(function() {
+				gameKanJiangDataC(<?= $diffTime ?>);
+			}, 1000);
+		} else {
+			setTimeout(gameKanJiangDataC, 1000, <?= $diffTime ?>);
+		}
+		<?php if ($kjDiffTime > 0) { ?>
+			if ($.browser.msie) {
+				setTimeout(function() {
+					setKJWaiting(<?= $kjDiffTime ?>);
+				}, 1000);
+			} else {
+				setTimeout(setKJWaiting, 1000, <?= $kjDiffTime ?>);
+			}
+		<?php } ?>
+
+		<?php if (!$kjHao) { ?>
+			loadKjData();
+		<?php } ?>
+	});
+</script>

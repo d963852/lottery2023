@@ -1,0 +1,17 @@
+<div class="top">
+<div class="top_in clear">
+<div href="javascript:;" class="lottery game_switch user_game" data-item="lot_hall">彩种切换</div>
+<div class="user_logo"><a href="/">会员中心</a></div>
+<div class="user_banner">Banner</div>
+<div class="top_menu">
+<a href="/" class="home"><span>平台首页</span></a>
+<?php if($this->user['type']){?><a href="/Agent/Index" class="user"><span>代理中心</span></a><?}?>
+<a href="/Member/Index" class="user"><span>会员中心</span></a>
+<a href="javascript:void(0)" onclick="Notice();" class="notices"><span>平台公告</span></a>
+<!--a href="/Index/Buys" class="buys"><span>合买大厅</span></a-->
+<a href="/Member/Information" class="message"><span>消息管理</span></a>
+<a href="javascript:void(0)" onclick="zxkf();" class="service"><span>联系客服</span></a>
+</div>
+</div>
+<?php $this->display('global/game_list.php'); ?>
+</div>

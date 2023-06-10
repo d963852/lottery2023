@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="renderer" content="webkit" />
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="IE=EmulateIE8" http-equiv="X-UA-Compatible" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta content="IE=EmulateIE8" http-equiv="X-UA-Compatible" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>亏损分红_<?= $this->settings['webName'] ?></title>
+<meta content="origin-when-cross-origin" name="referrer" />
+<meta content="telephone=no" name="format-detection" />
+<?php $this->display('global/skin.php'); ?>
+<link href="/public/css/main_box.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="/public/css/list.css" />
+<script type="text/javascript" src="/public/layer/layer.js"></script>
+<script type="text/javascript" src="/public/js/onload.js"></script>
+<script type="text/javascript" src="/public/js/function.js"></script>
+<script type="text/javascript" src="/public/js/main.js"></script>
+<script type="text/javascript" src="/public/js/soundBox.js"></script>
+</head>
+<body>
+<div class="Ccenter">
+<?php $this->display('global/agent_header.php'); ?>
+<div class="box-left">
+<?php $this->display('global/agent_menu.php'); ?>
+</div>
+<div class="box-right h777">
+<div class="bonus">
+<?php
+	$rechargeTime=strtotime('00:00');
+	$cashAmout=$this->getValue("select sum(mode*beiShu*actionNum) from {$this->prename}bets where actionTime>={$rechargeTime} and uid={$this->user['uid']} and isDelete=0");
+?>
+<div class="consume">
+下线今日已消费<span><?=$this->iff($cashAmout,$cashAmout,0)?></span>元
+<a datatype="json" call="MsgTips" target="ajax" href="/Agent/BonusSet" class="ml10">领取佣金</a>
+</div>
+<div class="info">
+<h2>佣金说明</h2>
+<p><?= $this->settings['webName'] ?>隆重推出全新佣金返利系统, 前所未有的返利规则, 为<?= $this->settings['webName'] ?>所有代理用户带来全新福利。</p>
+<p>只要您的团队中的下级在前一天的投注累计达到活动要求, 即可为您的上级累计可领取的福利, 达到要求的人数越多, 您能累计领取的福利也更多。</p>
+<?php  $ruleinfo=$this->dataa;
+	for($i=0;$i<count($ruleinfo);$i++){
+		$arr=$ruleinfo[$i];
+		echo "<p>下级投注达到<i>$arr[endtime]</i>元可领取<i>$arr[lvone]</i>元，下下级投注达到<i>$arr[endtime]</i>可领取<i>$arr[lvtwo]</i>元，下下下级投注达到<i>$arr[endtime]</i>可领取<i>$arr[lvtress]</i>元，下下下下级投注达到<i>$arr[endtime]</i>可领取<i>$arr[lvfour]</i>元；</p>";
+	}
+	$open=$this->dataaa[0];
+	echo "<p>领取时间为每天<i>$open[startime]:00:00</i>点后。</p>";
+?>
+<h2 class="mt20">活动规则</h2>
+<p>1、活动结算时间为每天<i>00:00:00 至 23:59:59</i>，每日代理需要自行领取前一日下级累计投注到的返利总额，逾期不候。</p>
+<p>2、任何的对冲等刷量行为不计入有效投注，<?= $this->settings['webName'] ?>保留取消、收回赠送礼金的权利。</p>
+<p>3、<?= $this->settings['webName'] ?>保留对此次活动作出更改、终止权利，并享有最终解释权。</p>
+</div>
+</div>
+</div>
+</div>
+<?php $this->display('global/agent_footer.php'); ?>
+</body>
+</html>

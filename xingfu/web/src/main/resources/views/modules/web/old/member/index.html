@@ -1,0 +1,149 @@
+<?php
+$teamAll=$this->getRow("select sum(u.coin) coin, count(u.uid) count from {$this->prename}members u where u.isDelete=0 and concat(',', u.parents, ',') like '%,{$this->user['uid']},%'");
+$teamAll2=$this->getRow("select count(u.uid) count from {$this->prename}members u where u.isDelete=0 and u.parentId={$this->user['uid']}");
+$home_uid=$this->user['uid'];
+$childrenarr=$this->getRows("SELECT username,coin,parents,uid FROM {$this->prename}members where concat(',',parents,',') like '%,{$home_uid},%' and uid!=?",$home_uid);
+$lever="select * from {$this->prename}member_level order by level";
+$data=$this->getRows($lever);
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta name="renderer" content="webkit" />
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta content="width=device-width, initial-scale=1.0" name="viewport">
+	<meta content="IE=EmulateIE8" http-equiv="X-UA-Compatible" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta content="IE=EmulateIE8" http-equiv="X-UA-Compatible" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>会员首页_<?= $this->settings['webName'] ?></title>
+	<meta content="origin-when-cross-origin" name="referrer" />
+	<meta content="telephone=no" name="format-detection" />
+	<?php $this->display('global/skin.php'); ?>
+	<link href="/public/css/member.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="/public/layer/layer-v3.1.1.js"></script>
+	<script type="text/javascript" src="/public/js/onload.js"></script>
+	<script type="text/javascript" src="/public/js/function.js"></script>
+	<script type="text/javascript" src="/public/js/main.js"></script>
+	<script type="text/javascript" src="/public/js/soundBox.js"></script>
+</head>
+<body style="overflow: auto;">
+    <?php $this->display('global/header.php'); ?>
+            <div class="Ccenter">
+                <div class="box-left">
+                    <?php $this->display('global/user_menu.php'); ?>
+                </div>
+                <div class="box-right h777">
+                    <div class="user_home">
+                        <div class="right right_list_agent">
+                            <div class="user_list">
+                                <?php if($this->user['mLetterStatus']==0){?>
+                                    <a href="javascript:void(0)" onclick="TestUser();">账户充值</a><a href="javascript:void(0)" onclick="TestUser();">账户提现</a><a href="javascript:void(0)" onclick="TestUser();" class="mt20">每日领彩</a><a href="javascript:void(0);" onclick="Logout();" class="mt20">登出账户</a>
+                                <?php }else{ ?>
+                                    <a href="javascript:void(0);" onclick="Recharge2('<?= $this->user['username'] ?>');">账户充值</a><a href="javascript:void(0);" onclick="Withdrawals();">账户提现</a><a datatype="json" call="MsgTips" target="ajax" href="/Member/Handsel" class="mt20">每日领彩</a><a href="javascript:void(0);" onclick="Logout();" class="mt20">登出账户</a>
+                                <?php }?>
+                            </div>
+                            <p class="red titleinfo">级别说明</p>
+                            <div class="mt5 ml10 mr10">
+                                <table width="100%" border="0" cellspacing="1" cellpadding="0" class="grayTable mt10">
+                                    <thead>
+                                        <tr class="table_b_th">
+                                            <td>级别</td>
+                                            <td>积分</td>
+                                            <td>日提现</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table_b_tr">
+                                    <?php if($data) foreach($data as $level){ ?>
+                                        <tr>
+                                            <td><?=$level['levelName']?></td>
+                                            <td><?=$level['minScore']?></td>
+                                            <td><?=$level['maxToCashCount']?></td>
+                                        </tr>
+                                    <?php } ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="user_home_list">
+                            <div class="uhleft left">我的账号：</div>
+                            <div class="uhright left"><?=$this->user['username']?></div>
+                        </div>
+                        <div class="user_home_list">
+                            <div class="uhleft left">我的昵称：</div>
+                            <div class="uhright left"><?=$this->user['nickname']?><a href="javascript:void(0);" onclick="Nickname();" class="ml10 red fz16">修改</a></div>
+                        </div>
+                        <div class="user_home_list">
+                            <div class="uhleft left">我的等级：</div>
+                            <div class="uhright left">
+                                <?php
+                                if($this->user['grade']==9){
+                                echo '白金';
+                                }elseif($this->user['grade']==10){
+                                echo '黄金';
+                                }elseif($this->user['grade']==11){
+                                echo '至尊';
+                                }else{
+                                echo 'Lv'.$this->user['grade'].'';
+                                }
+                                ?>
+                            </div>
+                        </div>
+                        <div class="user_home_list">
+                            <div class="uhleft left">账号类型：</div>
+                            <div class="uhright left"><?=$this->iff($this->user['type'], '代理', '会员')?></div>
+                        </div>
+						<?if(0){?>
+                        <div class="user_home_list">
+                            <div class="uhleft left">上级用户：</div>
+                            <div class="uhright left"><?=$this->iff($parent=$this->getValue("select username from {$this->prename}members where uid=?", $this->user['parentId']),$parent,'无')?></div>
+                        </div>
+						<?}?>
+                        <div class="user_home_list">
+                            <div class="uhleft left">最高返点：</div>
+                            <div class="uhright left"><i class="red"><?=$this->user['fanDian']?></i> %</div>
+                        </div>
+                        <div class="user_home_list">
+                            <div class="uhleft left">彩票时薪：</div>
+                            <div class="uhright left"><i class="red"><?=$this->user['dayrate']?></i> %</div>
+                        </div>
+                        <div class="user_home_list">
+                            <div class="uhleft left">彩票分红：</div>
+                            <div class="uhright left"><i class="red"><?=$this->user['bonus']?></i> %</div>
+                        </div>
+                        <div class="user_home_list">
+                            <div class="uhleft left">综合时薪：</div>
+                            <div class="uhright left"><i class="red"><?=$this->user['dayrateZonghe']?></i> %</div>
+                        </div>
+                        <div class="user_home_list">
+                            <div class="uhleft left">综合分红：</div>
+                            <div class="uhright left"><i class="red"><?=$this->user['bonusZonghe']?></i> %</div>
+                        </div>
+                        <div class="user_home_list">
+                            <div class="uhleft left">信息备注：</div>
+                            <div class="uhright left"><?=$this->ifs(($this->user['care']), '无备注')?><a href="javascript:void(0);" onclick="Remarks();" class="ml10 red fz16">修改</a></div>
+                        </div>
+                        <div class="user_home_list">
+                            <div class="uhleft left">冻结金额：</div>
+                            <div class="uhright left"><i class="red"><?=$this->user['fcoin']?></i> 元</div>
+                        </div>
+                        <!--div class="user_home_list">
+                            <div class="uhleft left">可用积分：</div>
+                            <div class="uhright left"><i class="red"><?=$this->user['score']?></i> 分<a href="/Activity/Turntable" class="ml10 red fz16">抽奖</a></div>
+                        </div-->
+                        <div class="user_home_list">
+                            <div class="uhleft left">注册时间：</div>
+                            <div class="uhright left"><?=date('Y-m-d H:i:s', $this->user['regTime'])?></div>
+                        </div>
+                        <div class="user_home_list">
+                            <div class="uhleft left">最后登入：</div>
+                            <div class="uhright left"><?=$this->user['updateTime']?></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    <?php $this->display('global/footer.php'); ?>
+</body>
+</html>

@@ -1,8 +1,6 @@
 package com.jeesite.modules.lotterycore.entity;
 
-import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.jeesite.common.entity.BaseEntity;
 import com.jeesite.common.entity.DataEntity;
 import com.jeesite.common.mybatis.annotation.Column;
 import com.jeesite.common.mybatis.annotation.JoinTable;
@@ -38,7 +36,7 @@ import java.util.Date;
         @Column(name = "issue_num_inner", attrName = "issueNumInner", label = "期数", comment = "期数(内部用)", isUpdateForce = true),
         @Column(name = "biz_status", attrName = "bizStatus", label = "业务状态"),
         @Column(includeEntity = DataEntity.class),
-        @Column(includeEntity = BaseEntity.class),
+//        @Column(includeEntity = BaseEntity.class),
         @Column(name = "deleted", attrName = "deleted", label = "是否删除", isQuery = false),
         @Column(name = "tenant_id", attrName = "tenantId", label = "租户编号", isQuery = false),
 }, joinTable = {

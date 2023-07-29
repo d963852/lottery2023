@@ -176,24 +176,24 @@ public class IssueService extends CrudService<IssueDao, Issue> {
 
                     String issueNum = "";
 //                    if (issueGenerateRule.getIssueBeginDate() == null) {
-                        // 期号由 日期+期号 组成
-                        // 期号日期部分规则
-                        String dateFormat = issueGenerateRule.getDateFormat();
-                        if ("yyyymmdd".equals(StringUtils.lowerCase(dateFormat))) {
-                            dateFormat = DateUtil.format(nowDate, "yyyyMMdd");
-                        } else if ("yymmdd".equals(StringUtils.lowerCase(dateFormat))) {
-                            dateFormat = StringUtils.substring(DateUtil.format(nowDate, "yyyyMMdd"), 2);
-                        } else if ("yymm".equals(StringUtils.lowerCase(dateFormat))) {
-                            dateFormat = StringUtils.substring(DateUtil.format(nowDate, "yyyyMM"), 2);
-                        } else if ("yyyy".equals(StringUtils.lowerCase(dateFormat))) {
-                            dateFormat = DateUtil.format(nowDate, "yyyy");
-                        }
-                        // 生成每期的期数
-                        String issueFormat = "";
-                        if (StringUtils.isNotEmpty(issueGenerateRule.getIssueFormat())) {
-                            issueFormat = String.format("%0" + issueGenerateRule.getIssueFormat().length() + "d", baseIssueNumber + sn);
-                        }
-                        issueNum = dateFormat + issueGenerateRule.getSeparator() + issueFormat;
+                    // 期号由 日期+期号 组成
+                    // 期号日期部分规则
+                    String dateFormat = issueGenerateRule.getDateFormat();
+                    if ("yyyymmdd".equals(StringUtils.lowerCase(dateFormat))) {
+                        dateFormat = DateUtil.format(nowDate, "yyyyMMdd");
+                    } else if ("yymmdd".equals(StringUtils.lowerCase(dateFormat))) {
+                        dateFormat = StringUtils.substring(DateUtil.format(nowDate, "yyyyMMdd"), 2);
+                    } else if ("yymm".equals(StringUtils.lowerCase(dateFormat))) {
+                        dateFormat = StringUtils.substring(DateUtil.format(nowDate, "yyyyMM"), 2);
+                    } else if ("yyyy".equals(StringUtils.lowerCase(dateFormat))) {
+                        dateFormat = DateUtil.format(nowDate, "yyyy");
+                    }
+                    // 生成每期的期数
+                    String issueFormat = "";
+                    if (StringUtils.isNotEmpty(issueGenerateRule.getIssueFormat())) {
+                        issueFormat = String.format("%0" + issueGenerateRule.getIssueFormat().length() + "d", baseIssueNumber + sn);
+                    }
+                    issueNum = dateFormat + issueGenerateRule.getSeparator() + issueFormat;
 //                    } else {
 //                        issueNum = String.valueOf(baseIssueNumber + sn);
 //                    }
@@ -266,4 +266,47 @@ public class IssueService extends CrudService<IssueDao, Issue> {
             dao.insertBatch(issueList, 100);
         }
     }
+
+    /**
+     * 获取指定游戏的当前期号
+     *
+     * @param gameCode
+     * @return
+     */
+    public Issue getCurrentIssue(String gameCode) {
+        return dao.getCurrentIssue(gameCode);
+    }
+
+    /**
+     * 获取指定游戏的上期期号
+     *
+     * @param gameCode
+     * @return
+     */
+    public Issue getLastIssue(String gameCode) {
+        return dao.getLastIssue(gameCode);
+    }
+
+    /**
+     * 根据游戏代码和游戏期号查找期号
+     *
+     * @param gameCode
+     * @param issueNumber
+     * @return
+     */
+    public Issue getByGameCodeAndIssueNumber(String gameCode, String issueNumber) {
+        return dao.getByGameCodeAndIssueNumber(gameCode, issueNumber);
+    }
+
+    /**
+     * 获取游戏开奖历史数据
+     *
+     * @param gameCode
+     * @param limitNumber
+     * @return
+     */
+    public List<Issue> findHistory(String gameCode, int limitNumber) {
+        return dao.findHistory(gameCode, limitNumber);
+    }
+
 }

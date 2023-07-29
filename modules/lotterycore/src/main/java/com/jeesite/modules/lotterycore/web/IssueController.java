@@ -124,10 +124,16 @@ public class IssueController extends BaseController {
     @RequiresPermissions("lotterycore:issue:view")
     @RequestMapping(value = "makeForm")
     public String makeForm(@Param("gameId") String gameId, Model model) {
-        Game gameSC = gameService.get(gameId);
-        if (gameSC == null) {
-            model.addAttribute("message", BizError.游戏不存在.getMsg());
-            return "error/404";
+        Game gameSC = new Game();
+        if ("all".equals(gameId)) {
+            gameSC.setGameName("全部游戏");
+            gameSC.setId("all");
+        } else {
+            gameSC = gameService.get(gameId);
+            if (gameSC == null) {
+                model.addAttribute("message", BizError.游戏不存在.getMsg());
+                return "error/404";
+            }
         }
         model.addAttribute("game", gameSC);
         return "modules/lotterycore/issueMakeForm";
@@ -144,9 +150,21 @@ public class IssueController extends BaseController {
     @RequiresPermissions("lotterycore:issue:edit")
     @RequestMapping(value = "makeIssue")
     @ResponseBody
-    public String makeIssue(@Param("beginDate") Date beginDate, @Param("endDate") Date endDate, @Param("gameId") String gameId, Model model) {
+    public String makeIssue(@Param("beginDate") Date beginDate, @Param("endDate") Date
+            endDate, @Param("gameId") String gameId, Model model) {
         try {
-            issueService.makeIssue(beginDate, endDate, gameId);
+            if ("all".equals(gameId)) {
+                List<Game> gameList = gameService.findList(new Game());
+                for (Game game : gameList) {
+                    issueService.makeIssue(beginDate, endDate, game.getId());
+                }
+            } else {
+                Game gameSC = gameService.get(gameId);
+                if (gameSC == null) {
+                    return renderResult(Global.FALSE, text(BizError.游戏不存在.getMsg()));
+                }
+                issueService.makeIssue(beginDate, endDate, gameId);
+            }
         } catch (BizException bizError) {
             return renderResult(Global.FALSE, text(bizError.getMsg()));
         }

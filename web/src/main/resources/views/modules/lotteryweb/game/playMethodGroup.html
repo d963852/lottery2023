@@ -1,0 +1,35 @@
+<div id="playMethodListRegion">
+    <div class="game-btn2" id="playMethodList">
+        <% for(thePlayMethod in playMethodList) { %>
+        <div class="ul-li ${thePlayMethod.sort==1?'current':''}">
+            <a data_id="${thePlayMethod.id}" href="${ctx}/lottery/tpl/${playMethod.playMethodTpl}?playMethodId=${thePlayMethod.id}&gameId=${game.id}">
+                ${thePlayMethod.playMethodName}
+            </a>
+        </div>
+        <% } %>
+        <div class="clear"></div>
+    </div>
+    <div id="game-helptips">
+        ${playMethod.simpleInfo}
+        <a class="gamr_tip" title="${playMethod.example}">玩法示例</a>
+        <a class="gamr_tip" title="${playMethod.info}">玩法帮助</a>
+    </div>
+    <div class="num-table" id="num-select">
+    </div>
+    <script>
+        $('#num-select').load('${ctx}/lottery/tpl/${playMethod.playMethodTpl}?playMethodId=${playMethod.id}&gameId=${game.id}', function(){
+            // $this.closest('.game-btn2').find('.current').removeClass('current');
+            // $this.parent().addClass('current');
+        });
+
+        $('#playMethodList a').on('click', function(){
+            let $this=$(this);
+            // loadPlayTips($this.attr('data_id'));
+            $('#num-select').load($this.attr('href'), function(){
+                $this.closest('.game-btn2').find('.current').removeClass('current');
+                $this.parent().addClass('current');
+            });
+            return false;
+        });
+    </script>
+</div>

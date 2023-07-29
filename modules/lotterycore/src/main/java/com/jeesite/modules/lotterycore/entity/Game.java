@@ -7,6 +7,7 @@ import com.jeesite.common.mybatis.annotation.Table;
 import com.jeesite.common.mybatis.mapper.query.QueryType;
 
 import javax.validation.constraints.Size;
+import java.util.Date;
 
 /**
  * 游戏Entity
@@ -27,6 +28,11 @@ import javax.validation.constraints.Size;
         @Column(name = "lottery_delay_second", attrName = "lotteryDelaySecond", label = "开奖延迟秒数", isUpdateForce = true),
         @Column(name = "duocai_game_code", attrName = "duocaiGameCode", label = "对应多彩游戏代码", isUpdateForce = true),
         @Column(name = "lottery_url", attrName = "lotteryUrl", label = "开奖地址", queryType = QueryType.LIKE, isUpdateForce = true),
+        @Column(name = "lottery_local_instead", attrName = "lotteryLocalInstead", label = "是否本地开奖代替", queryType = QueryType.EQ, isUpdateForce = true),
+        @Column(name = "current_issue_number", attrName = "currentIssueNumber", label = "当前期号", queryType = QueryType.EQ, isUpdateForce = true),
+        @Column(name = "current_issue_end_time", attrName = "currentIssueEndTime", label = "当前期号投注截止时间", queryType = QueryType.EQ, isUpdateForce = true),
+        @Column(name = "last_issue_number", attrName = "lastIssueNumber", label = "上期期号", queryType = QueryType.EQ, isUpdateForce = true),
+        @Column(name = "last_issue_lottery_number", attrName = "lastIssueLotteryNumber", label = "上期开奖结果", queryType = QueryType.EQ, isUpdateForce = true),
         @Column(name = "lottery_local_instead", attrName = "lotteryLocalInstead", label = "是否本地开奖代替", queryType = QueryType.EQ, isUpdateForce = true),
         @Column(name = "state", attrName = "state", label = "状态,启用", comment = "状态,启用:1;禁用:0", isQuery = false),
         @Column(name = "game_desc", attrName = "gameDesc", label = "游戏说明", queryType = QueryType.LIKE),
@@ -63,7 +69,10 @@ public class Game extends DataEntity<Game> {
     private String tenantId;        // 租户编号
     private String lotteryNumberList;        // 开奖号码列表
     private String lotteryNumberRepeat;        // 开奖号码是否能重复
-
+    private String currentIssueNumber;        // 当前期号
+    private Date currentIssueEndTime;        // 当前期号投注截止时间
+    private String lastIssueNumber;        // 上期期号
+    private String lastIssueLotteryNumber;        // 上期期号开奖结果
 
     public Game() {
         this(null);
@@ -241,5 +250,37 @@ public class Game extends DataEntity<Game> {
 
     public void setLotteryNumberRepeat(String lotteryNumberRepeat) {
         this.lotteryNumberRepeat = lotteryNumberRepeat;
+    }
+
+    public String getCurrentIssueNumber() {
+        return currentIssueNumber;
+    }
+
+    public void setCurrentIssueNumber(String currentIssueNumber) {
+        this.currentIssueNumber = currentIssueNumber;
+    }
+
+    public Date getCurrentIssueEndTime() {
+        return currentIssueEndTime;
+    }
+
+    public void setCurrentIssueEndTime(Date currentIssueEndTime) {
+        this.currentIssueEndTime = currentIssueEndTime;
+    }
+
+    public String getLastIssueNumber() {
+        return lastIssueNumber;
+    }
+
+    public void setLastIssueNumber(String lastIssueNumber) {
+        this.lastIssueNumber = lastIssueNumber;
+    }
+
+    public String getLastIssueLotteryNumber() {
+        return lastIssueLotteryNumber;
+    }
+
+    public void setLastIssueLotteryNumber(String lastIssueLotteryNumber) {
+        this.lastIssueLotteryNumber = lastIssueLotteryNumber;
     }
 }

@@ -12,4 +12,9 @@
 		ORDER BY ${sqlMap.order.toSql()}
 	</select> -->
 
+	<!-- 查询数据 -->
+	<select id="getGameByCode" resultType="Game">
+		SELECT * FROM `game` WHERE game_code=#{gameCode}
+	</select>
+
 </mapper>

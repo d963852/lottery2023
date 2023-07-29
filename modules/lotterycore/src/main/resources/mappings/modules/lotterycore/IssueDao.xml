@@ -1,16 +1,54 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jeesite.modules.lotterycore.dao.IssueDao">
-	
-	<!-- 查询数据
-	<select id="findList" resultType="Issue">
-		SELECT ${sqlMap.column.toSql()}
-		FROM ${sqlMap.table.toSql()}
-		<where>
-			${sqlMap.where.toSql()}
-		</where>
-		ORDER BY ${sqlMap.order.toSql()}
-	</select> -->
 
-	
+    <!-- 查询数据
+    <select id="findList" resultType="Issue">
+        SELECT ${sqlMap.column.toSql()}
+        FROM ${sqlMap.table.toSql()}
+        <where>
+            ${sqlMap.where.toSql()}
+        </where>
+        ORDER BY ${sqlMap.order.toSql()}
+    </select> -->
+
+    <!-- 获取指定游戏的当前投注期号 -->
+    <select id="getCurrentIssue" resultType="Issue">
+        SELECT *
+        FROM `issue`
+        WHERE game_code = #{gameCode}
+            AND lottery_time <![CDATA[ > ]]> NOW()
+        ORDER BY lottery_time ASC
+        LIMIT 1
+    </select>
+
+    <!-- 获取指定游戏的上期投注期号 -->
+    <select id="getLastIssue" resultType="Issue">
+        SELECT *
+        FROM `issue`
+        WHERE game_code = #{gameCode}
+            AND lottery_time <![CDATA[ <= ]]> NOW()
+        ORDER BY lottery_time DESC
+        LIMIT 1
+    </select>
+
+    <!-- 获取指定游戏指定期号 -->
+    <select id="getByGameCodeAndIssueNumber" resultType="Issue">
+        SELECT *
+        FROM `issue`
+        WHERE game_code = #{gameCode}
+            AND issue_num = #{issueNumber}
+    </select>
+
+    <!-- 获取游戏开奖历史数据 -->
+    <select id="findHistory" resultType="Issue">
+        SELECT id,issue_num,lottery_num,lottery_time
+        FROM `issue`
+        WHERE lottery_time <![CDATA[ < ]]> now()
+          AND game_code = #{gameCode}
+          AND state = '2'
+        ORDER BY lottery_time DESC
+        LIMIT #{limitNumber}
+    </select>
+
 </mapper>

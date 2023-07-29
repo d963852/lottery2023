@@ -1,0 +1,288 @@
+<link href="${ctxStatic}/flipper/flipper.css" rel="stylesheet"/>
+<div class="lottery_head" id="kaijiang">
+    <div class="lottery_show left">
+        <div class="lottery_con">
+            <div class="lottery_type left">
+                <div style="background:url(${ctxStatic}/images_new/main/${game.gameCode}.png) no-repeat center"></div>
+            </div>
+            <div class="lottery_timer left">
+                <div class="lottery_issue left">
+                    <p style="width:166px;">当前在售 <span id="currentIssueNumber">${game.currentIssueNumber}</span> 期</p>
+                    <p style="width:80px;">${game.gameDesc}</p>
+                    <span class="soundBtn soundClickEvent" onclick="voiceKJ();"></span>
+                </div>
+                <div class="lottery_timeBox left">
+                    <div class="clock" id="clock">
+                        <div class="flip down">
+                            <div class="digital front number0"></div>
+                            <div class="digital back number1"></div>
+                        </div>
+                        <div class="flip down">
+                            <div class="digital front number0"></div>
+                            <div class="digital back number1"></div>
+                        </div>
+                        <em>:</em>
+                        <div class="flip down">
+                            <div class="digital front number0"></div>
+                            <div class="digital back number1"></div>
+                        </div>
+                        <div class="flip down">
+                            <div class="digital front number0"></div>
+                            <div class="digital back number1"></div>
+                        </div>
+                        <em>:</em>
+                        <div class="flip down">
+                            <div class="digital front number0"></div>
+                            <div class="digital back number1"></div>
+                        </div>
+                        <div class="flip down">
+                            <div class="digital front number0"></div>
+                            <div class="digital back number1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="lottery_num left">
+                <p class="lottery_history_issue">第 <span id="lastIssueNumber">${game.lastIssueNumber}</span> 期开奖号码</p>
+                <div class="lottery_num_box">
+                    <% if(game.lotteryNumberCount != 10) { %>
+                    <ul id="num" style="display:table;margin: 0 auto;">
+                        <% for(var i=0;i
+                        <game.lotteryNumberCount
+                                ;i++) { %>
+                            <li><span style="top: 0px;" id="lotteryNumber${i}">${"-"}</span></li>
+                            <% } %>
+                    </ul>
+                    <% } else { %>
+                    <ul id="num" class="pk10_ul">
+                        <% for(var i=0;i
+                        <game.lotteryNumberCount
+                                ;i++) { %>
+                            <li class="car${i}" id="lotteryNumber${i}"><span>${"-"}</span></li>
+                            <% } %>
+                    </ul>
+                    <% } %>
+                    <ul id="lottering" style="display:none;margin: 0 auto;">
+                        <li style="top: 0px;"><span>${"获"}</span></li>
+                        <li style="top: 0px;"><span>${"取"}</span></li>
+                        <li style="top: 0px;"><span>${"开"}</span></li>
+                        <li style="top: 0px;"><span>${"奖"}</span></li>
+                        <li style="top: 0px;"><span>${"号"}</span></li>
+                        <li style="top: 0px;"><span>${"码"}</span></li>
+                        <li style="top: 0px;"><span>${"中"}</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="${ctxStatic}/flipper/flipper.js?${_version}"></script>
+    <script>
+
+        let flipObjs = [];
+        let dateDiff = 0;
+        let clock = document.getElementById('clock');
+        // 定位6个翻板
+        let flips = clock.querySelectorAll('.flip');
+        // 格式化当前时间
+        let nowTimeStr = formatTimeDiff(dateDiff);
+        // 格式化下一秒的时间
+        let nextTimeStr = formatTimeDiff(dateDiff - 1000);
+        let currentIssue = {
+            "currentIssueNumber": "${game.currentIssueNumber}",
+            "currentIssueEndTime": "${game.currentIssueEndTime,dateFormat='yyyy-MM-dd HH:mm:ss'}",
+            "lastIssueNumber": "${game.lastIssueNumber}",
+            "lastIssueLotteryNumber": "${game.lastIssueLotteryNumber}"
+        };
+        // console.info("currentIssue：", currentIssue);
+
+        var wsocket = null;
+        //判断当前浏览器是否支持WebSocket
+        if ('WebSocket' in window) {
+            //改成你的地址
+            wsocket = new WebSocket("ws://" + window.location.host + "/ws/gameBettingWebSocketService/${@MemUtils.getMember().getMemId()}/${game.gameCode}");
+            //连接发生错误的回调方法
+            wsocket.onerror = function () {
+                js.showErrorMessage("WebSocket连接发生错误");
+            };
+            //连接成功建立的回调方法
+            wsocket.onopen = function () {
+                console.log("WebSocket连接成功");
+                updateCurrentIssue(currentIssue);
+                // 投注倒数数秒
+                countSecond();
+                if (null == currentIssue.lastIssueLotteryNumber || currentIssue.lastIssueLotteryNumber.length == 0) {
+                    send("getLastIssueLotteryNumber:" + currentIssue.lastIssueNumber);
+                }
+            }
+            //接收到消息的回调方法
+            wsocket.onmessage = function (event) {
+                if (event.data != null) {
+                    try {
+                        let resultJson = JSON.parse(event.data);
+                        //console.log("resultJson", resultJson);
+                        if (resultJson.responseOf === "updateCurrentIssue") {
+                            updateCurrentIssue(resultJson);
+                        } else if (resultJson.responseOf === "getLastIssueLotteryNumber") {
+                            console.log("resultJson", resultJson);
+                            if (resultJson.lastIssueLotteryNumber) {
+                                updateLastIssueLotteryNumber(resultJson.lastIssueLotteryNumber);
+                                // 更新历史开奖记录
+                                if (resultJson.historyRefreshData) {
+                                    let historyData = JSON.parse(resultJson.historyRefreshData);
+                                    console.info("historyData",historyData);
+                                    $("#historyRefresh li").remove();  //清空ul
+                                    for(let i=0;i<historyData.length;i++) {
+                                        $("#historyRefresh").append('<li class="pk10"><em class="ml5">' + historyData[i].issueNum + '</em><p class="mt5">' + historyData[i].lotteryNum + '</p></li>');
+                                    }
+                                }
+                            }
+                        }
+                    } catch (e) {
+                        console.log("非JSON，不解析");
+                    }
+                }
+            }
+            //连接关闭的回调方法
+            wsocket.onclose = function () {
+                console.log("WebSocket连接关闭");
+            }
+            //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+            window.onbeforeunload = function () {
+                wsocket.close();
+            }
+        } else {
+            js.showErrorMessage('当前浏览器版本过旧，无法进行游戏，请升级浏览器，推荐使用chrome、edge等。');
+        }
+
+        //发送消息
+        function send(message) {
+            console.info("send(message)：", message);
+            wsocket.send(message);
+        }
+
+        function updateCurrentIssue(theIssue) {
+            // currentIssue = getCurrentIssueNumber("${game.gameCode}");
+            currentIssue = theIssue;
+            // console.info("currentIssue：", currentIssue);
+            if (theIssue != null) {
+                // 更新当期、上期期号和开奖号
+                $("#currentIssueNumber").html(currentIssue.currentIssueNumber);
+                $("#lastIssueNumber").html(currentIssue.lastIssueNumber);
+                if (theIssue.lastIssueLotteryNumber) {
+                    updateLastIssueLotteryNumber(currentIssue.lastIssueLotteryNumber);
+                } else {
+                    send("getLastIssueLotteryNumber:" + currentIssue.lastIssueNumber);
+                    setLastIssueLottering();
+                }
+            }
+            // 获取当前时间
+            let nowTime = new Date();
+            // 当前期投注截止时间
+            let endTime = new Date(currentIssue.currentIssueEndTime);
+            // 时间相差秒数
+            dateDiff = endTime.getTime() - nowTime.getTime();
+            // 定位时钟模块
+            clock = document.getElementById('clock');
+            // 定位6个翻板
+            flips = clock.querySelectorAll('.flip');
+            // 格式化当前时间
+            nowTimeStr = formatTimeDiff(dateDiff);
+            // 格式化下一秒的时间
+            nextTimeStr = formatTimeDiff(dateDiff - 1000);
+            // 定义牌板数组，用来存储6个Flipper翻板对象
+            for (let i = 0; i < flips.length; i++) {
+                // 创建6个Flipper实例，并初始化
+                flipObjs.push(new Flipper({
+                    // 每个flipper实例按数组顺序与翻板DOM的顺序一一对应
+                    node: flips[i],
+                    // 按数组顺序取时间字符串对应位置的数字
+                    frontText: 'number' + nowTimeStr[i],
+                    backText: 'number' + nextTimeStr[i]
+                }));
+            }
+        }
+
+        function formatTimeDiff(timeDiff) {
+            // 计算出相差天数
+            let days = Math.floor(timeDiff / (24 * 3600 * 1000));
+            // 计算出小时数
+            let residue1 = timeDiff % (24 * 3600 * 1000); // 计算天数后剩余的毫秒数
+            let hours = Math.floor(residue1 / (3600 * 1000));
+            // 计算相差分钟数
+            let residue2 = residue1 % (3600 * 1000); // 计算小时数后剩余的毫秒数
+            let minutes = Math.floor(residue2 / (60 * 1000));
+            // 计算相差秒数
+            let residue3 = residue2 % (60 * 1000); // 计算分钟数后剩余的毫秒数
+            let seconds = Math.round(residue3 / 1000);
+
+            //补0
+            if (hours < 10) {
+                hours = "0" + hours;
+            }
+            if (minutes < 10) {
+                minutes = "0" + minutes;
+            }
+            if (seconds < 10) {
+                seconds = "0" + seconds;
+            }
+
+            // // console.info("days",days);
+            // // console.info("hours",hours);
+            // // console.info("minutes",minutes);
+            // // console.info("seconds",seconds);
+
+            return hours + "" + minutes + "" + seconds;
+        }
+
+        function countSecond() {
+            // console.info("dateDiff：", dateDiff);
+            if (dateDiff > 1000) {
+                let nowTimeStr = formatTimeDiff(dateDiff);
+                let nextTimeStr = formatTimeDiff(dateDiff - 1000);
+                // // console.info("nowTimeStr：", nowTimeStr);
+                // // console.info("nextTimeStr：", nextTimeStr);
+                // 将当前时间和下一秒时间逐位对比
+                for (let i = 0; i < flipObjs.length; i++) {
+                    // 如果前后数字没有变化，则直接跳过，不翻牌
+                    if (nowTimeStr[i] === nextTimeStr[i]) {
+                        continue;
+                    }
+                    // 传递前后牌的数字，进行向下翻牌动画
+                    flipObjs[i].flipDown('number' + nowTimeStr[i], 'number' + nextTimeStr[i]);
+                }
+                if (dateDiff >= 5000 && dateDiff < 6000) {
+                    // 截止投注
+                    layer.msg('当期投注已截止，请进入下一期投注', {
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                }
+                dateDiff = dateDiff - 1000;
+            } else {
+                send("updateCurrentIssue");
+                setLastIssueLottering();
+            }
+            setTimeout("countSecond()", 1000);
+        }
+
+        function updateLastIssueLotteryNumber(lastIssueLotteryNumber) {
+            // console.info("lastIssueLotteryNumber：", lastIssueLotteryNumber);
+            if (null != lastIssueLotteryNumber) {
+                let res = lastIssueLotteryNumber.split(',');
+                if (res.length === ${game.lotteryNumberCount}) {
+                    for (let i = 0; i < res.length; i++) {
+                        $('#lotteryNumber' + i).html(res[i]);
+                    }
+                }
+                $("#num").css('display', 'table');
+                $("#lottering").css('display', 'none');
+            }
+
+        }
+
+        function setLastIssueLottering() {
+            $("#num").css('display', 'none');
+            $("#lottering").css('display', 'table');
+        }
+
+    </script>

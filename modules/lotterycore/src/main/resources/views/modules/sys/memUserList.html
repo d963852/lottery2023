@@ -1,0 +1,148 @@
+<% layout('/layouts/default.html', {title: '会员管理', libs: ['dataGrid']}){ %>
+<div class="main-content">
+    <div class="box box-main">
+        <div class="box-header">
+            <div class="box-title">
+                <i class="fa icon-user"></i> ${text('会员管理')}
+            </div>
+            <div class="box-tools pull-right">
+                <a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i>
+                    ${text('查询')}</a>
+                <% if(hasPermi('sys:memUser:edit')){ %>
+                <a href="${ctx}/sys/memUser/form?op=add" class="btn btn-default btnTool" title="${text('新增会员')}"><i
+                        class="fa fa-plus"></i> ${text('新增')}</a>
+                <% } %>
+                <a href="#" class="btn btn-default" id="btnSetting" title="${text('设置')}"><i
+                        class="fa fa-navicon"></i></a>
+            </div>
+        </div>
+        <div class="box-body">
+            <#form:form id="searchForm" model="${memUser}" action="${ctx}/sys/memUser/listData" method="post"
+            class="form-inline "
+            data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}"
+            data-order-by="${parameter.orderBy}">
+            <#form:hidden name="ctrlPermi" value="${@Global.getConfig('user.adminCtrlPermi', '2')}"/>
+            <div class="form-group">
+                <label class="control-label">${text('会员名')}：</label>
+                <div class="control-inline">
+                    <#form:input path="member.memName" maxlength="64" class="form-control width-120"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">${text('余额')}：</label>
+                <div class="control-inline">
+                    <#form:input path="member.balance_gte" maxlength="10" class="form-control width-60"/>
+                    &nbsp;-&nbsp;
+                    <#form:input path="member.balance_lte" maxlength="10" class="form-control width-60"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">${text('最近登录时间')}：</label>
+                <div class="control-inline">
+                    <#form:input path="member.latelyLoginTime_gte" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+                    dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm" data-done="latelyLoginTime_lte.click()"/>
+                    &nbsp;-&nbsp;
+                    <#form:input path="member.latelyLoginTime_lte" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+                    dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">${text('工资')}：</label>
+                <div class="control-inline">
+                    <#form:input path="member.wage_gte" maxlength="8" class="form-control width-60"/>
+                    &nbsp;-&nbsp;
+                    <#form:input path="member.wage_lte" maxlength="8" class="form-control width-60"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">${text('分红')}：</label>
+                <div class="control-inline">
+                    <#form:input path="member.bonus_gte" maxlength="8" class="form-control width-60"/>
+                    &nbsp;-&nbsp;
+                    <#form:input path="member.bonus_lte" maxlength="8" class="form-control width-60"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">${text('状态')}：</label>
+                <div class="control-inline width-120">
+                    <#form:select path="status" dictType="sys_search_status" blankOption="true" class="form-control isQuick"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">${text('备注')}：</label>
+                <div class="control-inline">
+                    <#form:input path="remarks" maxlength="512" class="form-control width-120"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+                <button type="reset" class="btn btn-default btn-sm isQuick">${text('重置')}</button>
+            </div>
+        </#form:form>
+        <table id="dataGrid"></table>
+        <div id="dataGridPage"></div>
+    </div>
+</div>
+</div>
+<% } %>
+<script>
+    // 初始化DataGrid对象
+    $('#dataGrid').dataGrid({
+        searchForm: $("#searchForm"),
+        columnModel: [
+            {header:'${text("会员账号")}', name:'loginCode', index:'a.login_code', width:200, align:"center", frozen:true, formatter: function(val, obj, row, act){
+                    return '<a href="${ctx}/sys/memUser/form?userCode='+row.userCode+'&op=edit" class="btnList" data-title="${text("编辑会员")}">'+(val||row.id)+'</a>';
+                }},
+            // {header:'${text("会员昵称")}', name:'userName', index:'a.user_name', width:200, align:"center"},
+            {header:'${text("余额")}', name:'member.balance', index:'a.balance', width:150, align:"right", formatter: function(val, obj, row, act){
+                    return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+                }},
+            {header:'${text("最近登录时间")}', name:'lastLoginDate', index:'a.lately_login_time', width:150, align:"center"},
+            {header:'${text("注册时间")}', name:'createDate', index:'a.create_date', width:150, align:"center"},
+            // {header:'${text("账号级别")}', name:'member.accountLevel', index:'a.account_level', width:150, align:"center"},
+            // {header:'${text("返点")}', name:'member.rebate', index:'a.rebate', width:150, align:"right", formatter: function(val, obj, row, act){
+            //         return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+            //     }},
+            // {header:'${text("赔率")}', name:'odds', index:'a.odds', width:150, align:"right", formatter: function(val, obj, row, act){
+            //         return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+            //     }},
+            {header:'${text("工资")}', name:'member.wage', index:'a.wage', width:150, align:"right", formatter: function(val, obj, row, act){
+                    return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+                }},
+            {header:'${text("分红")}', name:'member.bonus', index:'a.bonus', width:150, align:"right", formatter: function(val, obj, row, act){
+                    return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+                }},
+            {header:'${text("状态")}', name:'status', index:'a.status', width:150, align:"center", formatter: function(val, obj, row, act){
+                    return js.getDictLabel(${@DictUtils.getDictListJson('sys_search_status')}, val, '${text("未知")}', true);
+                }},
+            {header:'${text("备注")}', name:'remarks', index:'a.remarks', width:150, align:"left"},
+            {header:'${text("操作")}', name:'actions', width:270, sortable:false, title:false, formatter: function(val, obj, row, act){
+                    var actions = [];
+                    <% if(hasPermi('sys:memUser:edit')){ %>
+                        actions.push('<a href="${ctx}/sys/memUser/form?userCode='+row.userCode+'&op=edit" class="btnList" title="${text("编辑会员")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+                        <% } %>
+                    <% if(hasPermi('sys:memUser:updateStatus')){ %>
+                        if (row.status == Global.STATUS_NORMAL){
+                            actions.push('<a href="${ctx}/sys/memUser/disable?userCode='+row.userCode+'" class="btnList" title="${text("停用会员")}" data-confirm="${text("确认要停用该会员吗？")}"><i class="glyphicon glyphicon-ban-circle"></i></a>&nbsp;');
+                        }else if (row.status == Global.STATUS_DISABLE || row.status == Global.STATUS_FREEZE || row.status == Global.STATUS_AUDIT){
+                            actions.push('<a href="${ctx}/sys/memUser/enable?userCode='+row.userCode+'" class="btnList" title="${text("启用会员")}" data-confirm="${text("确认要启用该会员吗？")}"><i class="glyphicon glyphicon-ok-circle"></i></a>&nbsp;');
+                        }
+                    <% } %>
+                    <% if(hasPermi('sys:memUser:edit')){ %>
+                        actions.push('<a href="${ctx}/sys/memUser/delete?userCode='+row.userCode+'" class="btnList" title="${text("删除会员")}" data-confirm="${text("确认要删除该会员吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');
+                    <% } %>
+                    <% if(hasPermi('sys:memUser:resetpwd')){ %>
+                        actions.push('<a href="${ctx}/sys/memUser/resetpwd?userCode='+row.userCode+'" class="btnList" title="${text("会员密码重置")}" data-confirm="${text("确认要将该会员密码重置到初始状态吗？")}"><i class="fa fa-reply-all"></i></a>&nbsp;');
+                    <% } %>
+                        return actions.join('');
+                    }}
+        ],
+        treeGrid: true,			// 启用树结构表格
+        defaultExpandLevel: 0,	// 默认展开的层次
+        expandNodeClearPostData: 'memName,balance,latelyLoginTime,registeredTime,accountLevel,rebate,odds,wage,bonus,remarks,', // 展开节点清理请求参数数据（一般设置查询条件的字段属性，否则在查询后，不能展开子节点数据）
+        // 加载成功后执行事件
+        ajaxSuccess: function (data) {
+
+        }
+    });
+</script>

@@ -9,6 +9,7 @@
 				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
 				<% if(hasPermi('lotterycore:game:edit')){ %>
 					<a href="${ctx}/lotterycore/game/form" class="btn btn-default btnTool" title="${text('新增游戏')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+					<a href="${ctx}/lotterycore/issue/makeForm?gameId=all" class="btn btn-default btnTool" title="${text('生成全部游戏期号')}"><i class="fa fa-plus"></i> ${text('生成全部游戏期号')}</a>
 				<% } %>
 				<a href="#" class="btn btn-default" id="btnSetting" title="${text('设置')}"><i class="fa fa-navicon"></i></a>
 			</div>

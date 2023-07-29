@@ -1,0 +1,169 @@
+<link href="${ctxStatic}/flipper/flipper.css" rel="stylesheet"/>
+<div class="lottery_head" id="kaijiang">
+    <div class="lottery_show left">
+        <div class="lottery_con">
+            <div class="lottery_type left">
+                <div style="background:url(${ctxStatic}/images_new/main/${game.gameCode}.png) no-repeat center"></div>
+            </div>
+            <div class="lottery_timer left">
+                <div class="lottery_issue left">
+                    <p style="width:166px;">当前在售 <span id="currentIssueNumber"></span> 期</p>
+                    <p style="width:80px;">${game.gameDesc}</p>
+                    <span class="soundBtn soundClickEvent" onclick="voiceKJ();"></span>
+                </div>
+                <div class="lottery_timeBox left">
+                    <div class="clock" id="clock">
+                        <div class="flip down">
+                            <div class="digital front number0"></div>
+                            <div class="digital back number1"></div>
+                        </div>
+                        <div class="flip down">
+                            <div class="digital front number0"></div>
+                            <div class="digital back number1"></div>
+                        </div>
+                        <em>:</em>
+                        <div class="flip down">
+                            <div class="digital front number0"></div>
+                            <div class="digital back number1"></div>
+                        </div>
+                        <div class="flip down">
+                            <div class="digital front number0"></div>
+                            <div class="digital back number1"></div>
+                        </div>
+                        <em>:</em>
+                        <div class="flip down">
+                            <div class="digital front number0"></div>
+                            <div class="digital back number1"></div>
+                        </div>
+                        <div class="flip down">
+                            <div class="digital front number0"></div>
+                            <div class="digital back number1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="lottery_num left">
+                <p class="lottery_history_issue">第 <span id="lastIssueNumber"></span> 期开奖号码</p>
+                <div class="lottery_num_box">
+                    <% if(game.lotteryNumberCount != 10) { %>
+                    <ul id="num" style="display:table;margin: 0 auto;">
+                        <% for(var i=0;i
+                        <game.lotteryNumberCount
+                                ;i++) { %>
+                            <li><span style="top: 0px;">${game.lotteryNumberCount!"-"}</span></li>
+                            <% } %>
+                    </ul>
+                    <% } else { %>
+                    <ul id="num" class="pk10_ul">
+                        <% for(var i=0;i
+                        <game.lotteryNumberCount
+                                ;i++) { %>
+                            <li class="car${game.lotteryNumberCount!}"><span>${game.lotteryNumberCount!"-"}</span></li>
+                            <% } %>
+                    </ul>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="${ctxStatic}/flipper/flipper.js?${_version}"></script>
+    <script>
+        function init() {
+            currentIssue = getCurrentIssueNumber("${game.gameCode}");
+            if (currentIssue != null) {
+                $("#currentIssueNumber").html(currentIssue.currentIssueNumber);
+                $("#lastIssueNumber").html(currentIssue.lastIssueNumber);
+            }
+            // 获取当前时间
+            let nowTime = new Date();
+            // 当前期投注截止时间
+            let endTime = new Date(currentIssue.currentIssueEndTime);
+            // 时间相差秒数
+            dateDiff = endTime.getTime() - nowTime.getTime();
+            // 定位时钟模块
+            clock = document.getElementById('clock');
+            // 定位6个翻板
+            flips = clock.querySelectorAll('.flip');
+            // 格式化当前时间
+            nowTimeStr = formatTimeDiff(dateDiff);
+            // 格式化下一秒的时间
+            nextTimeStr = formatTimeDiff(dateDiff - 1000);
+            // 定义牌板数组，用来存储6个Flipper翻板对象
+            for (let i = 0; i < flips.length; i++) {
+                // 创建6个Flipper实例，并初始化
+                flipObjs.push(new Flipper({
+                    // 每个flipper实例按数组顺序与翻板DOM的顺序一一对应
+                    node: flips[i],
+                    // 按数组顺序取时间字符串对应位置的数字
+                    frontText: 'number' + nowTimeStr[i],
+                    backText: 'number' + nextTimeStr[i]
+                }));
+            }
+        }
+
+        function formatTimeDiff(timeDiff) {
+            // 计算出相差天数
+            let days = Math.floor(timeDiff / (24 * 3600 * 1000));
+            // 计算出小时数
+            let residue1 = timeDiff % (24 * 3600 * 1000); // 计算天数后剩余的毫秒数
+            let hours = Math.floor(residue1 / (3600 * 1000));
+            // 计算相差分钟数
+            let residue2 = residue1 % (3600 * 1000); // 计算小时数后剩余的毫秒数
+            let minutes = Math.floor(residue2 / (60 * 1000));
+            // 计算相差秒数
+            let residue3 = residue2 % (60 * 1000); // 计算分钟数后剩余的毫秒数
+            let seconds = Math.round(residue3 / 1000);
+            //补0
+            if (hours < 10) {
+                hours = "0" + hours;
+            }
+            if (minutes < 10) {
+                minutes = "0" + minutes;
+            }
+            if (seconds < 10) {
+                seconds = "0" + seconds;
+            }
+            return hours + minutes + seconds;
+        }
+
+        function countSecond() {
+            if (dateDiff > 1000) {
+                let nowTimeStr = formatTimeDiff(dateDiff);
+                let nextTimeStr = formatTimeDiff(dateDiff - 1000);
+                // 将当前时间和下一秒时间逐位对比
+                for (let i = 0; i < flipObjs.length; i++) {
+                    // 如果前后数字没有变化，则直接跳过，不翻牌
+                    if (nowTimeStr[i] === nextTimeStr[i]) {
+                        continue;
+                    }
+                    // 传递前后牌的数字，进行向下翻牌动画
+                    flipObjs[i].flipDown('number' + nowTimeStr[i], 'number' + nextTimeStr[i]);
+                }
+                if(dateDiff>=5000 && dateDiff<6000){
+                    // 截止投注
+                    layer.msg('当期投注已截止，请进入下一期投注',{
+                        icon: 1,
+                        time: 2000 //2秒关闭（如果不配置，默认是3秒）
+                    });
+                }
+                dateDiff = dateDiff - 1000;
+            } else {
+                init();
+            }
+            setTimeout("countSecond()", 1000);
+        }
+
+        let currentIssue;
+        let flipObjs = [];
+        let dateDiff = 0;
+        let clock = document.getElementById('clock');
+        // 定位6个翻板
+        let flips = clock.querySelectorAll('.flip');
+        // 格式化当前时间
+        let nowTimeStr = formatTimeDiff(dateDiff);
+        // 格式化下一秒的时间
+        let nextTimeStr = formatTimeDiff(dateDiff - 1000);
+        init();
+        // 投注倒数数秒
+        countSecond();
+    </script>

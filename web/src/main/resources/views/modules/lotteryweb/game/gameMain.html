@@ -1,0 +1,133 @@
+<div class="game-main">
+    <div id="bet-game">
+        <div class="game-btn">
+            <% for(playMethodGroup in playMethodGroupList) { %>
+            <div class="ul-li ${playMethodGroup.sort==1?'current':''}"><a href="${ctx}/lottery/playMethodGroup?groupId=${playMethodGroup.id}">${playMethodGroup.groupName}</a> </div>
+            <% } %>
+            <div class="clear"></div>
+        </div>
+        <div class="game-cont">
+            <% include('playMethodGroup.html'){} %>
+            <div class="num-table" id="game-dom">
+                <div class="fandian">
+                    <div class="fandian-k">
+                        <span class="spnimg">奖金/返点</span>
+                        <span id="fandian-value" class="fdmoney"><?= $maxPl ?></span>
+                        <div class="fandian-box">
+                            <div id="basic_slider" value="<?= $this->ifs($_COOKIE['fanDian'], 0) ?>" data-bet-count="<?= $this->settings['betMaxCount'] ?>" data-bet-zj-amount="<?= $this->settings['betMaxZjAmount'] ?>" max="<?= $this->user['fanDian'] ?>" game-fan-dian="<?= $this->settings['fanDianMax'] ?>" fan-dian="<?= $this->user['fanDian'] ?>" game-fan-dian-bdw="<?= $this->settings['fanDianBdwMax'] ?>" fan-dian-bdw="<?= $this->user['fanDianBdw'] ?>" min="0" step="0.1"></div>
+                        </div>
+                        <span id="fandian-value2" class="fdmoney2">/0%</span>
+                    </div>
+                    <script>
+                        var flag = false;
+                        slider = noUiSlider.create($("#basic_slider")[0], {
+                            start: 0,
+                            animate: true,
+                            range: {
+                                min: 0,
+                                max: 100
+                            },
+                        });
+                        slider.on('update', function(value) {
+                            flag && gameSetFanDian(parseFloat(value[0]));
+                            flag = true
+                        });
+                    </script>
+                    <div class="fl">
+                        <b value="2.000" data-max-fan-dian="<?= $this->settings['betModeMaxFanDian0'] ?>" class="danwei dwon">元</b>
+                        <b value="0.200" data-max-fan-dian="<?= $this->settings['betModeMaxFanDian1'] ?>" class="danwei">角</b>
+                        <b value="0.020" data-max-fan-dian="<?= $this->settings['betModeMaxFanDian2'] ?>" class="danwei">分</b>
+                        <b value="0.002" data-max-fan-dian="<?= $this->settings['betModeMaxFanDian2'] ?>" class="danwei">厘</b>
+                    </div>
+                    <div class="beishu">
+                        <input id="beishu" value="2" class="txt" />
+                        <select onchange="detail(this)" id="beishu">
+                            <option value="1">倍数</option>
+                            <option value="1">1倍</option>
+                            <option value="2">2倍</option>
+                            <option value="5">5倍</option>
+                            <option value="10">10倍</option>
+                            <option value="20">20倍</option>
+                            <option value="50">50倍</option>
+                            <option value="100">100倍</option>
+                            <option value="500">500倍</option>
+                            <option value="1000">1000倍</option>
+                        </select>
+                    </div>
+                    <div class="sendChoose right ml20"><a href="javascript:void(0);" class="sendBtn" id="CodesBet">立即投注</a></div>
+                    <div class="addOrderBox">
+                        <div class="prompt" id="game-tip-dom">请选择号码</div>
+                        <input type="button" class="addBtn" onclick="CodesAdd()" value="添加选号">
+                        <input type="button" class="addBtn left" style="float:left" onclick="CodesAddBet()" value="一键投注">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="warp mt10 right">
+        <div class="lotteryHistory">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <thead>
+                <tr class="bbnone">
+                    <th>期号/彩种</th>
+                    <th>倍数/投注额</th>
+                    <th>奖金（元）</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody id="BettingRefresh">
+                <?php $this->display('game/history/betting.php'); ?>
+                </tbody>
+            </table>
+        </div>
+        <div class="getMore"><a class="sqlist" href="/Member/Record" target="_blank">查看更多投注记录</a></div>
+    </div>
+    <div class="tzbox mt10">
+        <div class="addList">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tbody>
+                <tr>
+                    <td width="100%">
+                        <div class="lotteryList">
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0" id="lt_cf_content">
+                                <tbody>
+                                <tr class="cleanall">
+                                    <th>玩法/投注号码</th>
+                                    <th>模式</th>
+                                    <th>资金模式</th>
+                                    <th>注数</th>
+                                    <th>倍投</th>
+                                    <th>金额</th>
+                                    <th><a href="javascript:void(0);" onclick="gameActionRemoveCode()" class="deleteAll cleanall">全删</a></th>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </td>
+                    <!--td><div class="jixuan" id="lt_random_area"></div></td-->
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="touzhu-bottom">
+            <div class="tz-tongji">
+                <p>已选 <span id="lt_cf_count" class="num">0</span> 单，</p>
+                <p>共计 <span id="lt_cf_nums" class="num">0</span> 注</p>
+                <p>总金额 <span id="lt_cf_money" class="num orange">0</span> 元</p>
+                <div class="tz-buytype"></div>
+            </div>
+            <label class="zh_title tz-buytype fqzhBox fz15 none" name="lt_trace_if">
+                <input name="zhuiHao" id="lt_trace_if" class="none" value="yes" type="checkbox">追号</span>
+            </label>
+            <div class="buys right">
+                <label>
+                    <input type="checkbox" class="is_combine" value="1" id="cannel_chckbox" />
+                    <!--b>发起合买</b-->
+                </label>
+            </div>
+        </div>
+        <?php if ($this->settings['tzjl'] == 1) { ?>
+        <div id="znz-game" style="display:none;"></div>
+    </div>
+<? } ?>
+</div>

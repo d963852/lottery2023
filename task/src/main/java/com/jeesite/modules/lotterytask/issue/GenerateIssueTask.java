@@ -1,7 +1,6 @@
 package com.jeesite.modules.lotterytask.issue;
 
 import cn.hutool.core.date.DateUtil;
-import com.jeesite.common.lang.DateUtils;
 import com.jeesite.modules.lotterycore.entity.Game;
 import com.jeesite.modules.lotterycore.service.GameService;
 import com.jeesite.modules.lotterycore.service.IssueService;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
 import java.util.List;
 
 @Component

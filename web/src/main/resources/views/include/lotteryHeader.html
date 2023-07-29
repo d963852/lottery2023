@@ -1,0 +1,377 @@
+<style>
+    .menu-item a {
+        color: #AAAAAA;
+    }
+</style>
+<div class="_3ygsKXC1pDi_WdrYvVCKv0">
+    <header class="_2AawQSks1mRrbw96NwHX6B">
+        <nav class="_2ToBIklHPx1NBfgPN3XoFd">
+            <div class="contents">
+                <div class="box">
+                    <div class="bfc"></div>
+                    欢迎您，${@UserUtils.getUser().getUserName()}
+                    <span class="mail">
+                    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="envelope" class="svg-inline-fa" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="margin: 0px 4px;">
+                        <path fill="currentColor"
+                              d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"></path>
+                    </svg>
+                </span>
+                    账号类型：会员
+                    <span class="logout" onclick="Logout();">安全退出</span>
+                </div>
+                <div class="box">
+                <span class="balance">
+                    <span>余额：<em id="memberBalance" class="memberBalance">${@MemUtils.getBalance(),numberFormat="##.##"}</em>元</span>
+                </span>
+                    <span class="refresh" id="RefreshMoney">
+                    <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="recycle" class="svg-inline-fa" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="margin: 0px 4px;">
+                        <path fill="currentColor"
+                              d="M184.561 261.903c3.232 13.997-12.123 24.635-24.068 17.168l-40.736-25.455-50.867 81.402C55.606 356.273 70.96 384 96.012 384H148c6.627 0 12 5.373 12 12v40c0 6.627-5.373 12-12 12H96.115c-75.334 0-121.302-83.048-81.408-146.88l50.822-81.388-40.725-25.448c-12.081-7.547-8.966-25.961 4.879-29.158l110.237-25.45c8.611-1.988 17.201 3.381 19.189 11.99l25.452 110.237zm98.561-182.915l41.289 66.076-40.74 25.457c-12.051 7.528-9 25.953 4.879 29.158l110.237 25.45c8.672 1.999 17.215-3.438 19.189-11.99l25.45-110.237c3.197-13.844-11.99-24.719-24.068-17.168l-40.687 25.424-41.263-66.082c-37.521-60.033-125.209-60.171-162.816 0l-17.963 28.766c-3.51 5.62-1.8 13.021 3.82 16.533l33.919 21.195c5.62 3.512 13.024 1.803 16.536-3.817l17.961-28.743c12.712-20.341 41.973-19.676 54.257-.022zM497.288 301.12l-27.515-44.065c-3.511-5.623-10.916-7.334-16.538-3.821l-33.861 21.159c-5.62 3.512-7.33 10.915-3.818 16.536l27.564 44.112c13.257 21.211-2.057 48.96-27.136 48.96H320V336.02c0-14.213-17.242-21.383-27.313-11.313l-80 79.981c-6.249 6.248-6.249 16.379 0 22.627l80 79.989C302.689 517.308 320 510.3 320 495.989V448h95.88c75.274 0 121.335-82.997 81.408-146.88z"></path>
+                    </svg>
+                </span>
+                    <span class="balance">
+                    <span>积分：<em>1235489745</em></span>
+                </span>
+                    <span class="btn-recharge" onclick="Recharge2('<?= $this->user['username'] ?>');">账户充值</span>
+                    <span class="btn-withdrawal" onclick="Withdrawals();">账户提现</span>
+                    <span class="btn-binding" onclick="binding();">提款绑定</a></span>
+                    <span class="sustomer-service">
+                    <a onclick="zxkf();" style="cursor:pointer;">
+                        <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="headphones-alt"
+                             class="svg-inline-fa" role="img" xmlns="http://www.w3.org/2000/svg"
+                             viewBox="0 0 512 512" style="margin: -2px 4px;">
+                            <path fill="currentColor"
+                                  d="M160 288h-16c-35.35 0-64 28.7-64 64.12v63.76c0 35.41 28.65 64.12 64 64.12h16c17.67 0 32-14.36 32-32.06V320.06c0-17.71-14.33-32.06-32-32.06zm208 0h-16c-17.67 0-32 14.35-32 32.06v127.88c0 17.7 14.33 32.06 32 32.06h16c35.35 0 64-28.71 64-64.12v-63.76c0-35.41-28.65-64.12-64-64.12zM256 32C112.91 32 4.57 151.13 0 288v112c0 8.84 7.16 16 16 16h16c8.84 0 16-7.16 16-16V288c0-114.67 93.33-207.8 208-207.82 114.67.02 208 93.15 208 207.82v112c0 8.84 7.16 16 16 16h16c8.84 0 16-7.16 16-16V288C507.43 151.13 399.09 32 256 32z"></path>
+                        </svg>联系客服
+                    </a>
+                </span>
+                </div>
+            </div>
+        </nav>
+        <nav class="main">
+            <div class="contents">
+                <img src="${ctxStatic}/images_new/logo.png" alt="">
+                <div class="menus">
+                    <div class="menu-item home">
+                        <span><i></i>首页</span>
+                    </div>
+                    <div class="menu-item lottery">
+                        <span><i></i>彩票</span>
+                        <div class="_1OJUBn3i_B5rnpZm7bXSi">
+                            <div class="lottery-menu">
+                                <div class="main-title">彩票玩法<span class="manycai">多彩分析帮你提高中奖率！！</span>
+                                </div>
+                                <div class="lottery-menu-content">
+                                    <%
+                                    for(menuGroup in menuGroupList){
+                                    %>
+                                    <div class="cate-name">
+                                        <span class="title">${menuGroup.dictValue}</span>
+                                        <ul>
+                                            <%
+                                            for(menu in menuList){
+                                            if(menu.menuGroupName==menuGroup.dictValue){
+                                            %>
+                                            <li class="menu-item">
+                                                <a href="${ctxAdmin}/lottery/betting?gameId=${menu.gameId}">
+                                                    <div>
+                                                        ${menu.gameName}
+                                                        <% if(menu.gameHot == "1") { %>
+                                                        <i class="hot">H</i>
+                                                        <% } else { %>
+                                                        <i class="new">N</i>
+                                                        <%
+                                                        }
+                                                        %>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <%
+                                            }
+                                            }
+                                            %>
+                                        </ul>
+                                    </div>
+                                    <%
+                                    }
+                                    %>
+                                </div>
+                            </div>
+                            <div class="chess-menu">
+                                <div class="main-title">棋牌玩法</div>
+                                <div class="chess-menu-content">
+                                    <div class="cate-name">
+                                        <span class="title">龙虎斗</span>
+                                        <ul>
+                                            <li class="menu-item">
+                                                <div>多彩重庆30秒</div>
+                                            </li>
+                                            <li class="menu-item">
+                                                <div>加拿大30秒</div>
+                                            </li>
+                                            <li class="menu-item">
+                                                <div>腾讯分分彩</div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="cate-name">
+                                        <span class="title">百家乐</span>
+                                        <ul>
+                                            <li class="menu-item">
+                                                <div>多彩重庆30秒</div>
+                                            </li>
+                                            <li class="menu-item">
+                                                <div>加拿大30秒</div>
+                                            </li>
+                                            <li class="menu-item">
+                                                <div>腾讯分分彩</div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="cate-name">
+                                        <span class="title">百人牛牛</span>
+                                        <ul>
+                                            <li class="menu-item">
+                                                <div>意大利PK10</div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="cate-name">
+                                        <span class="title">彩票牛牛</span>
+                                        <ul>
+                                            <li class="menu-item">
+                                                <div>瑞典2分彩</div>
+                                            </li>
+                                            <li class="menu-item">
+                                                <div>瑞典1分彩</div>
+                                            </li>
+                                            <li class="menu-item">
+                                                <div>河内1分彩</div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-item casino">
+                        <span><i></i>真人</span>
+                        <div class="_3DPiO2EB5iVJQ21bW1MKfA">
+                            <div class="header-game-item">
+                                <img src="${ctxStatic}/images_new/f1da27.png" alt="">
+                                <div class="actions">
+                                    <button class="start">立即游戏</button>
+                                    <button class="transfer" name="CQ9真人娱乐">转账</button>
+                                </div>
+                            </div>
+                            <div class="header-game-item">
+                                <img src="${ctxStatic}/images_new/4cdf17.png" alt="">
+                                <div class="actions">
+                                    <button class="start">立即游戏</button>
+                                    <button class="transfer" name="AE 真人娱乐">转账</button>
+                                </div>
+                            </div>
+                            <div class="header-game-item">
+                                <img src="${ctxStatic}/images_new/1ca81e.png" alt="">
+                                <div class="actions">
+                                    <button class="start">立即游戏</button>
+                                    <button class="transfer" name="AG 真人娱乐">转账</button>
+                                </div>
+                            </div>
+                            <div class="header-game-item">
+                                <img src="${ctxStatic}/images_new/fde26c.png" alt="">
+                                <div class="actions">
+                                    <button class="start">立即游戏</button>
+                                    <button class="transfer" name="PT 真人娱乐">转账</button>
+                                </div>
+                            </div>
+                            <div class="header-game-item">
+                                <img src="${ctxStatic}/images_new/5576a0.png" alt="">
+                                <div class="actions">
+                                    <button class="start">立即游戏</button>
+                                    <button class="transfer" name="WM 真人娱乐">转账</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-item slot">
+                        <span><i></i>电游</span>
+                        <div class="_3DPiO2EB5iVJQ21bW1MKfA">
+                            <div class="header-game-item">
+                                <img src="${ctxStatic}/images_new/511e18.png" alt="">
+                                <div class="actions">
+                                    <button class="start">立即游戏</button>
+                                    <button class="transfer" name="奥丁电子游戏">转账</button>
+                                </div>
+                            </div>
+                            <div class="header-game-item">
+                                <img src="${ctxStatic}/images_new/b9413f.png" alt="">
+                                <div class="actions">
+                                    <button class="start">立即游戏</button>
+                                    <button class="transfer" name="CQ9电子游戏">转账</button>
+                                </div>
+                            </div>
+                            <div class="header-game-item">
+                                <img src="${ctxStatic}/images_new/9f3bd4.png" alt="">
+                                <div class="actions">
+                                    <button class="start">立即游戏</button>
+                                    <button class="transfer" name="AG电子游戏">转账</button>
+                                </div>
+                            </div>
+                            <div class="header-game-item">
+                                <img src="${ctxStatic}/images_new/4d29b2.png" alt="">
+                                <div class="actions">
+                                    <button class="start">立即游戏</button>
+                                    <button class="transfer" name="PT电子游戏">转账</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-item chess">
+                        <span><i></i>棋牌<span class="new-hot"></span></span>
+                        <div class="_3DPiO2EB5iVJQ21bW1MKfA">
+                            <div class="header-game-item">
+                                <img src="${ctxStatic}/images_new/c7949e.png" alt="">
+                                <div class="actions">
+                                    <button class="start">立即游戏</button>
+                                    <button class="transfer" name="云游棋牌">转账</button>
+                                </div>
+                            </div>
+                            <div class="header-game-item">
+                                <img src="${ctxStatic}/images_new/ba7fea.png" alt="">
+                                <div class="actions">
+                                    <button class="start">立即游戏</button>
+                                    <button class="transfer" name="KGAME棋牌">转账</button>
+                                </div>
+                            </div>
+                            <div class="header-game-item">
+                                <img src="${ctxStatic}/images_new/430aea.png" alt="">
+                                <div class="actions">
+                                    <button class="start">立即游戏</button>
+                                    <button class="transfer" name="特兔棋牌">转账</button>
+                                </div>
+                            </div>
+                            <div class="header-game-item">
+                                <img src="${ctxStatic}/images_new/34622e.png" alt="">
+                                <div class="actions">
+                                    <button class="start">立即游戏</button>
+                                    <button class="transfer" name="瓦力棋牌">转账</button>
+                                </div>
+                            </div>
+                            <div class="header-game-item">
+                                <img src="${ctxStatic}/images_new/fc9b7a.png" alt="">
+                                <div class="actions">
+                                    <button class="start">立即游戏</button>
+                                    <button class="transfer" name="VG财神棋牌">转账</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-item esports">
+                        <span><i></i>电竞</span>
+                    </div>
+                    <div class="menu-item sport">
+                        <span><i></i>体育</span>
+                        <div class="_3DPiO2EB5iVJQ21bW1MKfA">
+                            <div class="header-game-item">
+                                <img src="${ctxStatic}/images_new/732fb4.png" alt="">
+                                <div class="actions">
+                                    <button class="start">立即游戏</button>
+                                    <button class="transfer" name="FB体育">转账</button>
+                                </div>
+                            </div>
+                            <div class="header-game-item">
+                                <img src="${ctxStatic}/images_new/da824b.png" alt="">
+                                <div class="actions">
+                                    <button class="start">立即游戏</button>
+                                    <button class="transfer" name="188金宝博体育">转账</button>
+                                </div>
+                            </div>
+                            <div class="header-game-item">
+                                <img src="${ctxStatic}/images_new/71c9d5.png" alt="">
+                                <div class="actions">
+                                    <button class="start">立即游戏</button>
+                                    <button class="transfer" name="沙巴体育">转账</button>
+                                </div>
+                            </div>
+                            <div class="header-game-item">
+                                <img src="${ctxStatic}/images_new/aa03bc.png" alt="">
+                                <div class="actions">
+                                    <button class="start">立即游戏</button>
+                                    <button class="transfer" name="YB体育">转账</button>
+                                </div>
+                            </div>
+                            <div class="header-game-item">
+                                <img src="${ctxStatic}/images_new/bd72d2.png" alt="">
+                                <div class="actions">
+                                    <button class="start">立即游戏</button>
+                                    <button class="transfer" name="IM体育">转账</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu-item prom" onclick="Notice();">
+                        <span><i></i>平台公告</span>
+                    </div>
+                    <div class="menu-item team">
+                        <span><i></i>会员中心</span>
+                    </div>
+                    <div class="menu-item jinding">
+                        <span><i></i>代理中心</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <script>
+        // setInterval(function (){
+        //     var memberBalance = getMemberBlance("${@MemUtils.getMember().getMemId()}");
+        //     $('#memberBalance').html(memberBalance);
+        // }, 10 * 1000);
+
+        var pushWebsocket = null;
+        //判断当前浏览器是否支持WebSocket
+        if ('WebSocket' in window) {
+            //改成你的地址
+            pushWebsocket = new WebSocket("ws://" + window.location.host + "/ws/pushWebSocketService/${@MemUtils.getMember().getMemId()}");
+            //连接发生错误的回调方法
+            pushWebsocket.onerror = function () {
+                js.showErrorMessage("PushWebSocket连接发生错误");
+            };
+            //连接成功建立的回调方法
+            pushWebsocket.onopen = function () {
+                console.log("PushWebSocket连接成功");
+            }
+            //接收到消息的回调方法
+            pushWebsocket.onmessage = function (event) {
+                if (event.data != null) {
+                    try {
+                        let resultJson = JSON.parse(event.data);
+                        console.log("resultJson", resultJson);
+                        if (resultJson.responseOf === "memBalance") {
+                            $('#memberBalance').html(resultJson.memBalance);
+                        }
+                    } catch (e) {
+                        console.log("非JSON，不解析");
+                    }
+                }
+            }
+            //连接关闭的回调方法
+            pushWebsocket.onclose = function () {
+                console.log("PushWebSocket连接关闭");
+            }
+            //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+            window.onbeforeunload = function () {
+                pushWebsocket.close();
+            }
+        } else {
+            js.showErrorMessage('当前浏览器版本过旧，无法进行游戏，请升级浏览器，推荐使用chrome、edge等。');
+        }
+
+        //发送消息
+        function send(message) {
+            console.info("send(message)：", message);
+            pushWebsocket.send(message);
+        }
+    </script>
+    <div class="contents">

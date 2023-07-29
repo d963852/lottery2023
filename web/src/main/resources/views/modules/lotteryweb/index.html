@@ -1,0 +1,269 @@
+<% layout('/layouts/lotteryTemplate.html', {title:'首頁', libs: []}){ %>
+<div class="banner">
+    <div class="wrapper">
+        <div class="swiper-container" style="height:100%">
+            <div class="swiper-wrapper" style="height:100%">
+                <div class="swiper-slide" style="background-image: url(${ctxStatic}/images/banner/01.jpg)"></div>
+                <div class="swiper-slide" style="background-image: url(${ctxStatic}/images/banner/02.jpg)"></div>
+                <div class="swiper-slide" style="background-image: url(${ctxStatic}/images/banner/03.jpg)"></div>
+            </div>
+            <div class="controller">
+                <div id="prev_btn" class="prev prev-one">
+                    <img src="${ctxStatic}/images/arrow_left.png" alt="" class="img_hidden"/>
+                </div>
+                <div id="next_btn" class="next next-one">
+                    <img src="${ctxStatic}/images/arrow_right.png" alt="" class="img_hidden"/>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+</div>
+<div class="center-box">
+    <div class="notice-warp">
+        <div class="_2MGuAQ_5KIs7GV-_3Xpxvv" style="width: 100%; height: 35px; line-height: 35px;">
+            <div id="notice-box" class="contents">
+                <?php foreach ($args[0]['data'] as $var) { ?>
+                <div class="item" onclick="View(<?= $var['id'] ?>);">公告：[<?= date('Y-m-d', $var['addTime']) ?>] - <?= $var['title'] ?></div>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+    <img class="hot-lottery" src="data:image/png;base64,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" alt="">
+    <div class="_5cAJstp3wGseFf720aWg6">
+        <div class="reconmmend-item-box hn1fc">
+            <i><span>河内一分彩</span></i>
+        </div>
+        <div class="reconmmend-item-box hn5fc">
+            <i><span>河内五分彩</span></i>
+        </div>
+        <div class="reconmmend-item-box txffc">
+            <i><span>多彩腾讯分分彩</span></i>
+        </div>
+        <div class="reconmmend-item-box jnd30m">
+            <i><span>怀旧重庆彩</span></i>
+        </div>
+        <div class="reconmmend-item-box rd1fc">
+            <i><span>重庆分分彩</span></i>
+        </div>
+        <div class="_2CJmac7oU2CVr_XeaPlpS9">
+            <div class="maycai-wrapper"></div>
+            <div class="run-score"></div>
+            <div class="jin-ding"></div>
+            <div class="hipay"></div>
+            <div class="kgame"></div>
+            <div class="Win-gold"></div>
+        </div>
+    </div>
+    <div class="s-2">
+        <div class="_2DqfrpW7xq-eECNvb52P90">
+            <div class="title"><i></i></div>
+            <div class="items">
+                <div class="hot-lottery-item jnd30m">
+                    <div class="countdown-box">
+                        <div class="name">怀旧重庆彩</div>
+                        <i class="hot">H</i></div>
+                </div>
+                <div class="hot-lottery-item jnd11x5">
+                    <div class="countdown-box">
+                        <div class="name">多彩腾讯分分彩</div>
+                        <i class="new">N</i></div>
+                </div>
+                <div class="hot-lottery-item 3djnd">
+                    <div class="countdown-box">
+                        <div class="name">奇趣腾讯分分彩</div>
+                        <i class="hot">H</i></div>
+                </div>
+                <div class="hot-lottery-item xgffc">
+                    <div class="countdown-box">
+                        <div class="name">河内一分彩</div>
+                    </div>
+                </div>
+                <div class="hot-lottery-item rbffc">
+                    <div class="countdown-box">
+                        <div class="name">河内五分彩</div>
+                    </div>
+                </div>
+                <div class="hot-lottery-item jssm">
+                    <div class="countdown-box">
+                        <div class="name">重庆欢乐生肖</div>
+                        <i class="hot">H</i></div>
+                </div>
+                <div class="hot-lottery-item rd1fc">
+                    <div class="countdown-box">
+                        <div class="name">新疆时时彩</div>
+                    </div>
+                </div>
+                <div class="hot-lottery-item rd2fc">
+                    <div class="countdown-box">
+                        <div class="name">北京赛车</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="_2Qh_pQnn4qkYUpVAWlUtgL">
+            <div class="title"><i></i></div>
+            <div class="items">
+                <div class="hot-lottery-item txffc">
+                    <div class="countdown-box">
+                        <div class="name">幸运飞艇</div>
+                        <i class="hot">H</i></div>
+                </div>
+                <div class="hot-lottery-item txdsq">
+                    <div class="countdown-box">
+                        <div class="name">上海11选5</div>
+                        <i class="new">N</i></div>
+                </div>
+                <div class="hot-lottery-item txssq">
+                    <div class="countdown-box">
+                        <div class="name">山东11选5</div>
+                        <i class="new">N</i></div>
+                </div>
+                <div class="hot-lottery-item tx30s">
+                    <div class="countdown-box">
+                        <div class="name">江苏快三</div>
+                        <i class="new">N</i></div>
+                </div>
+                <div class="hot-lottery-item cqssc">
+                    <div class="countdown-box">
+                        <div class="name">福彩3D</div>
+                    </div>
+                </div>
+                <div class="hot-lottery-item cq30s">
+                    <div class="countdown-box">
+                        <div class="name">排列3</div>
+                        <i class="new">N</i></div>
+                </div>
+                <div class="hot-lottery-item pk10">
+                    <div class="countdown-box">
+                        <div class="name">重庆分分彩</div>
+                        <i class="hot">H</i></div>
+                </div>
+                <div class="hot-lottery-item mmc">
+                    <div class="countdown-box">
+                        <div class="name">西贡5分彩</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="jfh4arYCNbUVM9-o-VQxr">
+        <div class="main">
+            <div class="menus">
+                <div class="title">
+                    <img class="live-title" src="data:image/png;base64,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" alt="">
+                    <div class="menu-item casino">
+                        <div class="_2aBlUkNT3wcOQ_OZXbTZxP">
+                            <div class="header-game-item">
+                                <div class="game-item">CQ9</div>
+                                <div class="btns">
+                                    <span>正在接入中，敬请期待！</span>
+                                </div>
+                            </div>
+                            <div class="header-game-item">
+                                <div class="game-item">AE</div>
+                                <div class="btns">
+                                    <span>正在接入中，敬请期待！</span>
+                                </div>
+                            </div>
+                            <div class="header-game-item">
+                                <div class="game-item">AG</div>
+                                <div class="btns">
+                                    <span>正在接入中，敬请期待！</span>
+                                </div>
+                            </div>
+                            <div class="header-game-item">
+                                <div class="game-item">PT</div>
+                                <div class="btns">
+                                    <span>正在接入中，敬请期待！</span>
+                                </div>
+                            </div>
+                            <div class="header-game-item">
+                                <div class="game-item">WM</div>
+                                <div class="btns">
+                                    <span>正在接入中，敬请期待！</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="title">
+                    <img class="slot-title" src="data:image/png;base64,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" alt="">
+                    <div class="menu-item slot">
+                        <div class="_2aBlUkNT3wcOQ_OZXbTZxP">
+                            <div class="header-game-item">
+                                <div class="game-item">ODIN</div>
+                                <div class="btns">
+                                    <span>正在接入中，敬请期待！</span>
+                                </div>
+                            </div>
+                            <div class="header-game-item">
+                                <div class="game-item">CQ9</div>
+                                <div class="btns">
+                                    <span>正在接入中，敬请期待！</span>
+                                </div>
+                            </div>
+                            <div class="header-game-item">
+                                <div class="game-item">AG</div>
+                                <div class="btns">
+                                    <span>正在接入中，敬请期待！</span>
+                                </div>
+                            </div>
+                            <div class="header-game-item">
+                                <div class="game-item">PT</div>
+                                <div class="btns">
+                                    <span>正在接入中，敬请期待！</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="title">
+                    <img src="data:image/png;base64,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" alt="">
+                    <div class="menu-item sport">
+                        <div class="_2aBlUkNT3wcOQ_OZXbTZxP">
+                            <div class="header-game-item">
+                                <div class="game-item">FB</div>
+                                <div class="btns">
+                                    <span>正在接入中，敬请期待！</span>
+                                </div>
+                            </div>
+                            <div class="header-game-item">
+                                <div class="game-item">KINGBB</div>
+                                <div class="btns">
+                                    <span>正在接入中，敬请期待！</span>
+                                </div>
+                            </div>
+                            <div class="header-game-item">
+                                <div class="game-item">IBC</div>
+                                <div class="btns">
+                                    <span>正在接入中，敬请期待！</span>
+                                </div>
+                            </div>
+                            <div class="header-game-item">
+                                <div class="game-item">IMSB</div>
+                                <div class="btns">
+                                    <span>正在接入中，敬请期待！</span>
+                                </div>
+                            </div>
+                            <div class="header-game-item">
+                                <div class="game-item">IMSPORT</div>
+                                <div class="btns">
+                                    <span>正在接入中，敬请期待！</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="_1OpRJUrdnhc8Is86dxwPtA">
+    <div class="lite false2">
+        <span class="detail"></span>
+        <span class="resize"></span>
+    </div>
+    <div class="lite1 false3" style="display:none"></div>
+</div>
+<% } %>

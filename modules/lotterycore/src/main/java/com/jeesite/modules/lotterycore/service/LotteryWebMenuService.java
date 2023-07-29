@@ -1,13 +1,15 @@
 package com.jeesite.modules.lotterycore.service;
 
-import java.util.List;
+import com.jeesite.common.cache.CacheUtils;
+import com.jeesite.common.config.Global;
+import com.jeesite.common.entity.Page;
+import com.jeesite.common.service.CrudService;
+import com.jeesite.modules.lotterycore.dao.LotteryWebMenuDao;
+import com.jeesite.modules.lotterycore.entity.LotteryWebMenu;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jeesite.common.entity.Page;
-import com.jeesite.common.service.CrudService;
-import com.jeesite.modules.lotterycore.entity.LotteryWebMenu;
-import com.jeesite.modules.lotterycore.dao.LotteryWebMenuDao;
+import java.util.List;
 
 /**
  * 网站彩种菜单设置Service
@@ -76,6 +78,18 @@ public class LotteryWebMenuService extends CrudService<LotteryWebMenuDao, Lotter
 	@Transactional
 	public void delete(LotteryWebMenu lotteryWebMenu) {
 		super.delete(lotteryWebMenu);
+	}
+
+	public List<LotteryWebMenu> findListFromCache(){
+		List<LotteryWebMenu> menuList = CacheUtils.get("lotteryweb", "menuList");
+		if (menuList == null || menuList.size() < 1) {
+			LotteryWebMenu lotteryWebMenuSC = new LotteryWebMenu();
+			lotteryWebMenuSC.setWebSite(Global.getProperty("website.name"));
+			lotteryWebMenuSC.sqlMap().getOrder().setOrderBy("game_sort asc");
+			menuList = findList(lotteryWebMenuSC);
+			CacheUtils.put("lotteryweb", "menuList", menuList);
+		}
+		return menuList;
 	}
 	
 }

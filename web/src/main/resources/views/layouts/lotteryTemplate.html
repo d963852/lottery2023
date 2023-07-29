@@ -1,0 +1,17 @@
+<%/* Copyright (c) 2013-Now http://jeesite.com All rights reserved.
+* No deletion without permission, or be held responsible to law. */
+/*
+* 默认布局文件
+* @param title 页面标题
+* @param bodyClass body标签的class内容
+*/
+%>
+<% print('<'+'!DOC'+'TYPE html'+'>'); %>
+<html>
+    <head>
+        <% include('/include/lotteryHead.html', {title: text(title!)}){} %>
+    </head>
+    <body class="${bodyClass!}">
+        <% include('/include/lotteryHeader.html'){} %>
+            ${layoutContent}
+        <% include('/include/lotteryFooter.html'){} %>

@@ -8,7 +8,6 @@ import com.jeesite.modules.lotterycore.service.IssueService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -31,7 +30,7 @@ public class MakeIssueHistory {
         try {
             logger.info("执行移动历史期号任务start");
             Issue issueSC = new Issue();
-            issueSC.setLotteryTime_lte(DateUtil.offsetDay(DateUtil.beginOfDay(DateUtil.date()),-3));
+            issueSC.setLotteryTime_lte(DateUtil.offsetDay(DateUtil.beginOfDay(DateUtil.date()), -3));
             issueSC.setState("1");
             List<Issue> issueList = issueService.findList(issueSC);
 
@@ -39,7 +38,13 @@ public class MakeIssueHistory {
             for (Game game : gameList) {
                 try {
 //                    issueService.makeIssue(DateUtil.date(), DateUtil.tomorrow(), game.getId());
-                    issueService.makeIssue(DateUtil.tomorrow(), DateUtil.tomorrow(), game.getId());
+                    if ("FC3D".equals(game.getGameCode()) || "TCPL3".equals(game.getGameCode())) {
+                        // 福彩3D和体彩排列3每天只有一期，所以要生成未来2天的，这样才能计算下一期投注截止时间
+                        issueService.makeIssue(DateUtil.offsetDay(DateUtil.date(),1), DateUtil.offsetDay(DateUtil.date(),2), game.getId());
+                    } else {
+                        issueService.makeIssue(DateUtil.tomorrow(), DateUtil.tomorrow(), game.getId());
+                    }
+
                 } catch (Exception e) {
                     logger.error(e.getMessage());
                 }

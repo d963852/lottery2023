@@ -11,5 +11,5 @@ import com.jeesite.modules.lotterycore.entity.Game;
  */
 @MyBatisDao(dataSourceName="bet")
 public interface GameDao extends CrudDao<Game> {
-	
+	public Game getGameByCode(String gameCode);
 }

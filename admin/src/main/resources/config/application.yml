@@ -925,7 +925,7 @@ msg:
 
 # rocketmq 配置项，对应 RocketMQProperties 配置类
 rocketmq:
-  name-server: 10.0.2.103:9876
+  name-server: 10.0.2.104:9876
   producer:
     group: LotteryProducerGroup
     send-message-timeout: 10000

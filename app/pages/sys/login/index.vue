@@ -79,7 +79,7 @@
 			}).then(res => {
 				if (typeof res === 'object' && res.result !== 'login') {
 					uni.reLaunch({
-						url: '/pages/sys/home/index'
+						url: '/pages/lottery/index'
 					});
 				}
 			});
@@ -122,7 +122,7 @@
 						if (res.result == 'true') {
 							setTimeout(() => {
 								uni.reLaunch({
-									url: '/pages/sys/home/index'
+									url: '/pages/lottery/index'
 								});
 							}, 500);
 						}

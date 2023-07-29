@@ -6,9 +6,11 @@ export default {
 		title: 'JeeSite',
 	},
 	nav: {
-		home: 'Home',
-		user: 'User',
-		msg: 'Msg'
+		lottery: 'lottery',
+		history: 'histroy',
+		games: 'games',
+		activities: 'activities',
+		user: 'my'
 	},
 	login: {
 		title: 'Login',

@@ -45,14 +45,22 @@ export default {
 			});
 			uni.setTabBarItem({
 				index: 0,
-				text: this.$t('nav.msg')
+				text: this.$t('nav.lottery')
 			});
 			uni.setTabBarItem({
 				index: 1,
-				text: this.$t('nav.home')
+				text: this.$t('nav.history')
 			});
 			uni.setTabBarItem({
 				index: 2,
+				text: this.$t('nav.games')
+			});
+			uni.setTabBarItem({
+				index: 3,
+				text: this.$t('nav.activities')
+			});
+			uni.setTabBarItem({
+				index: 4,
 				text: this.$t('nav.user')
 			});
 		}

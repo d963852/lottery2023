@@ -3,12 +3,14 @@
  */
 export default {
 	common: {
-		title: 'JeeSite',
+		title: '杏富娱乐',
 	},
 	nav: {
-		home: '工作台',
-		user: '用户',
-		msg: '消息'
+		lottery: '彩票大厅',
+		history: '开奖历史',
+		games: '真人体育',
+		activities: '精彩活动',
+		user: '我的'
 	},
 	login: {
 		title: '登录',

@@ -22,3 +22,11 @@
 .DS_Store
 Thumbs.db
 rebel.xml
+
+/app/unpackage/dist/*
+/app/unpackage/cache/*
+/app/unpackage/release/*
+/app/node_modules/*
+/app/.hbuilderx/*
+/app/.idea/*
+/app/unpackage

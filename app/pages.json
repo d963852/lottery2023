@@ -24,6 +24,33 @@
 			}
 		},
 		
+		// 彩票相关
+		{
+			"path": "pages/lottery/index",
+			"style": {
+				"navigationBarTitleText": "彩票大厅"
+			}
+		},
+		{
+			"path": "pages/history/index",
+			"style": {
+				"navigationBarTitleText": "开奖记录"
+			}
+		},
+		{
+			"path": "pages/games/index",
+			"style": {
+				"navigationBarTitleText": "真人体育"
+			}
+		},
+		{
+			"path": "pages/activities/index",
+			"style": {
+				"navigationBarTitleText": "热门活动"
+			}
+		},
+		
+
 		/* 主页 */
 		{
 			"path": "pages/sys/home/index",
@@ -31,14 +58,14 @@
 				"navigationBarTitleText": "工作台"
 			}
 		},
-		
+
 		/* 用户 */
 		{
 			"path": "pages/sys/user/index",
 			"style": {
 				"navigationBarTitleText": "用户中心",
 				"backgroundColor": "#f8f8f8",
-				"navigationBarBackgroundColor":"#f8f8f8"
+				"navigationBarBackgroundColor": "#f8f8f8"
 			}
 		},
 		{
@@ -84,7 +111,7 @@
 				"navigationBarTitleText": "关于我们"
 			}
 		},
-		
+
 		/* 消息 */
 		{
 			"path": "pages/sys/msg/index",
@@ -98,7 +125,7 @@
 				"navigationBarTitleText": "查看详情"
 			}
 		},
-		
+
 		/* 增删改查例子 */
 		{
 			"path": "pages/testData/form",
@@ -112,7 +139,7 @@
 				"navigationBarTitleText": "增删改查"
 			}
 		},
-		
+
 		/* Common */
 		{
 			"path": "pages/common/webview",
@@ -120,12 +147,13 @@
 				"navigationBarTitleText": "浏览网页"
 			}
 		}
+		
 	],
 	"subPackages": [
-		
+
 	],
 	"preloadRule": {
-		
+
 	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -138,16 +166,28 @@
 		"backgroundColor": "#ffffff",
 		"borderStyle": "white",
 		"list": [{
-				"pagePath": "pages/sys/msg/index",
+				"pagePath": "pages/lottery/index",
 				"iconPath": "static/jeesite/tabbar/msg_1.png",
 				"selectedIconPath": "static/jeesite/tabbar/msg_2.png",
-				"text": "消息"
+				"text": "彩票大厅"
 			},
 			{
-				"pagePath": "pages/sys/home/index",
+				"pagePath": "pages/history/index",
 				"iconPath": "static/jeesite/tabbar/home_1.png",
 				"selectedIconPath": "static/jeesite/tabbar/home_2.png",
-				"text": "工作台"
+				"text": "开奖记录"
+			},
+			{
+				"pagePath": "pages/games/index",
+				"iconPath": "static/jeesite/tabbar/home_1.png",
+				"selectedIconPath": "static/jeesite/tabbar/home_2.png",
+				"text": "真人体育"
+			},
+			{
+				"pagePath": "pages/activities/index",
+				"iconPath": "static/jeesite/tabbar/home_1.png",
+				"selectedIconPath": "static/jeesite/tabbar/home_2.png",
+				"text": "热门活动"
 			},
 			{
 				"pagePath": "pages/sys/user/index",

@@ -63,14 +63,25 @@ const install = (Vue, vm) => {
 
 		// 文章类服务
 		aricleService: {
+			//获取大厅轮换图
 			getIndexPictureList: (params = {}) => vm.$u.post(config.adminPath +
 				'/api/article/getIndexPictureList', params),
+			//获取通知标题
 			getNoticeTitleList: (params = {}) => vm.$u.post(config.adminPath +
 				'/api/article/getNoticeTitleList', params),
+			//获取通知列表
 			getNoticeList: (params = {}) => vm.$u.post(config.adminPath +
 				'/api/article/getNoticeList', params),
+			//获取通知清单
 			getArticle: (params = {}, id) => vm.$u.post(config.adminPath +
 				'/api/article/getArticle/' + id, params),
+		},
+		
+		// 会员服务类
+		memberService: {
+			//获取会员余额
+			getBalance: (params = {}) => vm.$u.post(config.adminPath +
+				'/api/article/getIndexPictureList', params),
 		},
 
 	};

@@ -1,26 +1,15 @@
 <template>
 	<view class="wrap">
+		<!-- 余额组件 -->
+		<!-- <lo-balance></lo-balance> -->
+		<!-- 语言切换组件 -->
 		<js-lang title="lottery.title" :showBtn="true"></js-lang>
+		<!-- 轮播图 -->
 		<u-swiper :height="300" :list="imgList" :title="false" @click="imgListClick"></u-swiper>
+		<!-- 通知栏 -->
 		<u-notice-bar :more-icon="true" type="warning" mode="vertical" :list="noticeList"
 			@click="noticeListClick"></u-notice-bar>
-		<view class="toolbar u-m-b-20">
-			<u-grid class="grid" :col="3" :border="false">
-				<u-grid-item :index="0" @click="navTo('/pages/bpm/myTaskTodo')">
-					<u-badge :count="todoCount"></u-badge>
-					<u-icon class="grid-icon" name="clock" :size="80" :style="{ color: '#ea9a44' }"></u-icon>
-					<view class="grid-text">待办任务</view>
-				</u-grid-item>
-				<u-grid-item :index="1" @click="navTo('/pages/bpm/myTaskHistory')">
-					<u-icon class="grid-icon" name="checkmark-circle" :size="80" :style="{ color: '#47cb66' }"></u-icon>
-					<view class="grid-text">已办任务</view>
-				</u-grid-item>
-				<u-grid-item :index="2" @click="navTo('/pages/bpm/myRuntime')">
-					<u-icon class="grid-icon" name="order" :size="80" :style="{ color: '#5a98ea' }"></u-icon>
-					<view class="grid-text">我相关的</view>
-				</u-grid-item>
-			</u-grid>
-		</view>
+		<!-- 余额 -->
 		<u-collapse class="box u-p-b-5" :accordion="false" :arrow="true">
 			<view class="item" v-for="(menu, index) in menuList" :key="menu.menuCode">
 				<u-collapse-item :open="true">

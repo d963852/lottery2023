@@ -63,6 +63,13 @@
 			<version>${project.parent.version}</version>
 		</dependency>
 
+		<!--  WebSocket模块	-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-websocket</artifactId>
+			<version>3.1.0</version>
+		</dependency>
+
 		<!-- 移动端模块 
 		<dependency>
 			<groupId>com.jeesite</groupId>

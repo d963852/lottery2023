@@ -19,12 +19,15 @@ const config = {
 	appVersion: 1,
 
 	// 管理基础路径
-	adminPath: '/a'
+	adminPath: '/a',
+
+	//服务器地址
+	serverHost : '127.0.0.1:8023',
 
 }
 
 // 设置后台接口服务的基础地址
-config.baseUrl = 'http://127.0.0.1:8023';
+config.baseUrl = 'http://' + config.serverHost;
 config.serverUrl = config.baseUrl + config.adminPath;
 
 // 建议：打开下面注释，方便根据环境，自动设定服务地址

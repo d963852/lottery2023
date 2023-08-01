@@ -9,7 +9,7 @@
 				<u-icon class="u-icon" size="40" name="account"></u-icon>
 				<input class="u-input" type="text" v-model="username" maxlength="32"
 					:placeholder="$t('login.placeholderAccount')" />
-				<!-- <u-checkbox v-model="remember" active-color="#69cbff">{{$t('login.autoLogin')}}</u-checkbox> -->
+				<u-checkbox v-model="remember" active-color="#69cbff">{{$t('login.autoLogin')}}</u-checkbox>
 			</view>
 			<view class="list-call">
 				<u-icon class="u-icon" size="40" name="lock"></u-icon>
@@ -26,23 +26,9 @@
 				<u-image class="img-valid-code" width="200rpx" height="90rpx" :src="imgValidCodeSrc"
 					@click="refreshImgValidCode()"></u-image>
 			</view>
-			<!-- <view class="list-call base-url">
-				<u-icon class="u-icon" size="40" name="setting" style="padding-right:15rpx;"></u-icon>
-				<js-select v-model="baseUrl" :items="baseUrlList" :placeholder="$t('login.placeholderSwithServer')"
-					@confirm="updateBaseUrl"></js-select>
-			</view> -->
 		</view>
 		<view class="button" hover-class="button-hover" @click="submit()"><text>{{$t('login.loginButton')}}</text>
 		</view>
-		<!-- <view class="footer">
-			<navigator url="forget" open-type="navigate">{{$t('login.forget')}}</navigator>
-			<text>|</text>
-			<navigator url="reg" open-type="navigate">{{$t('login.reg')}}</navigator>
-		</view>
-		<view class="oauth2">
-			<u-icon class="u-icon" size="120" color="#00d969" name="weixin-circle-fill" @click="wxLogin"></u-icon>
-			<u-icon class="u-icon" size="120" color="#4fa1e8" name="qq-circle-fill" @click="qqLogin"></u-icon>
-		</view> -->
 	</view>
 </template>
 <script>
@@ -53,36 +39,17 @@
 	export default {
 		data() {
 			return {
-				username: 'system',
-				password: '123qwe123',
+				username: 'hy802',
+				password: '123456',
 				showPassword: false,
-				remember: false,
+				remember: true,
 				isValidCodeLogin: true,
 				validCode: '',
 				imgValidCodeSrc: null,
-				baseUrl: '',
-				baseUrlList: [{
-					name: 'https://demo.jeesite.com',
-					value: 'https://demo.jeesite.com/js'
-				}, {
-					name: 'http://192.168.0.11:8980',
-					value: 'http://192.168.0.11:8980/js'
-				}, {
-					name: 'http://127.0.0.1:8980',
-					value: 'http://127.0.0.1:8980/js'
-				}]
+				baseUrl: ''
 			};
 		},
 		onLoad() {
-			this.$u.api.index({
-				loginCheck: true
-			}).then(res => {
-				if (typeof res === 'object' && res.result !== 'login') {
-					uni.reLaunch({
-						url: '/pages/lottery/index'
-					});
-				}
-			});
 			this.refreshImgValidCode(null);
 		},
 		methods: {
@@ -132,20 +99,6 @@
 						}
 					});
 			},
-			wxLogin(res) {
-				this.$u.toast('微信登录');
-			},
-			qqLogin() {
-				this.$u.toast('QQ 登录');
-			},
-			updateBaseUrl() {
-				this.vuex_config.baseUrl = this.baseUrl;
-				this.$u.vuex('vuex_config', this.vuex_config);
-				this.$u.http.setConfig({
-					baseUrl: this.baseUrl
-				});
-				this.$u.toast('切换成功！');
-			}
 		}
 	};
 </script>

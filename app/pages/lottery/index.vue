@@ -1,7 +1,9 @@
 <template>
 	<view class="wrap">
-		<js-lang title="home.title" :showBtn="true"></js-lang>
+		<js-lang title="lottery.title" :showBtn="true"></js-lang>
 		<u-swiper :height="300" :list="imgList" :title="false" @click="imgListClick"></u-swiper>
+		<u-notice-bar :more-icon="true" type="warning" mode="vertical" :list="noticeList"
+			@click="noticeListClick"></u-notice-bar>
 		<view class="toolbar u-m-b-20">
 			<u-grid class="grid" :col="3" :border="false">
 				<u-grid-item :index="0" @click="navTo('/pages/bpm/myTaskTodo')">
@@ -25,15 +27,18 @@
 					<view class="title" slot="title">
 						<u-icon :name="menu.menuIcon != '' ? menu.menuIcon : 'home'" :size="40"
 							:style="{ color: menu.menuColor != '' ? menu.menuColor : '#666' }"></u-icon>
-						<view class="text" :style="{ color: menu.menuColor != '' ? menu.menuColor : '#666' }"
-							>{{menu.menuName}}</view>
+						<view class="text" :style="{ color: menu.menuColor != '' ? menu.menuColor : '#666' }">
+							{{menu.menuName}}
+						</view>
 					</view>
 					<u-grid class="grid u-m-t-20" :col="3" :border="false">
-						<u-grid-item v-for="(child, index2) in menu.childList" :key="child.menuCode" @click="navTo(child.url)">
+						<u-grid-item v-for="(child, index2) in menu.childList" :key="child.menuCode"
+							@click="navTo(child.url)">
 							<u-icon class="grid-icon" :name="child.menuIcon != '' ? child.menuIcon : 'order'" :size="80"
 								:style="{ color: child.menuColor != '' ? child.menuColor : '#666' }"></u-icon>
-							<view class="grid-text" :style="{ color: child.menuColor != '' ? child.menuColor : '#666' }"
-								>{{child.menuName}}</view>
+							<view class="grid-text"
+								:style="{ color: child.menuColor != '' ? child.menuColor : '#666' }">{{child.menuName}}
+							</view>
 						</u-grid-item>
 					</u-grid>
 				</u-collapse-item>
@@ -42,184 +47,227 @@
 	</view>
 </template>
 <script>
-/**
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- */
-export default {
-	data() {
-		return {
-			
-			imgList: [
-				{image: '/static/jeesite/banner/1.svg'},
-				{image: '/static/jeesite/banner/2.svg'},
-				{image: '/static/jeesite/banner/3.svg'}
-			],
-			
-			todoCount: 0,
-			
-			menuList: [
-				{
-					menuCode: 'a-1',
-					menuName: '增删改查',
-					menuIcon: 'file-text',
-					menuColor: '',
-					url: '',
-					childList: [
-						{
-							menuCode: 'a13',
-							menuName: '列表',
-							menuIcon: 'thumb-up',
-							menuColor: '',
-							url: '/pages/testData/index',
-						},
-						{
-							menuCode: 'a11',
-							menuName: '新增',
-							menuIcon: 'plus-circle',
-							menuColor: '',
-							url: '/pages/testData/form',
-						},
-						{
-							menuCode: 'a10',
-							menuName: '请假',
-							menuIcon: 'calendar',
-							menuColor: '',
-							url: '/pages/oa/oaLeave/index',
-						},
-					]
-				},
-				{
-					menuCode: 'a',
-					menuName: '公文管理',
-					menuIcon: 'home',
-					menuColor: '#919328',
-					url: '',
-					childList: [
-						{
-							menuCode: 'a1',
-							menuName: '收文',
-							menuIcon: 'email',
-							menuColor: '#919328',
-							url: '/pages/testData/form',
-						},
-						{
-							menuCode: 'a2',
-							menuName: '发文',
-							menuIcon: 'bookmark',
-							menuColor: '#919328',
-							url: '/pages/testData/form',
-						},
-						{
-							menuCode: 'a3',
-							menuName: '查询',
-							menuIcon: 'search',
-							menuColor: '#919328',
-							url: '/pages/testData/index',
-						}
-					]
-				},
-				{
-					menuCode: 'a-2',
-					menuName: '功能列表',
-					menuIcon: '',
-					menuColor: '#0d9311',
-					url: '',
-					childList: [
-						{
-							menuCode: 'a21',
-							menuName: '找回密码',
-							menuIcon: '',
-							menuColor: '#0d9311',
-							url: '/pages/sys/login/forget',
-						},
-						{
-							menuCode: 'a22',
-							menuName: '注册用户',
-							menuIcon: '',
-							menuColor: '#0d9311',
-							url: '/pages/sys/login/reg',
-						},
-						{
-							menuCode: 'a23',
-							menuName: '个人资料',
-							menuIcon: '',
-							menuColor: '#0d9311',
-							url: '/pages/sys/user/info',
-						},{
-							menuCode: 'a24',
-							menuName: '关于我们',
-							menuIcon: '',
-							menuColor: '#0d9311',
-							url: '/pages/sys/user/about',
-						},
-						{
-							menuCode: 'a25',
-							menuName: '修改密码',
-							menuIcon: '',
-							menuColor: '#0d9311',
-							url: '/pages/sys/user/pwd',
-						},
-						{
-							menuCode: 'a26',
-							menuName: '意见反馈',
-							menuIcon: '',
-							menuColor: '#0d9311',
-							url: '/pages/sys/user/comment',
-						},
-						{
-							menuCode: 'a27',
-							menuName: '系统设置',
-							menuIcon: '',
-							menuColor: '#0d9311',
-							url: '/pages/sys/user/setting',
-						},
-						{
-							menuCode: 'a28',
-							menuName: '列表演示',
-							menuIcon: '',
-							menuColor: '#0d9311',
-							url: '/pages/testData/index',
-						},
-						{
-							menuCode: 'a29',
-							menuName: '表单演示',
-							menuIcon: '',
-							menuColor: '#0d9311',
-							url: '/pages/testData/form',
-						}
-					]
-				},
-			],
-				
-		};
-	},
-	onLoad() {
-		//this.refreshCount();
-	},
-	onShow() {
-		this.refreshCount();
-	},
-	methods: {
-		navTo(url) {
-			uni.navigateTo({
-				url: url
-			});
+	/**
+	 * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
+	 */
+	export default {
+		data() {
+			return {
+
+				imgList: [{
+						image: '/static/common/img/banner/01.svg',
+						newsUrl: ''
+					},
+					{
+						image: '/static/common/img/banner/02.svg',
+						newsUrl: ''
+					},
+					{
+						image: '/static/common/img/banner/03.svg',
+						newsUrl: ''
+					}
+				],
+
+				noticeList: [
+					this.$t("lottery.noticeListDefault")
+				],
+
+
+				todoCount: 0,
+
+				menuList: [{
+						menuCode: 'a-1',
+						menuName: '增删改查',
+						menuIcon: 'file-text',
+						menuColor: '',
+						url: '',
+						childList: [{
+								menuCode: 'a13',
+								menuName: '列表',
+								menuIcon: 'thumb-up',
+								menuColor: '',
+								url: '/pages/testData/index',
+							},
+							{
+								menuCode: 'a11',
+								menuName: '新增',
+								menuIcon: 'plus-circle',
+								menuColor: '',
+								url: '/pages/testData/form',
+							},
+							{
+								menuCode: 'a10',
+								menuName: '请假',
+								menuIcon: 'calendar',
+								menuColor: '',
+								url: '/pages/oa/oaLeave/index',
+							},
+						]
+					},
+					{
+						menuCode: 'a',
+						menuName: '公文管理',
+						menuIcon: 'home',
+						menuColor: '#919328',
+						url: '',
+						childList: [{
+								menuCode: 'a1',
+								menuName: '收文',
+								menuIcon: 'email',
+								menuColor: '#919328',
+								url: '/pages/testData/form',
+							},
+							{
+								menuCode: 'a2',
+								menuName: '发文',
+								menuIcon: 'bookmark',
+								menuColor: '#919328',
+								url: '/pages/testData/form',
+							},
+							{
+								menuCode: 'a3',
+								menuName: '查询',
+								menuIcon: 'search',
+								menuColor: '#919328',
+								url: '/pages/testData/index',
+							}
+						]
+					},
+					{
+						menuCode: 'a-2',
+						menuName: '功能列表',
+						menuIcon: '',
+						menuColor: '#0d9311',
+						url: '',
+						childList: [{
+								menuCode: 'a21',
+								menuName: '找回密码',
+								menuIcon: '',
+								menuColor: '#0d9311',
+								url: '/pages/sys/login/forget',
+							},
+							{
+								menuCode: 'a22',
+								menuName: '注册用户',
+								menuIcon: '',
+								menuColor: '#0d9311',
+								url: '/pages/sys/login/reg',
+							},
+							{
+								menuCode: 'a23',
+								menuName: '个人资料',
+								menuIcon: '',
+								menuColor: '#0d9311',
+								url: '/pages/sys/user/info',
+							}, {
+								menuCode: 'a24',
+								menuName: '关于我们',
+								menuIcon: '',
+								menuColor: '#0d9311',
+								url: '/pages/sys/user/about',
+							},
+							{
+								menuCode: 'a25',
+								menuName: '修改密码',
+								menuIcon: '',
+								menuColor: '#0d9311',
+								url: '/pages/sys/user/pwd',
+							},
+							{
+								menuCode: 'a26',
+								menuName: '意见反馈',
+								menuIcon: '',
+								menuColor: '#0d9311',
+								url: '/pages/sys/user/comment',
+							},
+							{
+								menuCode: 'a27',
+								menuName: '系统设置',
+								menuIcon: '',
+								menuColor: '#0d9311',
+								url: '/pages/sys/user/setting',
+							},
+							{
+								menuCode: 'a28',
+								menuName: '列表演示',
+								menuIcon: '',
+								menuColor: '#0d9311',
+								url: '/pages/testData/index',
+							},
+							{
+								menuCode: 'a29',
+								menuName: '表单演示',
+								menuIcon: '',
+								menuColor: '#0d9311',
+								url: '/pages/testData/form',
+							}
+						]
+					},
+				],
+
+			};
 		},
-		refreshCount() {
-			this.todoCount = 3;
+		onLoad() {
+			//this.refreshCount();
+			this.getIndexPictureList();
+			this.getNoticeTitleList();
 		},
-		imgListClick(index) {
-			console.log(`点击了第${index + 1}页图片`)
+		onShow() {
+			this.refreshCount();
 		},
-		itemClick(index) {
-			console.log(index);
+		methods: {
+			navTo(url) {
+				uni.navigateTo({
+					url: url
+				});
+			},
+			refreshCount() {
+				this.todoCount = 3;
+			},
+			imgListClick(index) {
+				console.log(this.imgList[index].newsUrl);
+			},
+			itemClick(index) {
+				console.log(index);
+			},
+			noticeListClick(index){
+				this.navTo('/pages/sys/msg/index')
+			},
+			getIndexPictureList() {
+				//获取轮换图新闻图片和id
+				let that = this;
+				this.$u.api.aricleService.getIndexPictureList().then(res => {
+					if (res.success) {
+						let newArray = res.data.map(function(item, index) {
+							return {
+								image: that.vuex_config.baseUrl + item.imgUrl,
+								newsUrl: item.id
+							};
+						});
+						that.imgList = newArray;
+					}
+				});
+			},
+			getNoticeTitleList() {
+				// 获取最新5条通知
+				let that = this;
+				this.$u.api.aricleService.getNoticeTitleList().then(res => {
+					if (res.success) {
+						let newArray = res.data.map(function(item, index) {
+							return item.title;
+						});
+						that.noticeList = newArray;
+					}
+				});
+			},
+
 		}
-	}
-};
+	};
 </script>
 <style lang="scss">
-@import 'index.scss';
-page {
-	background-color: #f8f8f8;
-}
+	@import 'index.scss';
+
+	page {
+		background-color: #f8f8f8;
+	}
 </style>

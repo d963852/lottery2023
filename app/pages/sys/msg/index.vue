@@ -1,163 +1,101 @@
 <template>
 	<view class="wrap">
 		<js-lang title="msg.title"></js-lang>
-		<view class="search">
-			<u-search v-model="keywords" @custom="search" @search="search"></u-search>
-		</view>
-		<scroll-view class="scroll-list" scroll-y="true">
-			<u-collapse class="box" :accordion="false" :arrow="false">
-				<view class="item" v-for="(item, index) in list" :key="item.code">
-					<u-collapse-item :open="true">
-						<view class="title" slot="title">
-							<u-icon :name="item.icon != '' ? item.icon : 'home'" :size="35"></u-icon>
-							<view class="text">{{item.name}}</view>
-							<u-badge v-if="item.count && item.count > 0" :count="item.count"></u-badge>
-						</view>
-						<u-cell-group class="list" :border="false">
-							<u-cell-item :arrow="true" v-for="(child, index2) in item.childList" :key="child.code" @click="navTo('/pages/sys/msg/form')">
-								<text slot="title">{{child.name}}</text>
-								<text slot="label">发送者：{{child.createByName}} | 时间：{{child.createDate}}</text>
-							</u-cell-item>
-						</u-cell-group>
-					</u-collapse-item>
+		<u-modal v-model="showTheArticle" :title="theArticle.title" :title-style="{color: 'red'}" width="80%"
+			:mask-close-able="true">
+			<view class="slot-content">
+				<u-line color="red" length="97%" margin="15rpx" />
+				<view class="u-text-center view u-font-10">发布时间：{{theArticle.pubDate}}</view>
+				<u-parse className="article-content" :content="theArticle.content"></u-parse>
+			</view>
+		</u-modal>
+		<view class="item" v-for="(item, index) in noticeList" :key="item.id">
+			<u-card :title="item.title" :subTitle="item.pubDate" :index="item.id" @click="showArticle">
+				<view class="" slot="body">
+					<view slot="">
+						{{item.des}}
+					</view>
 				</view>
-			</u-collapse>
-		</scroll-view>
+			</u-card>
+		</view>
 	</view>
 </template>
 <script>
-/**
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- */
-export default {
-	data() {
-		return {
-			keywords: '',
-			
-			list: [
-				{
-					code: 'a',
-					name: '重要消息',
-					icon: 'error-circle',
-					count: 3,
-					childList: [
-						{
-							code: 'a1',
-							name: '铁马冰河入梦来铁马冰河入梦来铁马冰河入梦来河入梦来铁马冰河入梦来河入梦来铁马冰河入梦来河入梦来',
-							createByName: '管理员',
-							createDate: '2021-4-6 12:10'
-						},
-						{
-							code: 'a2',
-							name: '发文',
-							createByName: '管理员',
-							createDate: '2021-4-6 12:10'
-						},
-						{
-							code: 'a3',
-							name: '查询',
-							createByName: '管理员',
-							createDate: '2021-4-6 12:10'
-						}
-					]
-				},
-				{
-					code: 'a-1',
-					name: '一般消息',
-					icon: 'chat',
-					childList: [
-						{
-							code: 'a1',
-							name: '铁马冰河入梦来铁马冰河入梦来铁马冰河入梦来河入梦来',
-							createByName: '管理员',
-							createDate: '2021-4-6 12:10'
-						},
-						{
-							code: 'a2',
-							name: '发文',
-							createByName: '管理员',
-							createDate: '2021-4-6 12:10'
-						},
-						{
-							code: 'a3',
-							name: '查询',
-							createByName: '管理员',
-							createDate: '2021-4-6 12:10'
-						}
-					]
-				},
-				{
-					code: 'a-2',
-					name: '系统通知',
-					icon: 'bell',
-					childList: [
-						{
-							code: 'a1',
-							name: '铁马冰河入梦来铁马冰河入梦来铁马冰河入梦来河入梦来',
-							createByName: '管理员',
-							createDate: '2021-4-6 12:10'
-						},
-						{
-							code: 'a2',
-							name: '发文',
-							createByName: '管理员',
-							createDate: '2021-4-6 12:10'
-						},
-						{
-							code: 'a3',
-							name: '查询',
-							createByName: '管理员',
-							createDate: '2021-4-6 12:10'
-						}
-					]
-				},
-				{
-					code: 'a-3',
-					name: '已读消息',
-					icon: 'volume',
-					childList: [
-						{
-							code: 'a1',
-							name: '铁马冰河入梦来铁马冰河入梦来铁马冰河入梦来河入梦来',
-							createByName: '管理员',
-							createDate: '2021-4-6 12:10'
-						},
-						{
-							code: 'a2',
-							name: '发文',
-							createByName: '管理员',
-							createDate: '2021-4-6 12:10'
-						},
-						{
-							code: 'a3',
-							name: '查询',
-							createByName: '管理员',
-							createDate: '2021-4-6 12:10'
-						}
-					]
-				},
-			],
-				
-		};
-	},
-	onLoad() {
-		
-	},
-	methods: {
-		navTo(url) {
-			uni.navigateTo({
-				url: url
-			});
+	import uParse from '@/components/u-parse/u-parse.vue';
+	/**
+	 * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
+	 */
+	export default {
+		components: {
+			uParse
 		},
-		search(value) {
-			this.$u.toast('搜索内容为：' + value)
+		data() {
+			return {
+				showTheArticle: false,
+				noticeList: [{
+					id: 'a-3',
+					title: '【紧急通知】DNS被劫持处理方案！！',
+					pubDate: '2099-09-09',
+					des: '近期有不明网站使用非法手段劫持本平台的域名，本平台不会和其他平台合并，请大家不要向任何平台提供您的账号和密码，平台也不会向您索要您的账号密码。',
+				}, ],
+				theArticle: {
+					id: 'a-3',
+					title: '【紧急通知】DNS被劫持处理方案！！',
+					pubDate: '2099-09-09',
+					content: '',
+				},
+			};
+		},
+		onLoad() {
+			this.getNoticeList();
+		},
+		methods: {
+			navTo(url) {
+				uni.navigateTo({
+					url: url
+				});
+			},
+			getNoticeList() {
+				// 获取通知，最多显示10条
+				let that = this;
+				this.$u.api.aricleService.getNoticeList().then(res => {
+					console.info(res);
+					if (res.success) {
+						let newArray = res.data.map(function(item, index) {
+							return {
+								id: item.id,
+								title: item.title,
+								des: item.des,
+								pubDate: item.pubDate
+							};
+						});
+						that.noticeList = newArray;
+					}
+				});
+			},
+			showArticle(index) {
+				// 获取文章详情
+				let that = this;
+				this.$u.api.aricleService.getArticle({}, index).then(res => {
+					console.info(res);
+					if (res.success) {
+						that.theArticle = res.data;
+						that.showTheArticle = true;
+					} else {
+						that.$u.toast(that.$t('error.notFound'));
+					}
+				});
+			},
+
 		}
-		
-	}
-};
+	};
 </script>
 <style lang="scss">
-page {
-	background-color: #f8f8f8;
-}
+	page {
+		background-color: #f8f8f8;
+	}
+
+	.article-content {
+		padding: 30rpx;
+	}
 </style>

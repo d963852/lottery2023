@@ -56,12 +56,12 @@
 			<version>${project.parent.version}</version>
 		</dependency>
 
-		<!-- 定时任务模块
+		<!-- 定时任务模块 -->
 		<dependency>
 			<groupId>com.jeesite</groupId>
 			<artifactId>jeesite-module-quartz</artifactId>
 			<version>${project.parent.version}</version>
-		</dependency> -->
+		</dependency>
 
 		<!-- 移动端模块 
 		<dependency>
@@ -77,12 +77,12 @@
 			<version>${project.parent.version}</version>
 		</dependency>-->
 
-		<!-- 内容管理模块 
+		<!-- 内容管理模块 -->
 		<dependency>
 			<groupId>com.jeesite</groupId>
 			<artifactId>jeesite-module-cms</artifactId>
 			<version>${project.parent.version}</version>
-		</dependency>-->
+		</dependency>
 
 		<!-- 内容管理-页面静态化（标准版）
 		<dependency>

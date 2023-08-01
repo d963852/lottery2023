@@ -110,7 +110,7 @@ class Request {
 			// 此参数无需处理，因为5+和支付宝小程序不支持，默认为text即可
 			responseType: 'text',
 			showLoading: true, // 是否显示请求中的loading
-			loadingText: '请求中...',
+			loadingText: 'loading...',
 			loadingTime: 800, // 在此时间内，请求还没回来的话，就显示加载中动画，单位ms
 			timer: null, // 定时器
 			originalData: false, // 是否在拦截器中返回服务端的原始数据，见文档说明

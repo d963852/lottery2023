@@ -925,3 +925,16 @@ msg:
 #======================================#
 #========== Project settings ==========#
 #======================================#
+
+# rocketmq 配置项，对应 RocketMQProperties 配置类
+rocketmq:
+  name-server: 10.0.2.104:9876
+  producer:
+    group: LotteryProducerGroup
+    send-message-timeout: 10000
+  consumer:
+    group: LotteryConsumerGroup
+
+duocai:
+  url: http://vip.manycai.com/{}/{}/{}.json
+  key: K2644d2471cb170,K2644d25b3c950b,K2644d2666b9264,K2644d2728dfcfa

@@ -24,8 +24,8 @@ export default {
 		noLogin: 'No Login',
 		placeholderValidCode: 'Valid Code',
 	},
-	home: {
-		title: 'Home'
+	lottery: {
+		title: 'Lottery'
 	},
 	user: {
 		title: 'User'

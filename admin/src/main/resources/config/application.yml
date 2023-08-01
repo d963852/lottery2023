@@ -261,20 +261,20 @@ spring:
     pathmatch:
       matching-strategy: ANT_PATH_MATCHER
 
-#  # Redis 连接参数 （RedisProperties）
-#  redis:
-#    host: 127.0.0.1
-#    port: 6379
-#    ssl: false
-#    database: 0
-#    password: 1234
-#    timeout: 20000
-#    lettuce:
-#      pool:
-#        # 最大空闲连接数
-#        maxIdle: 3
-#        # 最大活动连接数
-#        maxActive: 20
+  # Redis 连接参数 （RedisProperties）
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    ssl: false
+    database: 0
+    password:
+    timeout: 20000
+    lettuce:
+      pool:
+        # 最大空闲连接数
+        maxIdle: 3
+        # 最大活动连接数
+        maxActive: 20
 
 #  # 缓存配置
 #  cache:
@@ -553,39 +553,39 @@ shiro:
   # 记住我密钥设置，你可以通过 com.jeesite.test.RememberMeKeyGen 类快速生成一个秘钥。
   # 若不设置，则每次启动系统后自动生成一个新秘钥，这样会导致每次重启后，客户端记录的用户信息将失效。
   rememberMe:
-    secretKey: ~
+    secretKey: qERQlggG6KdUALdyJ0rTWw==
 
-#  # 指定获取客户端IP的Header名称，防止IP伪造。指定为空，则使用原生方法获取IP。
-#  remoteAddrHeaderName: X-Forwarded-For
-#
-#  # 允许的请求方法设定，解决安全审计问题（BPM设计器用到了PUT或DELETE方法）
-#  allowRequestMethods: GET, POST, OPTIONS, PUT, DELETE
+  # 指定获取客户端IP的Header名称，防止IP伪造。指定为空，则使用原生方法获取IP。
+  remoteAddrHeaderName: X-Forwarded-For
+
+  # 允许的请求方法设定，解决安全审计问题（BPM设计器用到了PUT或DELETE方法）
+  allowRequestMethods: GET, POST, OPTIONS, PUT, DELETE
 #
 #  # 是否允许账号多地登录，如果设置为false，同一个设备类型的其它地点登录的相同账号被踢下线
 #  isAllowMultiAddrLogin: true
 #
-#  # 是否允许多账号多设备登录，如果设置为false，其它地点登录的相同账号全部登录设备将被踢下线
-#  isAllowMultiDeviceLogin: true
+  # 是否允许多账号多设备登录，如果设置为false，其它地点登录的相同账号全部登录设备将被踢下线
+  isAllowMultiDeviceLogin: false
 #
 #  # 是否允许刷新主框架页，如果设置为false，刷新主页将导致重新登录。如安全性比较高的，如银行个人首页不允许刷新。
 #  isAllowRefreshIndex: true
 #
-#  # 是否允许嵌入到外部网站iframe中（true：不限制，false：不允许）
-#  isAllowExternalSiteIframe: true
+  # 是否允许嵌入到外部网站iframe中（true：不限制，false：不允许）
+  isAllowExternalSiteIframe: false
 #
 #  # 设定允许获取的资源列表（v4.2.3）
 #  #contentSecurityPolicy: "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; img-src 'self' 'unsafe-inline' 'unsafe-eval' data:"
 
-#  # 是否允许跨域访问 CORS，如果允许，设置允许的域名。v4.2.3 开始支持多个域名和模糊匹配，例如：http://*.jeesite.com,http://*.jeesite.net
-#  accessControlAllowOrigin: '*'
-#
-#  # 允许跨域访问时 CORS，可以获取和返回的方法和请求头
-#  accessControlAllowMethods: GET, POST, OPTIONS
-#  accessControlAllowHeaders: content-type, x-requested-with, x-ajax, x-token, x-remember
-#  accessControlExposeHeaders: x-remember
+  # 是否允许跨域访问 CORS，如果允许，设置允许的域名。v4.2.3 开始支持多个域名和模糊匹配，例如：http://*.jeesite.com,http://*.jeesite.net
+  accessControlAllowOrigin: '*'
 
-#  # 是否允许接收跨域的Cookie凭证数据 CORS
-#  accessControlAllowCredentials: false
+  # 允许跨域访问时 CORS，可以获取和返回的方法和请求头
+  accessControlAllowMethods: GET, POST, OPTIONS
+  accessControlAllowHeaders: content-type, x-requested-with, x-ajax, x-token, x-remember
+  accessControlExposeHeaders: x-remember
+
+  # 是否允许接收跨域的Cookie凭证数据 CORS
+  accessControlAllowCredentials: false
 #
 #  # 允许的网站来源地址，不设置为全部地址（避免一些跨站点请求伪造 CSRF、防盗链）
 #  allowReferers: http://127.0.0.1,http://localhost
@@ -631,8 +631,9 @@ session:
   # 登录系统后的用户超时时间（不明确 param_deviceType 参数的，默认设备为 pc 登录）
   pcSessionTimeout: 1800000
 
-#  # 手机APP设备会话超时参数设置，登录请求参数加 param_deviceType=mobileApp 时有效，一般情况无需设置
-#  mobileAppSessionTimeout: 1800000
+  # 手机APP设备会话超时参数设置，登录请求参数加 param_deviceType=mobileApp 时有效，一般情况无需设置
+  mobileAppSessionTimeout: 1800000
+
 #
 #  # 定时清理失效会话，清理用户直接关闭浏览器造成的孤立会话（设置为 0 关闭，微服务下只开启 core 即可）
 #  sessionTimeoutClean: 1200000
@@ -649,16 +650,16 @@ session:
 #  sessionIdCookieHttpOnly: true
 #  sessionIdCookieSameSite: LAX
 #
-#  # 设置接收 SessionId 请求参数和请求头的名称
-#  sessionIdParamName: __sid
-#  sessionIdHeaderName: x-token
+  # 设置接收 SessionId 请求参数和请求头的名称
+  sessionIdParamName: __sid
+  sessionIdHeaderName: x-token
 #
 #  # 当直接通过 __sid 参数浏览器访问页面时，可将直接将 __sid 写入 Cookie 应用于后面的访问
 #  # 访问地址举例：http://host/js/a/index?__sid=123456&__cookie=true
 #  writeCookieParamName: __cookie
 #
-#  # 记住我的请求参数和请求头的名称（v4.2.3）
-#  rememberMeHeaderName: x-remember
+  # 记住我的请求参数和请求头的名称（v4.2.3）
+  rememberMeHeaderName: x-remember
 
 # 系统缓存配置
 #j2cache:
@@ -723,9 +724,9 @@ mybatis:
 # Web 相关
 web:
 
-#  # AJAX 接受参数名和请求头名（v4.3.0）
-#  ajaxParamName: __ajax
-#  ajaxHeaderName: x-ajax
+  # AJAX 接受参数名和请求头名（v4.3.0）
+  ajaxParamName: __ajax
+  ajaxHeaderName: x-ajax
 #
 #  # MVC 视图相关
 #  view:
@@ -807,7 +808,7 @@ web:
 
   # 在线API文档工具
   swagger:
-    enabled: true
+    enabled: false
 
 # 错误页面500.html是否输出错误信息（正式环境，为提供安全性可设置为false）
 error:

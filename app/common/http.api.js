@@ -76,7 +76,7 @@ const install = (Vue, vm) => {
 			getArticle: (params = {}, id) => vm.$u.post(config.adminPath +
 				'/api/article/getArticle/' + id, params),
 		},
-		
+
 		// 会员服务类
 		memberService: {
 			//获取会员余额
@@ -84,6 +84,25 @@ const install = (Vue, vm) => {
 				'/api/article/getIndexPictureList', params),
 		},
 
+		//彩票服务类
+		lotteryService: {
+			// 获取最爱彩种
+			findFavGameList: (params = {}) => vm.$u.post(config.adminPath +
+				'/api/article/getIndexPictureList', params),
+			// 获取热门彩种
+			findHotGameList: (params = {
+				gameGroup: 'hot'
+			}) => vm.$u.post(config.adminPath +
+				'/api/lottery/findGameList', params),
+			// 获取彩种详情
+			getGameInfo: (params = {}) => vm.$u.post(config.adminPath +
+				'/api/lottery/getGameInfo', params),
+			// 获取玩法清单
+			findPlayMethodList: (params = {
+				gemecode: ''
+			}) => vm.$u.post(config.adminPath +
+				'/api/lottery/findPlayMethodList', params),
+		},
 	};
 
 }

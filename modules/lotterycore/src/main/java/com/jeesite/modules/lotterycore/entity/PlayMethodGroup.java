@@ -117,5 +117,4 @@ public class PlayMethodGroup extends DataEntity<PlayMethodGroup> {
 	public void setTenantId(String tenantId) {
 		this.tenantId = tenantId;
 	}
-	
 }

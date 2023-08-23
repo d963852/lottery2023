@@ -48,14 +48,14 @@ public class PushWebSocketService extends BaseService {
         addOnlineCount();           //在线数加1
         this.sid = sid;
         try {
-            logger.info(this.sid+"连接PushWebSocketService");
+            logger.info(this.sid + "连接PushWebSocketService");
             Double memBalance = memberService.getBalanceByMemberId(sid);
             Map<String, String> result = new HashMap<>();
             result.put("responseOf", "memBalance");
             result.put("memBalance", String.valueOf(memBalance));
             sendMessage(JSONUtil.toJsonStr(result));
             // 定时取用户余额并推送
-            for (int i = 0; i < 200; i++) {
+            for (int i = 0; i < 6 * 60 * 2; i++) {
                 Thread.currentThread().sleep(10 * 1000);
                 Double nowMemBalance = memberService.getBalanceByMemberId(sid);
                 if (!nowMemBalance.equals(memBalance)) {

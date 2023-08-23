@@ -4,11 +4,12 @@
 export default {
 	common: {
 		title: '杏富娱乐',
-		lodding: '加载中，请稍候'
+		loading: '加载中',
+		more: '更多',
 	},
 	error: {
 		serverDisconnected: '与服务器断开连接',
-		notFound: '未找到您要的内容',
+		notFound: '未找请求的指定内容',
 	},
 	nav: {
 		lottery: '彩票大厅',
@@ -31,7 +32,24 @@ export default {
 	},
 	lottery: {
 		title: '彩票大厅',
-		noticeListDefault: '大吉大利，恭喜发财！'
+		noticeListDefault: '大吉大利，恭喜发财！',
+		
+		actionList: {
+			recharge: "快速充值",
+			bettinghistory: "最近投注",
+			accountDetails: "账变明细",
+			customerService: "联系客服",
+		},
+		
+		favGames: '最爱',
+		hotGameListTitle: '热门彩种',
+		allGames: '全部彩种',
+		
+		betPage: {
+			title: "快速充值",
+		},
+			
+		
 	},
 	user: {
 		title: '用户中心'

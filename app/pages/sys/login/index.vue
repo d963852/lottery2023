@@ -1,6 +1,6 @@
 <template>
 	<view class="wrap">
-		<js-lang title="login.title" :showBtn="true"></js-lang>
+		<!-- <js-lang title="login.title" :showBtn="true"></js-lang> -->
 		<view class="logo">
 			<image src="/static/lo/login/logo.png"></image>
 		</view>

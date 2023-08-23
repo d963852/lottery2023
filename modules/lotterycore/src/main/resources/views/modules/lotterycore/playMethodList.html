@@ -1,181 +1,109 @@
 <% layout('/layouts/default.html', {title: '玩法管理管理', libs: ['dataGrid']}){ %>
 <div class="main-content">
-	<div class="box box-main">
-		<div class="box-header">
-			<div class="box-title">
-				<i class="fa icon-notebook"></i> ${text('玩法管理管理')}
-			</div>
-			<div class="box-tools pull-right">
-				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
-				<% if(hasPermi('lotterycore:playMethod:edit')){ %>
-					<a href="${ctx}/lotterycore/playMethod/form" class="btn btn-default btnTool" title="${text('新增玩法管理')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
-				<% } %>
-				<a href="#" class="btn btn-default" id="btnSetting" title="${text('设置')}"><i class="fa fa-navicon"></i></a>
-			</div>
-		</div>
-		<div class="box-body">
-			<#form:form id="searchForm" model="${playMethod}" action="${ctx}/lotterycore/playMethod/listData" method="post" class="form-inline hide"
-					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
-				<div class="form-group">
-					<label class="control-label">${text('玩法名称')}：</label>
-					<div class="control-inline">
-						<#form:input path="playMethodName" maxlength="64" class="form-control width-120"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label">${text('玩法分组')}：</label>
-					<div class="control-inline">
-						<#form:input path="groupId" maxlength="64" class="form-control width-120"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label">${text('每注选几个号码')}：</label>
-					<div class="control-inline">
-						<#form:input path="selectNumber" maxlength="64" class="form-control width-120"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label">${text('玩法简单说明')}：</label>
-					<div class="control-inline">
-						<#form:input path="simpleInfo" maxlength="64" class="form-control width-120"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label">${text('玩法说明')}：</label>
-					<div class="control-inline">
-						<#form:input path="info" maxlength="1640" class="form-control width-120"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label">${text('中奖举例')}：</label>
-					<div class="control-inline">
-						<#form:input path="example" maxlength="1640" class="form-control width-120"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label">${text('中奖规则函数')}：</label>
-					<div class="control-inline">
-						<#form:input path="winRuleFun" maxlength="64" class="form-control width-120"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label">${text('最大中奖号码计算函数')}：</label>
-					<div class="control-inline">
-						<#form:input path="maxWinNumberFun" maxlength="64" class="form-control width-120"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label">${text('玩法模版')}：</label>
-					<div class="control-inline">
-						<#form:input path="playMethodTpl" maxlength="64" class="form-control width-120"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label">${text('移动端是否可用')}：</label>
-					<div class="control-inline width-120">
-						<#form:select path="android" dictType="sys_yes_no" blankOption="true" class="form-control"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label">${text('排序')}：</label>
-					<div class="control-inline">
-						<#form:input path="sort" maxlength="9" class="form-control width-120"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label">${text('最低消费额度')}：</label>
-					<div class="control-inline">
-						<#form:input path="minConsume_gte" maxlength="13" class="form-control width-60"/>
-						&nbsp;-&nbsp;
-						<#form:input path="minConsume_lte" maxlength="13" class="form-control width-60"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label">${text('注数计算函数')}：</label>
-					<div class="control-inline">
-						<#form:input path="betCountFun" maxlength="64" class="form-control width-120"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label">${text('总注数')}：</label>
-					<div class="control-inline">
-						<#form:input path="allBetCount" maxlength="18" class="form-control width-120"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label">${text('最大注数')}：</label>
-					<div class="control-inline">
-						<#form:input path="maxBetCount" maxlength="18" class="form-control width-120"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label">${text('数据状态')}：</label>
-					<div class="control-inline width-120">
-						<#form:select path="status" dictType="sys_search_status" blankOption="true" class="form-control isQuick"/>
-					</div>
-				</div>
-				<div class="form-group">
-					<button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
-					<button type="reset" class="btn btn-default btn-sm isQuick">${text('重置')}</button>
-				</div>
-			</#form:form>
-			<table id="dataGrid"></table>
-			<div id="dataGridPage"></div>
-		</div>
-	</div>
+    <div class="box box-main">
+        <div class="box-header">
+            <div class="box-title">
+                <i class="fa icon-notebook"></i> ${text('玩法管理管理')}
+            </div>
+            <div class="box-tools pull-right">
+                <a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+                <% if(hasPermi('lotterycore:playMethod:edit')){ %>
+                <a href="${ctx}/lotterycore/playMethod/form" class="btn btn-default btnTool" title="${text('新增玩法管理')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+                <% } %>
+                <a href="#" class="btn btn-default" id="btnSetting" title="${text('设置')}"><i class="fa fa-navicon"></i></a>
+            </div>
+        </div>
+        <div class="box-body">
+            <#form:form id="searchForm" model="${playMethod}" action="${ctx}/lotterycore/playMethod/listData" method="post" class="form-inline"
+            data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+            <div class="form-group">
+                <label class="control-label">${text('玩法分组')}：</label>
+                <div class="control-inline width-120">
+                    <#form:select path="groupId" items="${playMethodGroupList}" itemLabel="groupName" itemValue="id" class="form-control required" defaultValue="33" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">${text('玩法名称')}：</label>
+                <div class="control-inline">
+                    <#form:input path="playMethodName" maxlength="64" class="form-control width-120"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+                <button type="reset" class="btn btn-default btn-sm isQuick">${text('重置')}</button>
+            </div>
+        </#form:form>
+        <table id="dataGrid"></table>
+        <div id="dataGridPage"></div>
+    </div>
+</div>
 </div>
 <% } %>
 <script>
-// 初始化DataGrid对象
-$('#dataGrid').dataGrid({
-	searchForm: $("#searchForm"),
-	columnModel: [
-		{header:'${text("玩法名称")}', name:'playMethodName', index:'a.play_method_name', width:150, align:"left", frozen:true, formatter: function(val, obj, row, act){
-			return '<a href="${ctx}/lotterycore/playMethod/form?id='+row.id+'" class="btnList" data-title="${text("编辑玩法管理")}">'+(val||row.id)+'</a>';
-		}},
-		{header:'${text("玩法分组")}', name:'groupId', index:'a.group_id', width:150, align:"left"},
-		{header:'${text("最大奖金额")}', name:'maxBonus', index:'a.max_bonus', width:150, align:"right", formatter: function(val, obj, row, act){
-			return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
-		}},
-		{header:'${text("最小奖金额")}', name:'minBonus', index:'a.min_bonus', width:150, align:"right", formatter: function(val, obj, row, act){
-			return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
-		}},
-		{header:'${text("每注选几个号码")}', name:'selectNumber', index:'a.select_number', width:150, align:"left"},
-		{header:'${text("玩法简单说明")}', name:'simpleInfo', index:'a.simple_info', width:150, align:"left"},
-		{header:'${text("玩法说明")}', name:'info', index:'a.info', width:150, align:"left"},
-		{header:'${text("中奖举例")}', name:'example', index:'a.example', width:150, align:"left"},
-		{header:'${text("中奖规则函数")}', name:'winRuleFun', index:'a.win_rule_fun', width:150, align:"left"},
-		{header:'${text("最大中奖号码计算函数")}', name:'maxWinNumberFun', index:'a.max_win_number_fun', width:150, align:"left"},
-		{header:'${text("玩法模版")}', name:'playMethodTpl', index:'a.play_method_tpl', width:150, align:"left"},
-		{header:'${text("移动端是否可用")}', name:'android', index:'a.android', width:150, align:"center", formatter: function(val, obj, row, act){
-			return js.getDictLabel(${@DictUtils.getDictListJson('sys_yes_no')}, val, '${text("未知")}', true);
-		}},
-		{header:'${text("排序")}', name:'sort', index:'a.sort', width:150, align:"center"},
-		{header:'${text("最低消费额度")}', name:'minConsume', index:'a.min_consume', width:150, align:"right", formatter: function(val, obj, row, act){
-			return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
-		}},
-		{header:'${text("注数计算函数")}', name:'betCountFun', index:'a.bet_count_fun', width:150, align:"left"},
-		{header:'${text("总注数")}', name:'allBetCount', index:'a.all_bet_count', width:150, align:"center"},
-		{header:'${text("最大注数")}', name:'maxBetCount', index:'a.max_bet_count', width:150, align:"center"},
-		{header:'${text("数据状态")}', name:'status', index:'a.status', width:150, align:"center", formatter: function(val, obj, row, act){
-			return js.getDictLabel(${@DictUtils.getDictListJson('sys_search_status')}, val, '${text("未知")}', true);
-		}},
-		{header:'${text("操作")}', name:'actions', width:120, formatter: function(val, obj, row, act){
-			var actions = [];
-			//<% if(hasPermi('lotterycore:playMethod:edit')){ %>
-				actions.push('<a href="${ctx}/lotterycore/playMethod/form?id='+row.id+'" class="btnList" title="${text("编辑玩法管理")}"><i class="fa fa-pencil"></i></a>&nbsp;');
-				if (row.status == Global.STATUS_NORMAL){
-					actions.push('<a href="${ctx}/lotterycore/playMethod/disable?id='+row.id+'" class="btnList" title="${text("停用玩法管理")}" data-confirm="${text("确认要停用该玩法管理吗？")}"><i class="glyphicon glyphicon-ban-circle"></i></a>&nbsp;');
-				} else if (row.status == Global.STATUS_DISABLE){
-					actions.push('<a href="${ctx}/lotterycore/playMethod/enable?id='+row.id+'" class="btnList" title="${text("启用玩法管理")}" data-confirm="${text("确认要启用该玩法管理吗？")}"><i class="glyphicon glyphicon-ok-circle"></i></a>&nbsp;');
-				}
-			//<% } %>
-			return actions.join('');
-		}}
-	],
-	// 加载成功后执行事件
-	ajaxSuccess: function(data){
-		
-	}
-});
+    // 初始化DataGrid对象
+    $('#dataGrid').dataGrid({
+        searchForm: $("#searchForm"),
+        columnModel: [
+            {
+                header: '${text("玩法名称")}', name: 'playMethodName', index: 'a.play_method_name', width: 150, align: "left", frozen: true, formatter: function (val, obj, row, act) {
+                    return '<a href="${ctx}/lotterycore/playMethod/form?id=' + row.id + '" class="btnList" data-title="${text("编辑玩法管理")}">' + (val || row.id) + '</a>';
+                }
+            },
+            // {header:'${text("玩法分组")}', name:'groupId', index:'a.group_id', width:150, align:"left"},
+            {
+                header: '${text("最大奖金额")}', name: 'maxBonus', index: 'a.max_bonus', width: 150, align: "right", formatter: function (val, obj, row, act) {
+                    return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+                }
+            },
+            {
+                header: '${text("最小奖金额")}', name: 'minBonus', index: 'a.min_bonus', width: 150, align: "right", formatter: function (val, obj, row, act) {
+                    return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+                }
+            },
+            {header: '${text("每注选几个号码")}', name: 'selectNumber', index: 'a.select_number', width: 150, align: "left"},
+            {header: '${text("玩法简单说明")}', name: 'simpleInfo', index: 'a.simple_info', width: 150, align: "left"},
+            {header: '${text("玩法说明")}', name: 'info', index: 'a.info', width: 150, align: "left"},
+            {header: '${text("中奖举例")}', name: 'example', index: 'a.example', width: 150, align: "left"},
+            {header: '${text("中奖规则函数")}', name: 'winRuleFun', index: 'a.win_rule_fun', width: 150, align: "left"},
+            {header: '${text("最大中奖号码计算函数")}', name: 'maxWinNumberFun', index: 'a.max_win_number_fun', width: 150, align: "left"},
+            {header: '${text("玩法模版")}', name: 'playMethodTpl', index: 'a.play_method_tpl', width: 150, align: "left"},
+            {
+                header: '${text("移动端是否可用")}', name: 'android', index: 'a.android', width: 150, align: "center", formatter: function (val, obj, row, act) {
+                    return js.getDictLabel(${@DictUtils.getDictListJson('sys_yes_no')}, val, '${text("未知")}', true);
+                }
+            },
+            {header: '${text("排序")}', name: 'sort', index: 'a.sort', width: 150, align: "center"},
+            {
+                header: '${text("最低消费额度")}', name: 'minConsume', index: 'a.min_consume', width: 150, align: "right", formatter: function (val, obj, row, act) {
+                    return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+                }
+            },
+            {header: '${text("注数计算函数")}', name: 'betCountFun', index: 'a.bet_count_fun', width: 150, align: "left"},
+            {header: '${text("总注数")}', name: 'allBetCount', index: 'a.all_bet_count', width: 150, align: "center"},
+            {header: '${text("最大注数")}', name: 'maxBetCount', index: 'a.max_bet_count', width: 150, align: "center"},
+            // {
+            //     header: '${text("数据状态")}', name: 'status', index: 'a.status', width: 150, align: "center", formatter: function (val, obj, row, act) {
+            //         return js.getDictLabel(${@DictUtils.getDictListJson('sys_search_status')}, val, '${text("未知")}', true);
+            //     }
+            // },
+            {
+                header: '${text("操作")}', name: 'actions', width: 120, formatter: function (val, obj, row, act) {
+                    var actions = [];
+                    //<% if(hasPermi('lotterycore:playMethod:edit')){ %>
+                    actions.push('<a href="${ctx}/lotterycore/playMethod/form?id=' + row.id + '" class="btnList" title="${text("编辑玩法管理")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+                    if (row.status == Global.STATUS_NORMAL) {
+                        actions.push('<a href="${ctx}/lotterycore/playMethod/disable?id=' + row.id + '" class="btnList" title="${text("停用玩法管理")}" data-confirm="${text("确认要停用该玩法管理吗？")}"><i class="glyphicon glyphicon-ban-circle"></i></a>&nbsp;');
+                    } else if (row.status == Global.STATUS_DISABLE) {
+                        actions.push('<a href="${ctx}/lotterycore/playMethod/enable?id=' + row.id + '" class="btnList" title="${text("启用玩法管理")}" data-confirm="${text("确认要启用该玩法管理吗？")}"><i class="glyphicon glyphicon-ok-circle"></i></a>&nbsp;');
+                    }
+                    //<% } %>
+                    return actions.join('');
+                }
+            }
+        ],
+        // 加载成功后执行事件
+        ajaxSuccess: function (data) {
+
+        }
+    });
 </script>

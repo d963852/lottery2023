@@ -4,15 +4,24 @@
  */
 package com.jeesite.modules.api.web;
 
-import cn.hutool.core.date.DateUtil;
-import com.jeesite.common.entity.Page;
+import cn.hutool.core.bean.BeanUtil;
+import com.jeesite.common.config.Global;
 import com.jeesite.common.web.BaseController;
-import com.jeesite.modules.api.vo.ArticleVO;
-import com.jeesite.modules.cms.entity.Article;
-import com.jeesite.modules.cms.entity.Category;
-import com.jeesite.modules.cms.service.ArticleService;
+import com.jeesite.modules.api.vo.GameVO;
+import com.jeesite.modules.api.vo.PlayMethodGroupVO;
+import com.jeesite.modules.api.vo.PlayMethodVO;
+import com.jeesite.modules.file.entity.FileUpload;
+import com.jeesite.modules.file.utils.FileUploadUtils;
+import com.jeesite.modules.lotterycore.common.exception.BizException;
+import com.jeesite.modules.lotterycore.entity.Game;
+import com.jeesite.modules.lotterycore.entity.Issue;
+import com.jeesite.modules.lotterycore.entity.PlayMethod;
+import com.jeesite.modules.lotterycore.entity.PlayMethodGroup;
 import com.jeesite.modules.lotterycore.param.R;
+import com.jeesite.modules.lotterycore.service.*;
+import com.jeesite.modules.sys.utils.DictUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,59 +39,151 @@ import java.util.List;
 public class LotteryApiController extends BaseController {
 
     @Autowired
-    private ArticleService articleService;
+    private GameService gameService;
+    @Autowired
+    private IssueService issueService;
+    @Autowired
+    private LotteryWebMenuService lotteryWebMenuService;
+    @Autowired
+    private PlayMethodGroupService playMethodGroupService;
+    @Autowired
+    private PlayMethodService playMethodService;
 
     /**
-     * 获取彩票大厅轮播文章图片
-     *
-     * @return
+     * 投注页面
      */
-    @RequestMapping(value = "getIndexPictureList")
-    public R getIndexPictureList() {
-        Article articleSC = new Article();
-        Category categorySC = new Category();
-        categorySC.setCategoryCode("A1000");
-        articleSC.setCategory(categorySC);
-        List<Article> articleList = articleService.findList(articleSC);
-        List<ArticleVO> articleVOList = new ArrayList<>();
-        for (Article article : articleList) {
-            ArticleVO articleVO = new ArticleVO();
-            articleVO.setTitle(article.getTitle());
-            articleVO.setId(article.getId());
-            articleVO.setImgUrl(article.getImage());
-            articleVOList.add(articleVO);
+    @RequestMapping(value = "betting")
+    public String betting(String gameId, Model model) {
+
+        model.addAttribute("menuList", lotteryWebMenuService.findListFromCache());
+        model.addAttribute("gameList", gameService.findListFromCache());
+        model.addAttribute("menuGroupList", DictUtils.getDictList("lottery_menu_group"));
+
+        Game game = gameService.get(gameId);
+        if (game == null) {
+            return "error/404";
         }
 
-        return R.success().data(articleVOList);
+        // 开奖历史
+        List<Issue> issueHistoryList = issueService.findHistory(game.getGameCode(), 10);
+        model.addAttribute("issueHistoryList", issueHistoryList);
+
+        // 玩法组
+        PlayMethodGroup playMethodGroupSC = new PlayMethodGroup();
+        playMethodGroupSC.setGameCategory(game.getGameCategoryId());
+        playMethodGroupSC.sqlMap().getOrder().setOrderBy("sort asc");
+        List<PlayMethodGroup> playMethodGroupList = playMethodGroupService.findList(playMethodGroupSC);
+        if (playMethodGroupList.size() > 0) {
+            model.addAttribute("playMethodGroupList", playMethodGroupList);
+
+            PlayMethod playMethodSC = new PlayMethod();
+            playMethodSC.setGroupId(playMethodGroupList.get(0).getId());
+            playMethodSC.sqlMap().getOrder().setOrderBy("sort asc");
+            List<PlayMethod> playMethodList = playMethodService.findList(playMethodSC);
+            model.addAttribute("playMethodList", playMethodList);
+
+            model.addAttribute("playMethod", playMethodList.get(0));
+
+        }
+
+        model.addAttribute("game", game);
+        return "modules/lotteryweb/game/gameIndex";
     }
 
     /**
-     * 获取通知公告标题
+     * 获取游戏列表
      *
+     * @param gameGroup
      * @return
      */
-    @RequestMapping(value = "getNoticeTitleList")
-    public R getNoticeTitleList() {
-        List<ArticleVO> articleVOList = new ArrayList<>();
-
-        Article articleSC = new Article();
-        Category categorySC = new Category();
-        categorySC.setCategoryCode("A1002");
-        articleSC.setCategory(categorySC);
-        // 获取文章内容
-        Page<Article> page = new Page<>(1, 5, -1);
-        articleSC.setPage(page);
-        page = articleService.findPage(articleSC);
-        if (page.getList().size() > 0) {
-            List<Article> articleList = page.getList();
-            for (Article article : articleList) {
-                ArticleVO articleVO = new ArticleVO();
-                articleVO.setTitle(DateUtil.format(article.getCreateDate(), "yyyy-MM-dd") + " " + article.getTitle());
-                articleVOList.add(articleVO);
+    @RequestMapping(value = "findGameList")
+    public R findGameList(String gameGroup, Model model) {
+        Game gameSC = new Game();
+        List<GameVO> gameVoList = new ArrayList<>();
+        if ("hot".equals(gameGroup)) {
+            //热门
+            gameSC.setHotGameFlag(Global.YES);
+            List<Game> gameList = gameService.findList(gameSC);
+            for (Game game : gameList) {
+                GameVO gameVo = new GameVO();
+                BeanUtil.copyProperties(game, gameVo);
+                // 游戏图片
+                List<FileUpload> gameImageList = FileUploadUtils.findFileUpload(game.getId(), "game_image");
+                if (gameImageList.size() > 0) {
+                    gameVo.setImgUrl(gameImageList.get(0).getFileUrl());
+                }
+                gameVoList.add(gameVo);
             }
+        } else if ("fav".equals(gameGroup)) {
+            //TODO 最爱
+
+        } else {
+            //啥都不是
+            return R.failure();
         }
-        return R.success().data(articleVOList);
+        return R.success().data(gameVoList);
     }
 
+    /**
+     * 获取游戏详细信息
+     *
+     * @return
+     */
+    @RequestMapping(value = "getGameInfo")
+    public R getGameInfo(String gameCode) {
+        Game gameSC = new Game();
+        GameVO gameVo = new GameVO();
+        gameSC.setGameCode(gameCode);
+        List<Game> gameList = gameService.findList(gameSC);
+        if (gameList.size() < 1) {
+            return R.failure();
+        }
+        gameSC = gameList.get(0);
+        BeanUtil.copyProperties(gameSC, gameVo);
+        // 游戏图片
+        List<FileUpload> gameImageList = FileUploadUtils.findFileUpload(gameSC.getId(), "game_image");
+        if (gameImageList.size() > 0) {
+            gameVo.setImgUrl(gameImageList.get(0).getFileUrl());
+        }
+
+        return R.success().data(gameVo);
+    }
+
+    /**
+     * 根据游戏类型获取玩法组和玩法
+     *
+     * @return
+     */
+    @RequestMapping(value = "findPlayMethodList")
+    public R findPlayMethodList(String gameCode) {
+        List<PlayMethodGroupVO> playMethodGroupVoList = new ArrayList<>();
+        try {
+            Game game = gameService.validGameByGameCode(gameCode);
+            String gameCategory = game.getGameCategory();
+            // 根据游戏分类获取对应的playMethodGroup
+            PlayMethodGroup playMethodGroupSC = new PlayMethodGroup();
+            playMethodGroupSC.setGameCategory(gameCategory);
+            List<PlayMethodGroup> playMethodGroupList = playMethodGroupService.findList(playMethodGroupSC);
+            for (PlayMethodGroup playMethodGroup: playMethodGroupList) {
+                PlayMethodGroupVO playMethodGroupVo = new PlayMethodGroupVO();
+                BeanUtil.copyProperties(playMethodGroup, playMethodGroupVo);
+                // 获取分组下的playMethod
+                PlayMethod playMethodSC = new PlayMethod();
+                playMethodSC.setGroupId(playMethodGroup.getId());
+                List<PlayMethod> playMethodList = playMethodService.findList(playMethodSC);
+                List<PlayMethodVO> playMethodVoList = new ArrayList<>();
+                for (PlayMethod playMethod: playMethodList) {
+                    PlayMethodVO playMethodVo = new PlayMethodVO();
+                    BeanUtil.copyProperties(playMethod, playMethodVo);
+                    playMethodVoList.add(playMethodVo);
+                }
+                playMethodGroupVo.setPlayMethodList(playMethodVoList);
+                playMethodGroupVoList.add(playMethodGroupVo);
+            }
+            return R.success().data(playMethodGroupVoList);
+        } catch (BizException bizException) {
+            return R.failure().message(bizException.getMessage());
+        }
+    }
 
 }

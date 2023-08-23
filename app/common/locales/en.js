@@ -4,6 +4,8 @@
 export default {
 	common: {
 		title: 'JeeSite',
+		loading: 'loading',
+		more: 'more',
 	},
 	nav: {
 		lottery: 'lottery',
@@ -25,7 +27,20 @@ export default {
 		placeholderValidCode: 'Valid Code',
 	},
 	lottery: {
-		title: 'Lottery'
+		title: 'Lottery',
+		noticeListDefault: 'Good luck, congratulations on getting rich！',
+
+		actionList: {
+			recharge: "Recharge",
+			bettinghistory: "History",
+			accountDetails: "Account",
+			customerService: "Service",
+		},
+
+		favGames: 'Favorites',
+		hotGameListTitle: 'Popular Games',
+		allGames: 'All Games',
+		more: 'more',
 	},
 	user: {
 		title: 'User'

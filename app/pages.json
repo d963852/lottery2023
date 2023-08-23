@@ -7,8 +7,13 @@
 		/* 登录 */
 		{
 			"path": "pages/sys/login/index",
-			"style": {
-				"navigationBarTitleText": "登录"
+			// "style": {
+			// 	"navigationBarTitleText": "登录"
+			// },
+			"style": {  
+			  "app-plus": {  
+			    "titleNView": false //禁用原生导航栏  
+			  }  
 			}
 		},
 		{
@@ -47,6 +52,12 @@
 			"path": "pages/activities/index",
 			"style": {
 				"navigationBarTitleText": "热门活动"
+			}
+		},
+		{
+			"path": "pages/lottery/bet",
+			"style": {
+				"navigationBarTitleText": "彩票投注"
 			}
 		},
 		
@@ -156,9 +167,9 @@
 
 	},
 	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "JeeSite",
-		"navigationBarBackgroundColor": "#f8f8f8"
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "杏富",
+		"navigationBarBackgroundColor": "#fa3534"
 	},
 	"tabBar": {
 		"color": "#909399",

@@ -22,7 +22,17 @@ const config = {
 	adminPath: '/a',
 
 	//服务器地址
-	serverHost : '127.0.0.1:8023',
+	serverHost: '127.0.0.1:8023',
+
+	// 全大小单双清
+	selectNumber10: {
+		quan: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+		da: [5, 6, 7, 8, 9],
+		xiao: [0, 1, 2, 3, 4],
+		dan: [1, 3, 5, 7, 9],
+		shuang: [0, 2, 4, 6, 8],
+		qing: [],
+	}
 
 }
 

@@ -1,7 +1,7 @@
 <template>
 	<view v-if="showBtn" class="js-lang" @tap="switchLang">
 		<view class="u-flex u-flex-nowrap u-text-right">
-			<u-icon size="46" color="warning" :name="lang"></u-icon>
+			<u-icon size="46" color="#fdf6ec" :name="lang"></u-icon>
 			<u-tag class="u-margin-left-10" :text="calBalance" type="error" shape="circle" />
 		</view>
 	</view>
@@ -92,11 +92,10 @@
 				websocket.send(JSON.stringify(data));
 				// 接收消息
 				websocket.getMessage(res => {
-					console.info("在页面中处理", res.data);
 					if (res.data != null) {
 						let resultJson = JSON.parse(res.data);
 						if (resultJson.responseOf === "memBalance") {
-							console.info("resultJson.memBalance", resultJson.memBalance);
+							// console.info("resultJson.memBalance", resultJson.memBalance);
 							this.balance = resultJson.memBalance;
 						}
 					}

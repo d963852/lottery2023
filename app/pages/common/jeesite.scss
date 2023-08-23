@@ -119,3 +119,26 @@
 		margin-bottom: 10rpx;
 	}
 }
+
+.red-bold{
+	font-weight: bold;
+	color:$u-type-error;
+}
+
+.gray-border{
+	border: 1rpx solid #888;
+}
+
+	
+.btn-block{
+	width: 90%;
+}
+
+.cricle-border{
+	text-align: center;
+	-moz-border-radius: 120px;
+	border-radius: 120px;
+	padding: 0rpx 22rpx;
+	border: 1px solid #888;
+	background-color: #eee;
+}

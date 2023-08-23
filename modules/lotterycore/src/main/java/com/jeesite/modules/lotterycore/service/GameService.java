@@ -4,6 +4,8 @@ import com.jeesite.common.cache.CacheUtils;
 import com.jeesite.common.entity.Page;
 import com.jeesite.common.service.CrudService;
 import com.jeesite.modules.file.utils.FileUploadUtils;
+import com.jeesite.modules.lotterycore.common.exception.BizError;
+import com.jeesite.modules.lotterycore.common.exception.BizException;
 import com.jeesite.modules.lotterycore.dao.GameDao;
 import com.jeesite.modules.lotterycore.entity.Game;
 import org.springframework.stereotype.Service;
@@ -107,6 +109,23 @@ public class GameService extends CrudService<GameDao, Game> {
      */
     public Game getGameByCode(String gameCode) {
         return dao.getGameByCode(gameCode);
+    }
+
+    /**
+     * 根据gameCode验证游戏是否存在
+     * @param gameCode
+     * @return
+     */
+    public Game validGameByGameCode(String gameCode) throws BizException {
+        Game gameSC = new Game();
+        gameSC.setGameCode(gameCode);
+        List<Game> gameList = findList(gameSC);
+        if (gameList.size() < 1) {
+            // 没找到这个游戏
+            throw new BizException(BizError.游戏不存在);
+        }else{
+            return gameList.get(0);
+        }
     }
 
 }

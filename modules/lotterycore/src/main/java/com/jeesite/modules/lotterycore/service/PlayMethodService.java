@@ -77,5 +77,5 @@ public class PlayMethodService extends CrudService<PlayMethodDao, PlayMethod> {
 	public void delete(PlayMethod playMethod) {
 		super.delete(playMethod);
 	}
-	
+
 }

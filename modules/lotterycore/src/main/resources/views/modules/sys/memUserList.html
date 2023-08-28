@@ -9,8 +9,8 @@
                 <a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i>
                     ${text('查询')}</a>
                 <% if(hasPermi('sys:memUser:edit')){ %>
-                <a href="${ctx}/sys/memUser/form?op=add" class="btn btn-default btnTool" title="${text('新增会员')}"><i
-                        class="fa fa-plus"></i> ${text('新增')}</a>
+                <a href="${ctx}/sys/memUser/form?op=add" class="btn btn-default btnTool" title="${text('新增顶级会员')}"><i
+                        class="fa fa-plus"></i> ${text('新增顶级会员')}</a>
                 <% } %>
                 <a href="#" class="btn btn-default" id="btnSetting" title="${text('设置')}"><i
                         class="fa fa-navicon"></i></a>
@@ -22,6 +22,7 @@
             data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}"
             data-order-by="${parameter.orderBy}">
             <#form:hidden name="ctrlPermi" value="${@Global.getConfig('user.adminCtrlPermi', '2')}"/>
+            <#form:hidden path="member.parent.memId" />
             <div class="form-group">
                 <label class="control-label">${text('会员名')}：</label>
                 <div class="control-inline">
@@ -90,7 +91,7 @@
     $('#dataGrid').dataGrid({
         searchForm: $("#searchForm"),
         columnModel: [
-            {header:'${text("会员账号")}', name:'loginCode', index:'a.login_code', width:200, align:"center", frozen:true, formatter: function(val, obj, row, act){
+            {header:'${text("会员账号")}', name:'loginCode', index:'a.login_code', width:150, align:"center", frozen:true, formatter: function(val, obj, row, act){
                     return '<a href="${ctx}/sys/memUser/form?userCode='+row.userCode+'&op=edit" class="btnList" data-title="${text("编辑会员")}">'+(val||row.id)+'</a>';
                 }},
             // {header:'${text("会员昵称")}', name:'userName', index:'a.user_name', width:200, align:"center"},
@@ -100,26 +101,29 @@
             {header:'${text("最近登录时间")}', name:'lastLoginDate', index:'a.lately_login_time', width:150, align:"center"},
             {header:'${text("注册时间")}', name:'createDate', index:'a.create_date', width:150, align:"center"},
             // {header:'${text("账号级别")}', name:'member.accountLevel', index:'a.account_level', width:150, align:"center"},
-            // {header:'${text("返点")}', name:'member.rebate', index:'a.rebate', width:150, align:"right", formatter: function(val, obj, row, act){
-            //         return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
-            //     }},
-            // {header:'${text("赔率")}', name:'odds', index:'a.odds', width:150, align:"right", formatter: function(val, obj, row, act){
-            //         return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
-            //     }},
-            {header:'${text("工资")}', name:'member.wage', index:'a.wage', width:150, align:"right", formatter: function(val, obj, row, act){
+            {header:'${text("投注返点")}', name:'member.rebate', index:'a.rebate', width:80, align:"right", formatter: function(val, obj, row, act){
                     return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
                 }},
-            {header:'${text("分红")}', name:'member.bonus', index:'a.bonus', width:150, align:"right", formatter: function(val, obj, row, act){
+            {header:'${text("赔率")}', name:'member.odds', index:'a.odds', width:80, align:"right", formatter: function(val, obj, row, act){
                     return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
                 }},
-            {header:'${text("状态")}', name:'status', index:'a.status', width:150, align:"center", formatter: function(val, obj, row, act){
+            {header:'${text("工资")}', name:'member.wage', index:'a.wage', width:80, align:"right", formatter: function(val, obj, row, act){
+                    return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+                }},
+            {header:'${text("分红")}', name:'member.bonus', index:'a.bonus', width:80, align:"right", formatter: function(val, obj, row, act){
+                    return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+                }},
+            {header:'${text("状态")}', name:'status', index:'a.status', width:80, align:"center", formatter: function(val, obj, row, act){
                     return js.getDictLabel(${@DictUtils.getDictListJson('sys_search_status')}, val, '${text("未知")}', true);
                 }},
+            {header:'${text("上级会员")}', name:'member.parentName', index:'a.id', width:150, align:"center"},
             {header:'${text("备注")}', name:'remarks', index:'a.remarks', width:150, align:"left"},
             {header:'${text("操作")}', name:'actions', width:270, sortable:false, title:false, formatter: function(val, obj, row, act){
                     var actions = [];
                     <% if(hasPermi('sys:memUser:edit')){ %>
                         actions.push('<a href="${ctx}/sys/memUser/form?userCode='+row.userCode+'&op=edit" class="btnList" title="${text("编辑会员")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+                        actions.push('<a href="${ctx}/sys/memUser/form?userCode='+row.userCode+'&op=addSub" class="btnList" title="${text("添加下级会员")}"><i class="fa fa-plus-square"></i></a>&nbsp;');
+                        actions.push('<a href="${ctx}/sys/memUser/list?member.parent.memId='+row.userCode+'&op=addSub" class="btnList" title="【'+row.loginCode+'】的下级会员"><i class="fa fa-users"></i></a>&nbsp;');
                         <% } %>
                     <% if(hasPermi('sys:memUser:updateStatus')){ %>
                         if (row.status == Global.STATUS_NORMAL){

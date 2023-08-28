@@ -13,12 +13,14 @@ import com.jeesite.modules.api.vo.PlayMethodVO;
 import com.jeesite.modules.file.entity.FileUpload;
 import com.jeesite.modules.file.utils.FileUploadUtils;
 import com.jeesite.modules.lotterycore.common.exception.BizException;
+import com.jeesite.modules.lotterycore.constants.Constant;
 import com.jeesite.modules.lotterycore.entity.Game;
 import com.jeesite.modules.lotterycore.entity.Issue;
 import com.jeesite.modules.lotterycore.entity.PlayMethod;
 import com.jeesite.modules.lotterycore.entity.PlayMethodGroup;
 import com.jeesite.modules.lotterycore.param.R;
 import com.jeesite.modules.lotterycore.service.*;
+import com.jeesite.modules.sys.service.MemberService;
 import com.jeesite.modules.sys.utils.DictUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -48,6 +50,12 @@ public class LotteryApiController extends BaseController {
     private PlayMethodGroupService playMethodGroupService;
     @Autowired
     private PlayMethodService playMethodService;
+    @Autowired
+    private MemberService memberService;
+
+    @Autowired
+    private BetService betService;
+
 
     /**
      * 投注页面
@@ -118,7 +126,7 @@ public class LotteryApiController extends BaseController {
             //TODO 最爱
 
         } else {
-            //啥都不是
+            // 啥类型都不是
             return R.failure();
         }
         return R.success().data(gameVoList);
@@ -131,22 +139,19 @@ public class LotteryApiController extends BaseController {
      */
     @RequestMapping(value = "getGameInfo")
     public R getGameInfo(String gameCode) {
-        Game gameSC = new Game();
-        GameVO gameVo = new GameVO();
-        gameSC.setGameCode(gameCode);
-        List<Game> gameList = gameService.findList(gameSC);
-        if (gameList.size() < 1) {
-            return R.failure();
+        try {
+            Game game = gameService.validGameByGameCode(gameCode);
+            GameVO gameVo = new GameVO();
+            BeanUtil.copyProperties(game, gameVo);
+            // 游戏图片
+            List<FileUpload> gameImageList = FileUploadUtils.findFileUpload(game.getId(), "game_image");
+            if (gameImageList.size() > 0) {
+                gameVo.setImgUrl(gameImageList.get(0).getFileUrl());
+            }
+            return R.success().data(gameVo);
+        } catch (BizException bizException) {
+            return R.failure().message(bizException.getMessage());
         }
-        gameSC = gameList.get(0);
-        BeanUtil.copyProperties(gameSC, gameVo);
-        // 游戏图片
-        List<FileUpload> gameImageList = FileUploadUtils.findFileUpload(gameSC.getId(), "game_image");
-        if (gameImageList.size() > 0) {
-            gameVo.setImgUrl(gameImageList.get(0).getFileUrl());
-        }
-
-        return R.success().data(gameVo);
     }
 
     /**
@@ -164,7 +169,7 @@ public class LotteryApiController extends BaseController {
             PlayMethodGroup playMethodGroupSC = new PlayMethodGroup();
             playMethodGroupSC.setGameCategory(gameCategory);
             List<PlayMethodGroup> playMethodGroupList = playMethodGroupService.findList(playMethodGroupSC);
-            for (PlayMethodGroup playMethodGroup: playMethodGroupList) {
+            for (PlayMethodGroup playMethodGroup : playMethodGroupList) {
                 PlayMethodGroupVO playMethodGroupVo = new PlayMethodGroupVO();
                 BeanUtil.copyProperties(playMethodGroup, playMethodGroupVo);
                 // 获取分组下的playMethod
@@ -172,7 +177,7 @@ public class LotteryApiController extends BaseController {
                 playMethodSC.setGroupId(playMethodGroup.getId());
                 List<PlayMethod> playMethodList = playMethodService.findList(playMethodSC);
                 List<PlayMethodVO> playMethodVoList = new ArrayList<>();
-                for (PlayMethod playMethod: playMethodList) {
+                for (PlayMethod playMethod : playMethodList) {
                     PlayMethodVO playMethodVo = new PlayMethodVO();
                     BeanUtil.copyProperties(playMethod, playMethodVo);
                     playMethodVoList.add(playMethodVo);
@@ -183,6 +188,40 @@ public class LotteryApiController extends BaseController {
             return R.success().data(playMethodGroupVoList);
         } catch (BizException bizException) {
             return R.failure().message(bizException.getMessage());
+        }
+    }
+
+    /**
+     * 获取彩票基准销售单价
+     *
+     * @return
+     */
+    @RequestMapping(value = "getBasePrice")
+    public R getBasePrice() {
+        return R.success().data(Constant.系统_单注销售单价);
+    }
+
+    /**
+     * 获取系统投注返点上限
+     *
+     * @return
+     */
+    @RequestMapping(value = "getSysMaxRebate")
+    public R getSysMaxRebate() {
+        return R.success().data(Constant.系统_会员_返点上限);
+    }
+
+    /**
+     * 下注
+     *
+     * @return
+     */
+    @RequestMapping(value = "bet")
+    public R bet(String betRequest) {
+        try {
+            return betService.bet(betRequest);
+        } catch (Exception e) {
+            return R.failure();
         }
     }
 

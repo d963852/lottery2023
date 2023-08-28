@@ -46,6 +46,13 @@ export default {
 		title: 'User'
 	},
 	msg: {
-		title: 'Message'
-	}
+		title: 'Message',
+		stopBet: 'The current round of betting has ended. Please proceed to the next round of betting',
+	},
+	betPage: {
+		current: "Current",
+		nextLottery: "Next Lottery",
+		lastIssueWinningNumbers: "Winning Numbers",
+		history: "History",
+	},
 }

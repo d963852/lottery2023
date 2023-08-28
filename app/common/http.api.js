@@ -80,8 +80,11 @@ const install = (Vue, vm) => {
 		// 会员服务类
 		memberService: {
 			//获取会员余额
-			getBalance: (params = {}) => vm.$u.post(config.adminPath +
-				'/api/article/getIndexPictureList', params),
+			getBalance: () => vm.$u.post(config.adminPath +
+				'/api/member/getBalance', {}),
+			//获取会员投注返点上限
+			getRebate: () => vm.$u.post(config.adminPath +
+				'/api/member/getRebate', {}),
 		},
 
 		//彩票服务类
@@ -102,6 +105,15 @@ const install = (Vue, vm) => {
 				gemecode: ''
 			}) => vm.$u.post(config.adminPath +
 				'/api/lottery/findPlayMethodList', params),
+			// 获取系统单注售价
+			getBasePrice: (params = {}) => vm.$u.post(config.adminPath +
+				'/api/lottery/getBasePrice', params),
+			// 获取系统投注返点上限
+			getSysMaxRebate: (params = {}) => vm.$u.post(config.adminPath +
+				'/api/lottery/getSysMaxRebate', params),
+			// 下注
+			bet: (params = {}) => vm.$u.post(config.adminPath +
+				'/api/lottery/bet', params),
 		},
 	};
 

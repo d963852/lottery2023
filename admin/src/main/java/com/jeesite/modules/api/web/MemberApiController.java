@@ -4,25 +4,21 @@
  */
 package com.jeesite.modules.api.web;
 
-import cn.hutool.core.date.DateUtil;
 import com.jeesite.common.web.BaseController;
+import com.jeesite.modules.api.service.GameBettingWebSocketService;
 import com.jeesite.modules.lotterycore.entity.Game;
 import com.jeesite.modules.lotterycore.param.R;
 import com.jeesite.modules.lotterycore.service.GameService;
 import com.jeesite.modules.lotterycore.service.IssueService;
 import com.jeesite.modules.lotterycore.service.LotteryWebMenuService;
-import com.jeesite.modules.api.service.GameBettingWebSocketService;
 import com.jeesite.modules.sys.entity.Member;
 import com.jeesite.modules.sys.service.MemberService;
+import com.jeesite.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 演示实例Controller
@@ -55,33 +51,29 @@ public class MemberApiController extends BaseController {
     /**
      * 获取会员余额
      */
-    @RequestMapping(value = "getBalance/{memberId}")
+    @RequestMapping(value = "getBalance")
     @ResponseBody
-    public R getMemberBalance(@PathVariable("memberId") String memberId) {
-        Member member = memberService.get(memberId);
-        if (null != member) {
-            return R.success().data(member.getBalance());
+    public R getMemberBalance() {
+        Member currentUser = UserUtils.getUser().getRefObj();
+        if (null != currentUser) {
+            return R.success().data(currentUser.getBalance());
         } else {
-            return R.failure().data(0.0d);
+            return R.failure();
         }
     }
 
     /**
-     * 获取游戏当前期号
+     * 获取会员投注返点
      */
-    @RequestMapping(value = "getCurrentIssueNumber/{gameCode}")
+    @RequestMapping(value = "getRebate")
     @ResponseBody
-    public R getCurrentIssueNumber(@PathVariable("gameCode") String gameCode) {
-        Game game = gameService.getGameByCode(gameCode);
-        Map<String, String> result = new HashMap<>();
-        if (game != null) {
-            result.put("currentIssueNumber", game.getCurrentIssueNumber());
-            result.put("currentIssueEndTime", DateUtil.format(game.getCurrentIssueEndTime(), "yyyy-MM-dd HH:mm:ss"));
-            result.put("lastIssueNumber", game.getLastIssueNumber());
-            result.put("lastIssueLotteryNumber", game.getLastIssueLotteryNumber());
+    public R getRebate() {
+        Member currentUser = UserUtils.getUser().getRefObj();
+        if (null != currentUser) {
+            return R.success().data(currentUser.getRebate());
+        } else {
+            return R.failure();
         }
-        return R.success().data(result);
     }
-
 
 }

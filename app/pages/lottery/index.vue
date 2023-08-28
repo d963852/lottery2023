@@ -193,7 +193,7 @@
 				let that = this;
 				this.$u.api.lotteryService.findHotGameList().then(res => {
 					if (res.success) {
-						console.info(res.data);
+						// console.info(res.data);
 						let newArray = res.data.map(function(item, index) {
 							return {
 								menuCode: item.gameCode,

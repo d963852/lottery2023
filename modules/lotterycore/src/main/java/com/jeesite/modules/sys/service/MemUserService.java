@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * 会员用户Service
  * @author ThinkGem
@@ -33,7 +35,10 @@ public class MemUserService extends CrudService<MemUserDao, MemUser> {
      */
     @Override
     public MemUser get(MemUser memUser) {
-        return super.get(memUser);
+        //解决Parent懒加载问题
+        MemUser theMemUser = super.get(memUser);
+        theMemUser.getMember().setParent(memberService.get(theMemUser.getMember().getParent()));
+        return theMemUser;
     }
 
     /**
@@ -41,7 +46,35 @@ public class MemUserService extends CrudService<MemUserDao, MemUser> {
      */
     @Override
     public Page<MemUser> findPage(MemUser memUser) {
-        return super.findPage(memUser);
+        //解决Parent懒加载问题
+        Page<MemUser> page = super.findPage(memUser);
+        List<MemUser> memUserList = page.getList();
+        for (MemUser theMemUser: memUserList) {
+            Member parent = theMemUser.getMember().getParent();
+            if(parent != null){
+                parent = memberService.get(parent.getMemId());
+                theMemUser.getMember().setParent(parent);
+            }
+        }
+        page.setList(memUserList);
+        return page;
+    }
+
+    /**
+     * 分页查询数据
+     */
+    @Override
+    public List<MemUser> findList(MemUser memUser) {
+        //解决Parent懒加载问题
+        List<MemUser> memUserList = super.findList(memUser);
+        for (MemUser theMemUser: memUserList) {
+            Member parent = theMemUser.getMember().getParent();
+            if(parent != null){
+                parent = memberService.get(parent.getMemId());
+                theMemUser.getMember().setParent(parent);
+            }
+        }
+        return memUserList;
     }
 
     /**

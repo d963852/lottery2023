@@ -4,6 +4,7 @@ import cn.hutool.json.JSONUtil;
 import com.jeesite.modules.lotterycore.common.exception.BizError;
 import com.jeesite.modules.lotterycore.common.exception.BizException;
 import com.jeesite.modules.lotterycore.constants.Constant;
+import com.jeesite.modules.lotterycore.entity.Game;
 import com.jeesite.modules.lotterycore.entity.Issue;
 import com.jeesite.modules.lotterycore.param.SyncLotteryNumMsg;
 import com.jeesite.modules.lotterycore.service.GameService;
@@ -49,6 +50,18 @@ public class BaseSyncLotteryNumTask implements RocketMQListener<String> {
         try {
             logger.info("执行同步" + theIssue.getGameCode() + "开奖号码任务start");
             syncLotteryNumberService.syncLotteryNumber(theIssue);
+
+            // 同步开奖结果到Game中
+            Issue currentIssue = issueService.getCurrentIssue(theIssue.getGameCode());
+            Issue lastIssue = issueService.getLastIssue(theIssue.getGameCode());
+            if (currentIssue != null) {
+                Game game = gameService.validGameByGameCode(theIssue.getGameCode());
+                game.setCurrentIssueNumber(currentIssue.getIssueNum());
+                game.setCurrentIssueEndTime(currentIssue.getLotteryTime());
+                game.setLastIssueNumber(lastIssue.getIssueNum());
+                game.setLastIssueLotteryNumber(lastIssue.getLotteryNum());
+                gameService.save(game);
+            }
 
             // TODO 开奖
 

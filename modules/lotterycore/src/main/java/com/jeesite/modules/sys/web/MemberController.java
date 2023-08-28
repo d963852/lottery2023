@@ -341,7 +341,7 @@ public class MemberController extends BaseController {
 	}
 
 	/**
-	 * 提出在线用户
+	 * 在线用户强制下线
 	 * @author ThinkGem
 	 */
 	@RequiresPermissions("sys:member:edit")

@@ -24,7 +24,7 @@ class websocketUtil {
 			success:()=>{
 				// console.log("准备建立websocket...");
 				// 返回实例
-				return this.socketTask
+				return this.socketTask;
 			},
 		});
 		
@@ -50,7 +50,7 @@ class websocketUtil {
 		this.socketTask.onClose(() => {
 			// console.log("已经被关闭了")
 			this.is_open_socket = false;
-			this.reconnect();
+			// this.reconnect();
 		})
 	}
 	
@@ -79,7 +79,7 @@ class websocketUtil {
 		//如果不是人为关闭的话，进行重连
 		if(!this.is_open_socket){
 			this.reconnectTimeOut = setTimeout(()=>{
-				this.connectSocketInit();
+				// this.connectSocketInit();
 			},3000)
 		}
 	}
@@ -89,7 +89,10 @@ class websocketUtil {
 			return callback(res)
 		})
 	}
- 
+	//关闭
+	closeWebsocket(){
+		this.socketTask.close({});
+	}
 }
 
 module.exports = websocketUtil

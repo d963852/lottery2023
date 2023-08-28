@@ -28,7 +28,7 @@ public class SyncCurrentIssue {
     /**
      * 更改游戏的当前期号和下期期号
      */
-    @Scheduled(cron = "0/30 * * * * *")
+    @Scheduled(cron = "0,30 * * * * *")
     public void execute() {
         logger.info("执行【更改游戏的当前期号和下期期号任务】开始");
         try {

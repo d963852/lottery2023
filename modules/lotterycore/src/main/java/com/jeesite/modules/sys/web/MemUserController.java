@@ -86,9 +86,41 @@ public class MemUserController extends BaseController {
         }
         // 操作类型：add: 全部； edit: 编辑； auth: 授权
         model.addAttribute("op", op);
-        model.addAttribute("memUser", memUser);
-        model.addAttribute("bonusDefaultValue", Global.getConfig("lottery.member.bonus"));
-        model.addAttribute("wageDefaultValue", Global.getConfig("lottery.member.wage"));
+
+        // 各项数值系统上限
+        double maxRebate = Double.parseDouble(Global.getConfig("lottery.member.rebate", "15"));
+        double maxOdds = Double.parseDouble(Global.getConfig("lottery.member.odds", "2"));
+        double maxWage = Double.parseDouble(Global.getConfig("lottery.member.wage", "2.5"));
+        double maxBonus = Double.parseDouble(Global.getConfig("lottery.member.bonus", "15"));
+        if(memUser.getMember().getParent() != null){
+            // 如果有上级用户，则上级用户为上限
+            maxRebate = memUser.getMember().getParent().getRebate();
+            maxOdds = memUser.getMember().getParent().getOdds();
+            maxWage = memUser.getMember().getParent().getWage();
+            maxBonus = memUser.getMember().getParent().getBonus();
+        }
+        // 添加下级用户，预设值上级信息
+        if ("addSub".equals(op)) {
+            MemUser subMemUser = get("", true);
+            subMemUser.getMember().setParent(memUser.getMember());
+            // 单独设置各项数据上限
+            maxRebate = memUser.getMember().getRebate();
+            maxOdds = memUser.getMember().getOdds();
+            maxWage = memUser.getMember().getWage();
+            maxBonus = memUser.getMember().getBonus();
+
+            model.addAttribute("memUser", subMemUser);
+        } else {
+            model.addAttribute("memUser", memUser);
+        }
+
+
+
+        model.addAttribute("maxRebate", maxRebate);
+        model.addAttribute("maxOdds", maxOdds);
+        model.addAttribute("maxWage", maxWage);
+        model.addAttribute("maxBonus", maxBonus);
+
         return "modules/sys/memUserForm";
     }
 
@@ -102,15 +134,55 @@ public class MemUserController extends BaseController {
         if (!MemUser.USER_TYPE_MEMBER.equals(memUser.getUserType())) {
             return renderResult(Global.FALSE, "非法操作，不能够操作此用户！");
         }
+
+        // 如有上级，不能超过上级投注返点、赔率、工资、分红
+        if (memUser.getMember().getParent() != null) {
+            MemUser parent = memUserService.get(memUser.getMember().getParent().getId());
+            // 投注返点不能超过上级投注返点
+            if (memUser.getMember().getRebate() > parent.getMember().getRebate()) {
+                return renderResult(Global.FALSE, "投注返点不能超过上级投注返点" + parent.getMember().getRebate());
+            }
+            // 赔率不能超过上级赔率
+            if (memUser.getMember().getOdds() > parent.getMember().getOdds()) {
+                return renderResult(Global.FALSE, "赔率不能超过上级赔率" + parent.getMember().getOdds());
+            }
+            // 工资不能超过上级工资
+            if (memUser.getMember().getWage() > parent.getMember().getWage()) {
+                return renderResult(Global.FALSE, "工资不能超过上级工资" + parent.getMember().getWage());
+            }
+            // 分红不能超过上级分红
+            if (memUser.getMember().getBonus() > parent.getMember().getBonus()) {
+                return renderResult(Global.FALSE, "分红不能超过上级分红" + parent.getMember().getBonus());
+            }
+        }
+
+        // 各项数据不能超过系统最大限额
+        double sysMaxRebate = Double.parseDouble(Global.getConfig("lottery.member.rebate", "15"));
+        double sysMaxOdds = Double.parseDouble(Global.getConfig("lottery.member.odds", "2"));
+        double sysMaxWage = Double.parseDouble(Global.getConfig("lottery.member.wage", "2.5"));
+        double sysMaxBonus = Double.parseDouble(Global.getConfig("lottery.member.bonus", "15"));
+        if (sysMaxRebate < memUser.getMember().getRebate()) {
+            return renderResult(Global.FALSE, "投注返点数不能超过系统设置的投注返点上限" + sysMaxRebate);
+        }
+        if (sysMaxOdds < memUser.getMember().getOdds()) {
+            return renderResult(Global.FALSE, "赔率不能超过系统设置的赔率上限" + sysMaxOdds);
+        }
+        if (sysMaxWage < memUser.getMember().getWage()) {
+            return renderResult(Global.FALSE, "工资不能超过系统设置的工资上限" + sysMaxWage);
+        }
+        if (sysMaxBonus < memUser.getMember().getBonus()) {
+            return renderResult(Global.FALSE, "分红不能超过系统设置的分红上限" + sysMaxBonus);
+        }
+
         MemUser old = super.getWebDataBinderSource(request);
         if (!Global.TRUE.equals(userService.checkLoginCode(old != null ? old.getLoginCode() : "", memUser.getLoginCode()))) {
             return renderResult(Global.FALSE, text("保存用户失败，登录账号''{0}''已存在", memUser.getLoginCode()));
         }
         Subject subject = UserUtils.getSubject();
-        if (StringUtils.inString(op, Global.OP_ADD, Global.OP_EDIT) && subject.isPermitted("sys:memUser:edit")) {
+        if (StringUtils.inString(op, Global.OP_ADD, Global.OP_EDIT, "addSub") && subject.isPermitted("sys:memUser:edit")) {
             memUserService.save(memUser);
         }
-        if (StringUtils.inString(op, Global.OP_ADD, Global.OP_AUTH) && subject.isPermitted("sys:memUser:authRole")) {
+        if (StringUtils.inString(op, Global.OP_ADD, Global.OP_AUTH, "addSub") && subject.isPermitted("sys:memUser:authRole")) {
             userService.saveAuth(memUser);
         }
         return renderResult(Global.TRUE, text("保存用户''{0}''成功", memUser.getUserName()));

@@ -7,7 +7,7 @@
 					<view class="u-flex-4">
 						<text class="u-font-18 u-p-l-20 u-main-color red-bold">{{ item.title }}</text>
 					</view>
-					<view class=" u-flex u-row-between u-flex-nowrap u-flex-8">
+					<view class=" u-flex u-row-between u-flex-nowrap u-flex-8 u-p-r-20">
 						<view @click.stop="quickSelectNumber(item.id,'quan')">全</view>
 						<view @click.stop="quickSelectNumber(item.id,'da')">大</view>
 						<view @click.stop="quickSelectNumber(item.id,'xiao')">小</view>
@@ -16,7 +16,7 @@
 						<view @click.stop="quickSelectNumber(item.id,'qing')">清</view>
 					</view>
 				</view>
-				<u-gap height="3"></u-gap>
+				<u-gap height="5"></u-gap>
 				<view class="u-p-20" style="background: #fff;">
 					<view class="u-flex u-row-around u-flex-nowrap u-m-b-25">
 						<view class="select-number" v-for="(number, index) in item.numberRowOne"
@@ -36,7 +36,7 @@
 				<u-gap height="15"></u-gap>
 			</view>
 		</view>
-		
+
 	</view>
 </template>
 
@@ -45,44 +45,77 @@
 		data() {
 			return {
 				panelData: [{
-						id: "wan",
+						id: "p05",
 						title: '万位',
 						numberRowOne: [0, 1, 2, 3, 4],
 						numberRowTow: [5, 6, 7, 8, 9],
 					},
 					{
-						id: "qian",
+						id: "p04",
 						title: '千位',
 						numberRowOne: [0, 1, 2, 3, 4],
 						numberRowTow: [5, 6, 7, 8, 9],
 					},
 					{
-						id: "bai",
+						id: "p03",
 						title: '百位',
 						numberRowOne: [0, 1, 2, 3, 4],
 						numberRowTow: [5, 6, 7, 8, 9],
 					},
 					{
-						id: "shi",
+						id: "p02",
 						title: '十位',
 						numberRowOne: [0, 1, 2, 3, 4],
 						numberRowTow: [5, 6, 7, 8, 9],
 					},
 					{
-						id: "ge",
+						id: "p01",
 						title: '个位',
 						numberRowOne: [0, 1, 2, 3, 4],
 						numberRowTow: [5, 6, 7, 8, 9],
 					},
 				],
 				selectedNumber: {
-					wan: [],
-					qian: [],
-					bai: [],
-					shi: [],
-					ge: [],
+					p01: [],
+					p02: [],
+					p03: [],
+					p04: [],
+					p05: [],
 				},
 			};
+		},
+		computed: {},
+		watch: {
+			selectedNumber: {
+				handler: function(newVal, oldVal) {
+					// 监听selectedNumber，如果全部选择完毕，回传给父组件
+					for (let key in newVal) {
+						if (newVal[key].length < 1) {
+							this.$emit('monitorBetNumber', {
+								error: "请选择5位数字",
+							});
+							return;
+						}
+					}
+
+					// 计算投注注数
+					let betCount = 1;
+					for (let key in newVal) {
+						betCount *= newVal[key].length;
+					}
+
+					// 将选择结果反馈到上级组件
+					// 选中号码拼接为 x,x,x|x,x,x|…… 格式
+					let arr = Object.values(newVal).join("|");
+
+					this.$emit('monitorBetNumber', {
+						success: true,
+						betNumber: arr,
+						betCount: betCount,
+					});
+				},
+				deep: true,
+			}
 		},
 		methods: {
 			selectNumber(position, number) {
@@ -110,7 +143,6 @@
 				} else if (action == "qing") {
 					this.selectedNumber[position] = this.vuex_config.selectNumber10.qing;
 				}
-				console.info(this.selectedNumber);
 			},
 			isSelected(position, number) {
 				if (this.selectedNumber[position].indexOf(number) != -1) {

@@ -1,0 +1,184 @@
+<% layout('/layouts/default.html', {title: '账变日志管理', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-notebook"></i> ${text('账变日志管理')}
+			</div>
+			<div class="box-tools pull-right">
+				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+				<% if(hasPermi('lotterycore:accountChangeLog:edit')){ %>
+					<a href="${ctx}/lotterycore/accountChangeLog/form" class="btn btn-default btnTool" title="${text('新增账变日志')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+				<% } %>
+				<a href="#" class="btn btn-default" id="btnSetting" title="${text('设置')}"><i class="fa fa-navicon"></i></a>
+			</div>
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" model="${accountChangeLog}" action="${ctx}/lotterycore/accountChangeLog/listData" method="post" class="form-inline hide"
+					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+				<div class="form-group">
+					<label class="control-label">${text('用户账号')}：</label>
+					<div class="control-inline">
+						<#form:input path="userAccount" maxlength="64" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('账变金额')}：</label>
+					<div class="control-inline">
+						<#form:input path="changeAmount_gte" maxlength="13" class="form-control width-60"/>
+						&nbsp;-&nbsp;
+						<#form:input path="changeAmount_lte" maxlength="13" class="form-control width-60"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('账变时间')}：</label>
+					<div class="control-inline">
+						<#form:input path="changeTime_gte" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm" data-done="changeTime_lte.click()"/>
+						&nbsp;-&nbsp;
+						<#form:input path="changeTime_lte" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('账变类型')}：</label>
+					<div class="control-inline width-120">
+						<#form:select path="changeType" dictType="" blankOption="true" class="form-control"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('余额')}：</label>
+					<div class="control-inline">
+						<#form:input path="balance_gte" maxlength="13" class="form-control width-60"/>
+						&nbsp;-&nbsp;
+						<#form:input path="balance_lte" maxlength="13" class="form-control width-60"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('游戏名称')}：</label>
+					<div class="control-inline">
+						<#form:input path="gameName" maxlength="64" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('是否冻结')}：</label>
+					<div class="control-inline width-120">
+						<#form:select path="freeze" dictType="" blankOption="true" class="form-control"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('是否可提现')}：</label>
+					<div class="control-inline width-120">
+						<#form:select path="canWithdraw" dictType="" blankOption="true" class="form-control"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('游戏期号')}：</label>
+					<div class="control-inline">
+						<#form:input path="issue" maxlength="64" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('操作人账号')}：</label>
+					<div class="control-inline">
+						<#form:input path="actionUserAccount" maxlength="64" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('操作时间')}：</label>
+					<div class="control-inline">
+						<#form:input path="actionTime_gte" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm" data-done="actionTime_lte.click()"/>
+						&nbsp;-&nbsp;
+						<#form:input path="actionTime_lte" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('操作ip')}：</label>
+					<div class="control-inline">
+						<#form:input path="actionIp" maxlength="64" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('业务状态')}：</label>
+					<div class="control-inline width-120">
+						<#form:select path="bizStatus" dictType="" blankOption="true" class="form-control"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('备注')}：</label>
+					<div class="control-inline">
+						<#form:input path="remarks" maxlength="512" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('是否删除')}：</label>
+					<div class="control-inline">
+						<#form:input path="deleted" maxlength="64" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('租户编号')}：</label>
+					<div class="control-inline">
+						<#form:input path="tenantId" maxlength="64" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+					<button type="reset" class="btn btn-default btn-sm isQuick">${text('重置')}</button>
+				</div>
+			</#form:form>
+			<table id="dataGrid"></table>
+			<div id="dataGridPage"></div>
+		</div>
+	</div>
+</div>
+<% } %>
+<script>
+// 初始化DataGrid对象
+$('#dataGrid').dataGrid({
+	searchForm: $("#searchForm"),
+	columnModel: [
+		{header:'${text("用户账号")}', name:'userAccount', index:'a.user_account', width:150, align:"left", frozen:true, formatter: function(val, obj, row, act){
+			return '<a href="${ctx}/lotterycore/accountChangeLog/form?id='+row.id+'" class="btnList" data-title="${text("编辑账变日志")}">'+(val||row.id)+'</a>';
+		}},
+		{header:'${text("账变金额")}', name:'changeAmount', index:'a.change_amount', width:150, align:"right", formatter: function(val, obj, row, act){
+			return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+		}},
+		{header:'${text("账变时间")}', name:'changeTime', index:'a.change_time', width:150, align:"center"},
+		{header:'${text("账变类型")}', name:'changeType', index:'a.change_type', width:150, align:"center", formatter: function(val, obj, row, act){
+			return js.getDictLabel(${@DictUtils.getDictListJson('')}, val, '${text("未知")}', true);
+		}},
+		{header:'${text("余额")}', name:'balance', index:'a.balance', width:150, align:"right", formatter: function(val, obj, row, act){
+			return js.formatNumber(val, 2, false, ''); // 数值类型格式化 (原始数值, 小数位数, 是否千分位, 默认值，金额情况下设置0.00);
+		}},
+		{header:'${text("游戏名称")}', name:'gameName', index:'a.game_name', width:150, align:"left"},
+		{header:'${text("是否冻结")}', name:'freeze', index:'a.freeze', width:150, align:"center", formatter: function(val, obj, row, act){
+			return js.getDictLabel(${@DictUtils.getDictListJson('')}, val, '${text("未知")}', true);
+		}},
+		{header:'${text("是否可提现")}', name:'canWithdraw', index:'a.can_withdraw', width:150, align:"center", formatter: function(val, obj, row, act){
+			return js.getDictLabel(${@DictUtils.getDictListJson('')}, val, '${text("未知")}', true);
+		}},
+		{header:'${text("游戏期号")}', name:'issue', index:'a.issue', width:150, align:"left"},
+		{header:'${text("操作人账号")}', name:'actionUserAccount', index:'a.action_user_account', width:150, align:"left"},
+		{header:'${text("操作时间")}', name:'actionTime', index:'a.action_time', width:150, align:"center"},
+		{header:'${text("操作ip")}', name:'actionIp', index:'a.action_ip', width:150, align:"left"},
+		{header:'${text("业务状态")}', name:'bizStatus', index:'a.biz_status', width:150, align:"center", formatter: function(val, obj, row, act){
+			return js.getDictLabel(${@DictUtils.getDictListJson('')}, val, '${text("未知")}', true);
+		}},
+		{header:'${text("备注")}', name:'remarks', index:'a.remarks', width:150, align:"left"},
+		{header:'${text("操作")}', name:'actions', width:120, formatter: function(val, obj, row, act){
+			var actions = [];
+			//<% if(hasPermi('lotterycore:accountChangeLog:edit')){ %>
+				actions.push('<a href="${ctx}/lotterycore/accountChangeLog/form?id='+row.id+'" class="btnList" title="${text("编辑账变日志")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+			//<% } %>
+			return actions.join('');
+		}}
+	],
+	// 加载成功后执行事件
+	ajaxSuccess: function(data){
+		
+	}
+});
+</script>

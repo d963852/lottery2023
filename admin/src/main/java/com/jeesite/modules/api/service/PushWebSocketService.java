@@ -15,6 +15,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @ServerEndpoint("/ws/pushWebSocketService/{sid}")
 @Component
@@ -49,25 +52,33 @@ public class PushWebSocketService extends BaseService {
         this.sid = sid;
         try {
             logger.info(this.sid + "连接PushWebSocketService");
-            Double memBalance = memberService.getBalanceByMemberId(sid);
-            Map<String, String> result = new HashMap<>();
-            result.put("responseOf", "memBalance");
-            result.put("memBalance", String.valueOf(memBalance));
-            sendMessage(JSONUtil.toJsonStr(result));
-            // 定时取用户余额并推送
-            for (int i = 0; i < 6 * 60 * 2; i++) {
-                Thread.currentThread().sleep(10 * 1000);
-                Double nowMemBalance = memberService.getBalanceByMemberId(sid);
-                if (!nowMemBalance.equals(memBalance)) {
-                    // 余额变化，推送
-                    result = new HashMap<>();
+            ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+            Runnable task = new Runnable() {
+                public void run() {
+                    Double memBalance = memberService.getBalanceByMemberId(sid);
+                    Map<String, String> result = new HashMap<>();
                     result.put("responseOf", "memBalance");
-                    result.put("memBalance", String.valueOf(nowMemBalance));
-                    sendMessage(JSONUtil.toJsonStr(result));
-                    memBalance = nowMemBalance;
+                    result.put("memBalance", String.valueOf(memBalance));
+                    try {
+                        sendMessage(JSONUtil.toJsonStr(result));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
+            };
+            int initialDelay = 0; // 初始延迟时间为0秒
+            int period = 10; // 间隔时间为10秒
+            scheduler.scheduleAtFixedRate(task, initialDelay, period, TimeUnit.SECONDS);
+            // 等待一段时间后关闭定时任务调度器
+            try {
+                Thread.sleep(10 * 60 * 1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+            scheduler.shutdown();
+
         } catch (Exception e) {
+            e.printStackTrace();
             logger.error("websocket IO异常");
         }
 
@@ -82,7 +93,7 @@ public class PushWebSocketService extends BaseService {
         webSocketSet.remove(this);  //从set中删除
         subOnlineCount();           //在线数减1
 //        TelegramUtils.sendMessage("断掉链接："+sid);
-        logger.info("有一连接关闭！当前在线人数为" + getOnlineCount());
+        logger.info("pushService有一连接关闭！当前在线人数为" + getOnlineCount());
     }
 
     /**
@@ -92,7 +103,7 @@ public class PushWebSocketService extends BaseService {
      */
     @OnMessage
     public void onMessage(String message, Session session) {
-        logger.info("收到来自请求" + sid + "的信息:" + message);
+        logger.info("pushService收到来自请求" + sid + "的信息:" + message);
         try {
             if (StrUtil.isEmpty(message)) {
                 logger.info("消息体为空，不予处理");
@@ -105,7 +116,7 @@ public class PushWebSocketService extends BaseService {
 
     @OnError
     public void onError(Session session, Throwable error) {
-        logger.error("发生错误");
+        logger.error("pushService发生错误"+error.getMessage());
         error.printStackTrace();
     }
 

@@ -22,6 +22,7 @@
 		data() {
 			return {
 				balance: 0.00,
+				timer: null,
 			}
 		},
 		props: {
@@ -46,6 +47,10 @@
 		created() {
 			this.setBarTitle();
 			this.getBalance();
+			// 每30秒取一次余额
+			this.timer = setInterval(() => {
+				this.getBalance();
+			}, 30 * 1000);
 		},
 		methods: {
 			switchLang() {
@@ -81,27 +86,21 @@
 					text: this.$t('nav.user')
 				});
 			},
-			getBalance() {
-				let websocket = new wsRequest("ws://" + this.vuex_config.serverHost + "/ws/pushWebSocketService/" + this
-					.vuex_user.id, 5000);
-				// 发送消息
-				let data = {
-					value: "传输内容1",
-					method: "方法名称2"
+			//获取 用户余额
+			async getBalance() {
+				let res = await this.$u.api.memberService.getBalance();
+				// console.info(res);
+				if (res.success) {
+					this.balance = res.data;
+				} else {
+					this.$u.toast(this.$t('error.serverDisconnected'));
 				}
-				websocket.send(JSON.stringify(data));
-				// 接收消息
-				websocket.getMessage(res => {
-					if (res.data != null) {
-						let resultJson = JSON.parse(res.data);
-						if (resultJson.responseOf === "memBalance") {
-							// console.info("resultJson.memBalance", resultJson.memBalance);
-							this.balance = resultJson.memBalance;
-						}
-					}
-				})
 			},
-		}
+		},
+		beforeDestroy() {
+			clearInterval(this.timer);
+			this.timer = null;
+		},
 	}
 </script>
 <style lang="scss" scoped>

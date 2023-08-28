@@ -70,7 +70,7 @@ public class GameBettingWebSocketService extends BaseService {
         this.sid = sid;
         this.gameCode = gameCode;
         try {
-            logger.info(this.sid + "连接GameBettingWebSocketService");
+            logger.info(this.sid + "连接GameBettingWebSocketService，请求"+ this.gameCode);
         } catch (Exception e) {
             logger.error("websocket IO异常");
         }

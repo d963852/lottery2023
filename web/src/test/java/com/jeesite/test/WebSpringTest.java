@@ -6,6 +6,7 @@ package com.jeesite.test;
 
 import com.jeesite.common.tests.BaseSpringContextTests;
 import com.jeesite.modules.Application;
+import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -13,9 +14,9 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest(classes = Application.class)
 public class WebSpringTest extends BaseSpringContextTests {
 
-//    @Test
-//    public void testTg(){
-//        TelegramUtils.sendMessage("测试测试");
-//    }
+    @Test
+    public void testTg(){
+        System.out.println("测试测试");
+    }
 
 }

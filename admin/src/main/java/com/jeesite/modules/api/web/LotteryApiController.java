@@ -220,8 +220,11 @@ public class LotteryApiController extends BaseController {
     public R bet(String betRequest) {
         try {
             return betService.bet(betRequest);
+        } catch (BizException e) {
+            return R.failure().message(e.getMessage());
         } catch (Exception e) {
-            return R.failure();
+            logger.error(e.getMessage());
+            return R.failure().message("系统异常，请重新投注");
         }
     }
 

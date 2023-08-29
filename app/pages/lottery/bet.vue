@@ -222,8 +222,9 @@
 			</view>
 			<u-gap height="15"></u-gap>
 		</view>
+
+		<!-- 余额不足提示 -->
 		<view>
-			<!-- 余额不足提示 -->
 			<u-popup v-model="needRechargeAlertVisible" :closeable=true mode="bottom" length="50%">
 				<view class="u-p-t-60 u-p-30">
 					<view class="u-text-center u-font-40 red-bold">
@@ -251,6 +252,12 @@
 				</view>
 			</u-popup>
 		</view>
+
+		<!-- 顶部弹出错误提醒 -->
+		<view>
+			<u-top-tips ref="uTips"></u-top-tips>
+		</view>
+
 
 	</view>
 </template>
@@ -350,7 +357,7 @@
 				},
 				basePrice: 2.00, // 彩票每注基准售价，默认2元，进入页面后从服务器更新
 				canBet: true, //是否可投注，用于控制按钮是否可点，当截止投注前5秒不可投注
-				waitForBetRequestDisable: false,//点击投注后，禁用添加列表、投注按钮
+				waitForBetRequestDisable: false, //点击投注后，禁用添加列表、投注按钮
 
 				rebateAndBonusSliderValue: 0, //投注返点slider值
 				// playMethodMaxBonus: 0, //玩法最大奖金
@@ -416,7 +423,7 @@
 				if (!isNaN(parseFloat(this.betListTotalAmount)) && //列表总投注金额是数字
 					isFinite(this.betListTotalAmount) && //列表总投注金额是数字
 					this.betListTotalAmount > 0 && // 列表总投注金额大于0
-					this.canBet &&  //没有封盘
+					this.canBet && //没有封盘
 					!this.waitForBetRequestDisable //没有在等投注结果
 				) {
 					return false;
@@ -694,21 +701,33 @@
 			 */
 			calcRebateAndBonus() {
 				// 客户选择的返点
-				let rebate = this.memberRebate * this.rebateAndBonusSliderValue / 100;
+				let selectRebate = this.memberRebate * this.rebateAndBonusSliderValue / 100;
 				// 当前玩法的中奖奖金
 				let bonusDiff = this.currentPlayMethod.maxBonus - this.currentPlayMethod.minBonus;
-				let rebateDiff = this.memberRebate - rebate;
+				let rebateDiff = this.memberRebate - selectRebate;
 				let bonusAdd = bonusDiff * rebateDiff / this.sysMaxRebate;
 				let bonus = bonusAdd + this.currentPlayMethod.minBonus;
-				// console.log('rebate', rebate);
-				// console.log('bonusDiff', bonusDiff);
-				// console.log('rebateDiff', rebateDiff);
-				// console.log('bonusAdd', bonusAdd);
-				// console.log('bonus', bonus);
-
 				this.currentBet.bonusAmount = bonus; //奖金
-				this.currentBet.rebate = rebate; // 返点率(还需要除以100)
-				this.currentBet.rebateAmount = rebate / 100 * this.currentBet.betAmount; //返点金额=返点率*投注金额
+				this.currentBet.rebate = selectRebate; // 返点率(还需要除以100)
+				this.currentBet.rebateAmount = selectRebate / 100 * this.currentBet.betAmount; //返点金额=返点率*投注金额
+				
+				console.log('this.currentPlayMethod', this.currentPlayMethod);
+				
+				console.log('this.memberRebate', this.memberRebate);
+				console.log('selectRebate', selectRebate);
+				console.log('rebateDiff', rebateDiff);
+				
+				console.log('this.currentPlayMethod.maxBonus', this.currentPlayMethod.maxBonus);
+				console.log('this.currentPlayMethod.minBonus', this.currentPlayMethod.minBonus);
+				console.log('bonusDiff', bonusDiff);
+			
+				console.log('this.sysMaxRebate', this.sysMaxRebate);
+				console.log('bonusAdd', bonusAdd);
+				console.log('bonus', bonus);
+				
+				console.log('this.currentBet.bonusAmount', this.currentBet.bonusAmount);
+				console.log('this.currentBet.rebate', this.currentBet.rebate);
+				console.log('this.currentBet.rebateAmount ', this.currentBet.rebateAmount );
 			},
 			// 添加到投注列表及直接投注之前，计算当前投注的信息
 			async validateBalance(amount) {
@@ -782,10 +801,14 @@
 				if (betResult.success) {
 					// 投注成功，更新余额
 					this.$u.toast(this.$t('betPage.betSuccess'));
-					this.$refs.jslang.getBalance();
+					this.$refs.jslang.balance = betResult.data;
 					this.waitForBetRequestDisable = false; // 启用添加列表、投注按钮
 				} else {
-					this.$u.toast(this.$t('error.serverDisconnected'));
+					this.$refs.uTips.show({
+						title: '投注失败，原因：' + betResult.message,
+						type: 'warning ',
+						duration: '3000'
+					})
 					this.waitForBetRequestDisable = false; // 启用添加列表、投注按钮
 				}
 			}

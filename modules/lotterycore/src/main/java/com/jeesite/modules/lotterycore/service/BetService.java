@@ -1,6 +1,7 @@
 package com.jeesite.modules.lotterycore.service;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
@@ -60,7 +61,7 @@ public class BetService extends BaseService {
     @Transactional
     public R bet(String betRequest) throws Exception {
         // 会员信息
-        Member currentUser = UserUtils.getUser().getRefObj();
+        Member currentUser = memberService.get(UserUtils.getUser().getId());
         // 字符串安全验证
         String filteredBetRequest = EncodeUtils.xssFilter(betRequest);
         filteredBetRequest = EncodeUtils.sqlFilter(filteredBetRequest);
@@ -123,7 +124,7 @@ public class BetService extends BaseService {
             if (playMethodGroup == null || playMethodGroup.getIsNewRecord()) {
                 throw new BizException(BizError.游戏玩法不存在);
             }
-            if (!StrUtil.contains(playMethodGroup.getGameCategory(), game.getGameCode())) {
+            if (!StrUtil.contains(playMethodGroup.getGameCategory(), game.getGameCategory())) {
                 throw new BizException(BizError.该游戏不能用这个玩法下注);
             }
 
@@ -157,9 +158,9 @@ public class BetService extends BaseService {
             }
 
             // 投注金额验证
-            // 投注金额 = 投注数*基准售价
-            double betAmount = betInfo.getFinalCount() * Constant.系统_单注销售单价;
-            if (betAmount == betInfo.getBetAmount()) {
+            // 投注金额 = 投注数*基准售价*货币单位
+            double betAmount = betInfo.getFinalCount() * Constant.系统_单注销售单价 * betInfo.getBetUnit().getValue();
+            if (NumberUtil.compare(betAmount, betInfo.getBetAmount()) != 0) {
                 throw new BizException(BizError.投注金额验证错误);
             }
 
@@ -187,24 +188,19 @@ public class BetService extends BaseService {
              * 投注返点和奖金计算
              * 若系统投注返点上限15，客户投注返点上限不能超过15
              * 投注时允许客户选择奖金和返点比例，返点是投注就给（相当于打折），奖金是中奖才给
-             * 中奖奖金金额=(玩法最大奖金-玩法最小奖金)*(客户投注返点上限-客户选择返点)/系统投注返点上限+玩法最小奖金
+             * 奖金金额=(玩法最大奖金-玩法最小奖金)*(客户投注返点上限-客户选择返点)/系统投注返点上限+玩法最小奖金
              * 投注返点金额=投注金额*客户选择返点
              */
             double bonusDiff = playMethod.getMaxBonus() - playMethod.getMinBonus();
             double rebateDiff = currentUser.getRebate() - betInfo.getRebate();
             double bonusAdd = bonusDiff * rebateDiff / Constant.系统_会员_返点上限;
             double bonusAmount = bonusAdd + playMethod.getMinBonus();//奖金金额
-            double rebate = currentUser.getRebate() / 100; // 返点率
-            double rebateAmount = rebate * betAmount; //返点金额=返点率*投注金额
-            if (bonusAmount != betInfo.getBonusAmount()) {
+            double rebateAmount = betInfo.getRebate() * betAmount / 100; //返点金额=客户选择返点率*投注金额
+            if (NumberUtil.compare(bonusAmount, betInfo.getBonusAmount()) != 0) {
                 throw new BizException(BizError.奖金金额验证错误);
             }
-            if (rebate != betInfo.getRebate()) {
-                throw new BizException(BizError.投注返点比例验证错误);
-            }
-            if (rebateAmount != betInfo.getRebateAmount()) {
-                throw new BizException(BizError.投注返点金额验证错误);
-            }
+            // 在前台未计算返点金额，在此处直接计算
+            betInfo.setRebateAmount(rebateAmount);
 
             // 累加投注金额
             totalBetAmount += betAmount;
@@ -218,8 +214,8 @@ public class BetService extends BaseService {
             betOrder.setUserId(currentUser.getId());
             betOrder.setUserAccount(currentUser.getMemName());
             betOrder.setUserIp(UserUtils.getSession().getHost());
-            betOrder.setUserWay(UserUtils.getSession().getAttribute("deviceType").toString());
-            betOrder.setUserEquipment(UserUtils.getSession().getAttribute("org.apache.shiro.subject.support.DefaultSubjectContext_PRINCIPALS_SESSION_KEY.primaryPrincipal.params.device").toString());
+//            betOrder.setUserWay(UserUtils.getSession().getAttribute("deviceType").toString());
+//            betOrder.setUserEquipment(UserUtils.getSession().getAttribute("org.apache.shiro.subject.support.DefaultSubjectContext_PRINCIPALS_SESSION_KEY.primaryPrincipal.params.device").toString());
             betOrder.setBasePrice(Constant.系统_单注销售单价);
             betOrder.setBetTime(DateUtil.date());
             betOrder.setGameCode(betRequestBean.getGameCode());
@@ -235,11 +231,11 @@ public class BetService extends BaseService {
             betOrder.setBetMultiple((long) betInfo.getBetCount());
             betOrder.setTotalBetCount((long) betInfo.getFinalCount());
             betOrder.setBetUnit(betInfo.getBetUnit().getValue());
-            betOrder.setBetAmount(betInfo.getBetAmount());
+            betOrder.setBetAmount(NumberUtil.round(betInfo.getBetAmount(), 2).doubleValue());
 //            betOrder.setNotPosition();//不定位
             betOrder.setRebate(betInfo.getRebate());
-            betOrder.setRebateAmount(betInfo.getRebateAmount());
-            betOrder.setBonusAmount(betInfo.getBonusAmount());
+            betOrder.setRebateAmount(NumberUtil.round(betInfo.getRebateAmount(), 2).doubleValue());
+            betOrder.setBonusAmount(NumberUtil.round(betInfo.getBonusAmount(), 2).doubleValue());
 //            betOrder.setSyndicate();//合买
 //            betOrder.setFrisbee();//飞盘
 //            betOrder.setChasing();//追号
@@ -265,7 +261,6 @@ public class BetService extends BaseService {
         for (BetOrder betOrder : betOrderList) {
             // 保存投注记录
             betOrderService.save(betOrder);
-            Member member = UserUtils.getUser().getRefObj();
 
             // 开始变动余额
             double newBalance = currentUser.getBalance();//原始余额
@@ -273,8 +268,9 @@ public class BetService extends BaseService {
             double changeAmount = 0 - betOrder.getBetAmount();
             newBalance += changeAmount;
             // 记录账变日志
-            accountChangeLogService.add(member,
+            accountChangeLogService.add(currentUser,
                     changeAmount,
+                    newBalance,
                     Constant.账变日志类型_出账_投注扣款,
                     Constant.操作人_系统自动,
                     BetOrder.class.getName(),
@@ -282,24 +278,27 @@ public class BetService extends BaseService {
 
             // 发放客户投注返点
             changeAmount = betOrder.getRebateAmount();
-            newBalance += changeAmount;
-            // 记录账变日志
-            accountChangeLogService.add(member,
-                    changeAmount,
-                    Constant.账变日志类型_入账_投注返点,
-                    Constant.操作人_系统自动,
-                    BetOrder.class.getName(),
-                    betOrder.getIssueId());
+            if (changeAmount > 0) {
+                newBalance += changeAmount;
+                // 记录账变日志
+                accountChangeLogService.add(currentUser,
+                        changeAmount,
+                        newBalance,
+                        Constant.账变日志类型_入账_投注返点,
+                        Constant.操作人_系统自动,
+                        BetOrder.class.getName(),
+                        betOrder.getIssueId());
+            }
 
             // 客户账变完毕，保存余额
-            member.setBalance(newBalance);
-            memberService.save(member);
+            currentUser.setBalance(NumberUtil.round(newBalance, 2).doubleValue());
+            memberService.save(currentUser);
 
             // TODO 发放客户上级投注返点
-            payRebateAmountToParent(member, betOrder.getBetAmount(), betOrder.getId());
+            payRebateAmountToParent(currentUser, betOrder.getBetAmount(), betOrder.getId());
         }
 
-        return R.success();
+        return R.success().message("投注成功").data(currentUser.getBalance());
     }
 
     /**
@@ -312,23 +311,27 @@ public class BetService extends BaseService {
     public void payRebateAmountToParent(Member member, double betAmount, String bizId) throws Exception {
         if (!"0".equals(member.getParentCode())) {
             Member parentMember = memberService.get(member.getParentCode());
+            String memberName = member.getMemName();
             // 计算返点差
             double rebateDiff = parentMember.getRebate() - member.getRebate();
             if (rebateDiff < 0) {
                 throw new BizException(BizError.上级返点小于下级);
             }
-            // 发放下家的返点金额
+            // 发放返点金额
             double rebateAmount = rebateDiff * betAmount / 100;
-            // 发放下家的返点金额
-            parentMember.setBalance(parentMember.getBalance() + rebateAmount);
-            // 记录账变日志
-            accountChangeLogService.add(parentMember,
-                    betAmount,
-                    Constant.账变日志类型_入账_下家投注返点,
-                    Constant.操作人_系统自动,
-                    BetOrder.class.getName(),
-                    bizId);
-            memberService.save(parentMember);
+            if (rebateAmount > 0.0d) {
+                // 发放返点金额
+                parentMember.setBalance(parentMember.getBalance() + rebateAmount);
+                // 记录账变日志
+                accountChangeLogService.add(parentMember,
+                        rebateAmount,
+                        parentMember.getBalance(),
+                        StrUtil.format("{}【{}】", Constant.账变日志类型_入账_下家投注返点, memberName),
+                        Constant.操作人_系统自动,
+                        BetOrder.class.getName(),
+                        bizId);
+                memberService.save(parentMember);
+            }
 
             //递归调用直到所有上级都返点
             payRebateAmountToParent(parentMember, betAmount, bizId);

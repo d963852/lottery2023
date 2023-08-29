@@ -88,8 +88,8 @@ public class Constant {
 
     public static final double 系统_会员_分红上限 = Double.parseDouble(Global.getConfig("lottery.member.bonus", "15"));
     public static final double 系统_会员_工资上限 = Double.parseDouble(Global.getConfig("lottery.member.wage", "2.5"));
-    public static final double 系统_会员_返点上限 = Double.parseDouble(Global.getConfig("lottery.member.wage", "15"));
-    public static final double 系统_会员_赔率上限 = Double.parseDouble(Global.getConfig("lottery.member.wage", "2"));
+    public static final double 系统_会员_返点上限 = Double.parseDouble(Global.getConfig("lottery.member.rebate", "15"));
+    public static final double 系统_会员_赔率上限 = Double.parseDouble(Global.getConfig("lottery.member.odds", "2"));
     public static final double 系统_单注销售单价 = Double.parseDouble(Global.getConfig("lottery.sys.basePrice", "2.00"));
 
 

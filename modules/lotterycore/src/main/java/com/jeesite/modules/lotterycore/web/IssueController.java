@@ -1,5 +1,6 @@
 package com.jeesite.modules.lotterycore.web;
 
+import cn.hutool.core.date.DateUtil;
 import com.jeesite.common.config.Global;
 import com.jeesite.common.entity.Page;
 import com.jeesite.common.web.BaseController;
@@ -178,6 +179,12 @@ public class IssueController extends BaseController {
     @RequestMapping(value = "lotteryNumberList")
     public String lotteryNumberList(Issue issue, Model model) {
         List<Game> gameList = gameService.findList(new Game());
+        // 默认显示当前时间的前1小时和后半小时的数据
+        issue.setLotteryTime_lte(DateUtil.offsetMinute(new Date(), 30));
+        issue.setLotteryTime_gte(DateUtil.offsetHour(new Date(), -1));
+        issue.setGameCode(gameList.get(0).getGameCode());
+//        issue.setState(Constant.期号状态_未开奖);
+
         model.addAttribute("gameList", gameList);
         model.addAttribute("issue", issue);
         return "modules/lotterycore/lotteryNumberList";

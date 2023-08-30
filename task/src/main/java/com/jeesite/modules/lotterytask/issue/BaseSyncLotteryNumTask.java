@@ -63,7 +63,8 @@ public class BaseSyncLotteryNumTask implements RocketMQListener<String> {
                 gameService.save(game);
             }
 
-            // TODO 开奖
+            // TODO 中奖验证和结算
+            issueService.checkWinBet(theIssue);
 
             logger.info("执行同步" + theIssue.getGameCode() + "开奖号码任务end");
         } catch (Exception e) {

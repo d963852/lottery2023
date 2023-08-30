@@ -9,8 +9,8 @@ import com.jeesite.modules.lotterycore.common.exception.BizException;
 /**
  * 投注数计算
  */
-public class BetUtils {
-    private static final BetUtils BETUTILS = new BetUtils();
+public class BetCountUtils {
+    private static final BetCountUtils BETUTILS = new BetCountUtils();
     private static final String NUMBER_0_9 = "\\d+";
 
     /**

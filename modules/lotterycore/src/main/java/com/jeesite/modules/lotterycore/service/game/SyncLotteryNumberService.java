@@ -58,14 +58,20 @@ public class SyncLotteryNumberService extends CrudService<IssueDao, Issue> {
             logger.error("本期已开奖，跳过" + issue.toString());
             return issue;
         }
-        Issue latestWithInterface = getLotteryNumberResultFromMultipleWays(issue);
-        if (latestWithInterface == null) {
-            return issue;
+        if(StrUtil.isNotBlank(issue.getLotteryNumInner())){
+            // 内部开奖
+            issue.setLotteryNum(issue.getLotteryNumInner());
+            issue.setLotterySource("local");
+        }else {
+            Issue latestWithInterface = getLotteryNumberResultFromMultipleWays(issue);
+            if (latestWithInterface == null) {
+                return issue;
+            }
+            issue.setLotteryNum(latestWithInterface.getLotteryNum());
+            issue.setLotterySource(latestWithInterface.getLotterySource());
         }
-        issue.setLotteryNum(latestWithInterface.getLotteryNum());
         //TODO 风控检测
 
-        issue.setLotterySource(latestWithInterface.getLotterySource());
         issue.setState(Constant.期号状态_已开奖);
         issue.setSyncTime(DateUtil.date());
         issueService.save(issue);

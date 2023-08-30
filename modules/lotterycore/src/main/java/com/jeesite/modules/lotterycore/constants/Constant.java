@@ -21,10 +21,10 @@ public class Constant {
     public static final String 登录状态_成功 = "1";
     public static final String 登录状态_失败 = "0";
 
-    public static final String 投注订单状态_未开奖 = "1";
-    public static final String 投注订单状态_未中奖 = "2";
-    public static final String 投注订单状态_已中奖 = "3";
-    public static final String 投注订单状态_已撤单 = "4";
+    public static final String 投注订单状态_未开奖 = "未开奖";
+    public static final String 投注订单状态_未中奖 = "未中奖";
+    public static final String 投注订单状态_已派奖 = "已派奖";
+    public static final String 投注订单状态_已撤单 = "已撤单";
 
     public static final String 追号订单状态_进行中 = "1";
     public static final String 追号订单状态_已完成 = "2";

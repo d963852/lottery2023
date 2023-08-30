@@ -2,6 +2,8 @@ package com.jeesite.modules.lotterycore.service;
 
 import cn.hutool.core.date.DateUnit;
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.NumberUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.jeesite.common.collect.ListUtils;
 import com.jeesite.common.entity.Page;
@@ -11,12 +13,13 @@ import com.jeesite.common.service.CrudService;
 import com.jeesite.modules.file.utils.FileUploadUtils;
 import com.jeesite.modules.lotterycore.common.exception.BizError;
 import com.jeesite.modules.lotterycore.common.exception.BizException;
+import com.jeesite.modules.lotterycore.common.utils.WinRulesUtils;
 import com.jeesite.modules.lotterycore.constants.Constant;
 import com.jeesite.modules.lotterycore.dao.IssueDao;
-import com.jeesite.modules.lotterycore.entity.Game;
-import com.jeesite.modules.lotterycore.entity.Issue;
-import com.jeesite.modules.lotterycore.entity.IssueGenerateRule;
+import com.jeesite.modules.lotterycore.entity.*;
 import com.jeesite.modules.lotterycore.param.SyncLotteryNumMsg;
+import com.jeesite.modules.sys.entity.Member;
+import com.jeesite.modules.sys.service.MemberService;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
@@ -39,12 +42,18 @@ public class IssueService extends CrudService<IssueDao, Issue> {
 
     @Autowired
     private IssueGenerateRuleService issueGenerateRuleService;
-
     @Autowired
     private GameService gameService;
-
     @Autowired
     private RocketMQTemplate rocketMQTemplate;
+    @Autowired
+    private BetOrderService betOrderService;
+    @Autowired
+    private PlayMethodService playMethodService;
+    @Autowired
+    private MemberService memberService;
+    @Autowired
+    private AccountChangeLogService accountChangeLogService;
 
     /**
      * 获取单条数据
@@ -256,6 +265,7 @@ public class IssueService extends CrudService<IssueDao, Issue> {
                         issue.getPlanSyncTime().getTime()
                 );
 
+//                之前用的xxl-mq，但是投递消息时间不准确，已更换为rocketmq
 //                XxlMqMessage mqMessage = new XxlMqMessage();
 //                mqMessage.setTopic("SYNC_LOTTERY_NUM_" + issue.getGameCode());
 //                mqMessage.setData(JSON.toJSONString(new SyncLotteryNumMsg(issue.getGameCode(), issue.getIssueNum(), 3)));
@@ -309,4 +319,119 @@ public class IssueService extends CrudService<IssueDao, Issue> {
         return dao.findHistory(gameCode, limitNumber);
     }
 
+    /**
+     * 中奖验证和结算
+     *
+     * @param issue 要进行中奖验证和结算的期号
+     */
+    @Transactional
+    public void checkWinBet(Issue issue) {
+        if (StrUtil.isBlankIfStr(issue.getLotteryNum()) || !issue.getState().equals(Constant.期号状态_已开奖)) {
+            throw new BizException(BizError.该期还未开奖无法进行中奖验证和结算);
+        }
+        // 查找本期所有的投注
+        BetOrder betOrderSC = new BetOrder();
+        betOrderSC.setIssueId(issue.getId());
+        List<BetOrder> betOrderList = betOrderService.findList(betOrderSC);
+        for (BetOrder betOrder : betOrderList) {
+            // 查找投注对应的玩法
+            PlayMethod playMethod = playMethodService.get(betOrder.getPlayMethodId());
+            if (playMethod == null || StrUtil.isBlankIfStr(playMethod.getWinRuleFun())) {
+                throw new BizException(BizError.valueOf("期号玩法对应的中奖验证方法为空"));
+            }
+            try {
+                // 获取对应的用户，准备进行资金操作
+                Member member = memberService.get(betOrder.getUserId());
+                if (member == null || member.getIsNewRecord()) {
+                    throw new BizException(BizError.用户名不存在);
+                }
+                // 发放投注返点，只有在开奖后才能发放投注返点，因为这时已经不能撤单
+                double totalRebateAmount = payRebateAmountToParent(member, betOrder.getBetAmount(), betOrder.getId(), 0.0d);
+                // 调用中奖规则工具类计算中奖注数
+                int winCount = WinRulesUtils.calcWinningCount(playMethod.getWinRuleFun(), betOrder.getBetNumber(), issue.getLotteryNum(), betOrder.getExtBetNumber());
+                // 计算奖金 = 中奖注数*单注奖金*倍数*货币单位
+                double winAmount = NumberUtil.round(winCount * betOrder.getBonusAmount() * betOrder.getBetMultiple() * betOrder.getBetUnit(), 2).doubleValue();
+                // TODO 计算盈亏 = 投注金额-投注返点-中奖金额
+                double profitAndLoss = NumberUtil.round(betOrder.getBetAmount() - totalRebateAmount - winAmount, 2).doubleValue();
+
+                betOrder.setLotteryNumber(issue.getLotteryNum()); //开奖号码
+                betOrder.setLotteryTime(issue.getLotteryTime()); //开奖时间
+                betOrder.setLotterySource(issue.getLotterySource()); //开奖来源
+                betOrder.setWinCount((long) winCount);//中奖注数
+                betOrder.setWinAmount(winAmount);// 奖金
+                betOrder.setTotalRebateAmount(totalRebateAmount);//总返点
+                betOrder.setProfitAndLoss(profitAndLoss);//总盈亏
+                if (winAmount <= 0) {
+                    betOrder.setBizStatus(Constant.投注订单状态_未中奖);//改订单状态
+                } else {
+                    betOrder.setBizStatus(Constant.投注订单状态_已派奖);//改订单状态
+                }
+                betOrderService.save(betOrder);
+
+                // TODO检查派奖
+                if (winAmount > 0) {
+                    double newBalance = winAmount + member.getBalance();
+                    // 记录账变日志
+                    accountChangeLogService.add(member,
+                            winAmount,
+                            newBalance,
+                            Constant.账变日志类型_入账_中奖派奖,
+                            Constant.操作人_系统自动,
+                            BetOrder.class.getName(),
+                            betOrder.getIssueId());
+                    member.setBalance(newBalance);
+                    memberService.save(member);
+                }
+
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+                throw new BizException(BizError.valueOf(e.getMessage()));
+            }
+        }
+        //改issue状态为已结算
+        issue.setState(Constant.期号状态_已结算);
+        save(issue);
+    }
+
+    /**
+     * 发放上级投注返点=下家投注金额*上下级返点差
+     *
+     * @param member    会员
+     * @param betAmount 下家投注金额
+     * @param bizId     业务ID
+     * @param allAmount 合计金额，用于最后返回
+     */
+    @Transactional
+    public double payRebateAmountToParent(Member member, double betAmount, String bizId, double allAmount) throws Exception {
+        if (!"0".equals(member.getParentCode())) {
+            Member parentMember = memberService.get(member.getParentCode());
+            String memberName = member.getMemName();
+            // 计算返点差
+            double rebateDiff = parentMember.getRebate() - member.getRebate();
+            if (rebateDiff < 0) {
+                throw new BizException(BizError.上级返点小于下级);
+            }
+            // 发放返点金额
+            double rebateAmount = rebateDiff * betAmount / 100;
+            if (rebateAmount > 0.0d) {
+                // 发放返点金额
+                parentMember.setBalance(parentMember.getBalance() + rebateAmount);
+                // 记录账变日志
+                accountChangeLogService.add(parentMember,
+                        rebateAmount,
+                        parentMember.getBalance(),
+                        StrUtil.format("{}【{}】", Constant.账变日志类型_入账_下家投注返点, memberName),
+                        Constant.操作人_系统自动,
+                        BetOrder.class.getName(),
+                        bizId);
+                memberService.save(parentMember);
+            }
+            // 累加合计金额
+            allAmount += rebateAmount;
+
+            //递归调用直到所有上级都返点
+            return payRebateAmountToParent(parentMember, betAmount, bizId, allAmount);
+        }
+        return allAmount;
+    }
 }

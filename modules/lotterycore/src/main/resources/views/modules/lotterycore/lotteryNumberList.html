@@ -28,16 +28,16 @@
 				<div class="form-group">
 					<label class="control-label">${text('状态')}：</label>
 					<div class="control-inline width-120">
-						<#form:select path="state" dictType="lottery_issue_status" blankOption="true" blankOptionLabel="请选择" defaultValue="2" class="form-control width-120" />
+						<#form:select path="state" dictType="lottery_issue_status" blankOption="true" blankOptionLabel="请选择" class="form-control width-120" />
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label">${text('开奖日期')}：</label>
+					<label class="control-label">${text('开奖时间')}：</label>
 					<div class="control-inline">
-						<#form:input path="lotteryDate_gte" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+						<#form:input path="lotteryTime_gte" readonly="true" maxlength="20" class="form-control laydate width-datetime"
 							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm" data-done="lotteryDate_lte.click()"/>
 						&nbsp;-&nbsp;
-						<#form:input path="lotteryDate_lte" readonly="true" maxlength="20" class="form-control laydate width-datetime"
+						<#form:input path="lotteryTime_lte" readonly="true" maxlength="20" class="form-control laydate width-datetime"
 							dataFormat="datetime" data-type="datetime" data-format="yyyy-MM-dd HH:mm"/>
 					</div>
 				</div>
@@ -65,6 +65,7 @@ $('#dataGrid').dataGrid({
 			formatoptions:{srcformat:'Y-m-d H:i:s', newformat:'Y-m-d'}
 		},
 		{header:'${text("开奖号码")}', name:'lotteryNum', index:'a.lottery_num', width:150, align:"center"},
+		{header:'${text("开奖号码（内部）")}', name:'lotteryNumInner', index:'a.lottery_num_inner', width:150, align:"center"},
 		{header:'${text("开奖时间")}', name:'lotteryTime', index:'a.lottery_time', width:150, align:"center"},
 		{header:'${text("开奖来源")}', name:'lotterySource', index:'a.lottery_source', width:150, align:"left",formatter: function(val, obj, row, act){
 				if(val===null || val==="" || val===undefined) {
@@ -79,12 +80,12 @@ $('#dataGrid').dataGrid({
 		{header:'${text("操作")}', name:'actions', width:120, formatter: function(val, obj, row, act){
 			var actions = [];
 			//<% if(hasPermi('lotterycore:issue:edit')){ %>
-				actions.push('<a href="${ctx}/lotterycore/issue/form?id='+row.id+'" class="btnList" title="${text("编辑彩票期号")}"><i class="fa fa-pencil"></i></a>&nbsp;');
-				if (row.status == Global.STATUS_NORMAL){
-					actions.push('<a href="${ctx}/lotterycore/issue/disable?id='+row.id+'" class="btnList" title="${text("停用彩票期号")}" data-confirm="${text("确认要停用该彩票期号吗？")}"><i class="glyphicon glyphicon-ban-circle"></i></a>&nbsp;');
-				} else if (row.status == Global.STATUS_DISABLE){
-					actions.push('<a href="${ctx}/lotterycore/issue/enable?id='+row.id+'" class="btnList" title="${text("启用彩票期号")}" data-confirm="${text("确认要启用该彩票期号吗？")}"><i class="glyphicon glyphicon-ok-circle"></i></a>&nbsp;');
-				}
+				actions.push('<a href="${ctx}/lotterycore/issue/lotteryNumberForm?id='+row.id+'" class="btnList" title="${text("编辑彩票期号")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+				// if (row.status == Global.STATUS_NORMAL){
+				// 	actions.push('<a href="${ctx}/lotterycore/issue/disable?id='+row.id+'" class="btnList" title="${text("停用彩票期号")}" data-confirm="${text("确认要停用该彩票期号吗？")}"><i class="glyphicon glyphicon-ban-circle"></i></a>&nbsp;');
+				// } else if (row.status == Global.STATUS_DISABLE){
+				// 	actions.push('<a href="${ctx}/lotterycore/issue/enable?id='+row.id+'" class="btnList" title="${text("启用彩票期号")}" data-confirm="${text("确认要启用该彩票期号吗？")}"><i class="glyphicon glyphicon-ok-circle"></i></a>&nbsp;');
+				// }
 			//<% } %>
 			return actions.join('');
 		}}

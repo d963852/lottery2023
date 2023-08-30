@@ -9,7 +9,7 @@ import com.jeesite.common.codec.EncodeUtils;
 import com.jeesite.common.service.BaseService;
 import com.jeesite.modules.lotterycore.common.exception.BizError;
 import com.jeesite.modules.lotterycore.common.exception.BizException;
-import com.jeesite.modules.lotterycore.common.utils.BetUtils;
+import com.jeesite.modules.lotterycore.common.utils.BetCountUtils;
 import com.jeesite.modules.lotterycore.constants.Constant;
 import com.jeesite.modules.lotterycore.entity.*;
 import com.jeesite.modules.lotterycore.param.BetInfo;
@@ -146,7 +146,7 @@ public class BetService extends BaseService {
                 throw new BizException(BizError.投注选号位数不符合玩法规则);
             }
             try {
-                int validBetCount = BetUtils.calcBetCount(betInfo.getBetNumber(), playMethod.getBetCountFun());
+                int validBetCount = BetCountUtils.calcBetCount(betInfo.getBetNumber(), playMethod.getBetCountFun());
                 int betCount = validBetCount * betInfo.getBetMultiplier(); //投注数=计算注数*倍数
                 if (betCount != betInfo.getFinalCount()) {
                     throw new BizException(BizError.投注数验证错误);
@@ -228,7 +228,7 @@ public class BetService extends BaseService {
             betOrder.setBetNumber(betInfo.getBetNumber());
 //            betOrder.setExtBetNumber(); //附加号码
             betOrder.setBetCount((long) betInfo.getBetCount());
-            betOrder.setBetMultiple((long) betInfo.getBetCount());
+            betOrder.setBetMultiple((long) betInfo.getBetMultiplier());
             betOrder.setTotalBetCount((long) betInfo.getFinalCount());
             betOrder.setBetUnit(betInfo.getBetUnit().getValue());
             betOrder.setBetAmount(NumberUtil.round(betInfo.getBetAmount(), 2).doubleValue());
@@ -294,49 +294,12 @@ public class BetService extends BaseService {
             currentUser.setBalance(NumberUtil.round(newBalance, 2).doubleValue());
             memberService.save(currentUser);
 
-            // TODO 发放客户上级投注返点
-            payRebateAmountToParent(currentUser, betOrder.getBetAmount(), betOrder.getId());
         }
 
         return R.success().message("投注成功").data(currentUser.getBalance());
     }
 
-    /**
-     * 发放上级投注返点=下家投注金额*上下级返点差
-     *
-     * @param member
-     * @param betAmount
-     */
-    @Transactional
-    public void payRebateAmountToParent(Member member, double betAmount, String bizId) throws Exception {
-        if (!"0".equals(member.getParentCode())) {
-            Member parentMember = memberService.get(member.getParentCode());
-            String memberName = member.getMemName();
-            // 计算返点差
-            double rebateDiff = parentMember.getRebate() - member.getRebate();
-            if (rebateDiff < 0) {
-                throw new BizException(BizError.上级返点小于下级);
-            }
-            // 发放返点金额
-            double rebateAmount = rebateDiff * betAmount / 100;
-            if (rebateAmount > 0.0d) {
-                // 发放返点金额
-                parentMember.setBalance(parentMember.getBalance() + rebateAmount);
-                // 记录账变日志
-                accountChangeLogService.add(parentMember,
-                        rebateAmount,
-                        parentMember.getBalance(),
-                        StrUtil.format("{}【{}】", Constant.账变日志类型_入账_下家投注返点, memberName),
-                        Constant.操作人_系统自动,
-                        BetOrder.class.getName(),
-                        bizId);
-                memberService.save(parentMember);
-            }
 
-            //递归调用直到所有上级都返点
-            payRebateAmountToParent(parentMember, betAmount, bizId);
-        }
-    }
 
 
 }

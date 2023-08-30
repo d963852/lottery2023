@@ -22,6 +22,7 @@ import java.util.Date;
         @Column(name = "issue_num", attrName = "issueNum", label = "期数", queryType = QueryType.LIKE),
         @Column(name = "lottery_date", attrName = "lotteryDate", label = "开奖日期", isUpdateForce = true),
         @Column(name = "lottery_num", attrName = "lotteryNum", label = "开奖号码"),
+        @Column(name = "lottery_num_inner", attrName = "lotteryNumInner", label = "开奖号码（内部用）", isUpdateForce = true),
         @Column(name = "lottery_source", attrName = "lotterySource", label = "开奖来源"),
         @Column(name = "lottery_time", attrName = "lotteryTime", label = "开奖时间", isUpdateForce = true),
         @Column(name = "start_time", attrName = "startTime", label = "开始时间", isUpdateForce = true),
@@ -54,6 +55,7 @@ public class Issue extends DataEntity<Issue> {
     private String issueNum;        // 期数
     private Date lotteryDate;        // 开奖日期
     private String lotteryNum;        // 开奖号码
+    private String lotteryNumInner;        // 开奖号码（内部用）
     private String lotterySource;        // 开奖来源
     private Date lotteryTime;        // 开奖时间
     private Date startTime;        // 开始时间
@@ -360,6 +362,14 @@ public class Issue extends DataEntity<Issue> {
             sqlMap.getWhere().andBracket("lottery_num", QueryType.IS_NULL, null, 2)
                     .or("lottery_num", QueryType.EQ_FORCE, "", 3).endBracket();
             this.setLotteryNum(null);
+    }
+
+    public String getLotteryNumInner() {
+        return lotteryNumInner;
+    }
+
+    public void setLotteryNumInner(String lotteryNumInner) {
+        this.lotteryNumInner = lotteryNumInner;
     }
 
     @Override

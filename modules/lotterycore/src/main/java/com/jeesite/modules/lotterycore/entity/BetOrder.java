@@ -52,9 +52,10 @@ import java.util.Date;
 		@Column(name="chasing_win_stop", attrName="chasingWinStop", label="中奖停止追号"),
 		@Column(name="lottery_number", attrName="lotteryNumber", label="开奖号码", queryType=QueryType.LIKE),
 		@Column(name="lottery_time", attrName="lotteryTime", label="开奖时间", isUpdateForce=true),
-		@Column(name="lottery_address", attrName="lotteryAddress", label="开奖地址", queryType=QueryType.LIKE),
+		@Column(name="lottery_source", attrName="lotterySource", label="开奖来源", queryType=QueryType.LIKE),
 		@Column(name="win_count", attrName="winCount", label="中奖注数", isUpdateForce=true),
 		@Column(name="win_amount", attrName="winAmount", label="中奖金额", isUpdateForce=true),
+		@Column(name="total_rebate_amount", attrName="totalRebateAmount", label="中奖金额", isUpdateForce=true),
 		@Column(name="profit_and_loss", attrName="profitAndLoss", label="盈亏", isUpdateForce=true),
 		@Column(name="cancel_time", attrName="cancelTime", label="撤单时间", isUpdateForce=true),
 		@Column(name="version", attrName="version", label="乐观锁版本号", isUpdateForce=true),
@@ -103,8 +104,9 @@ public class BetOrder extends DataEntity<BetOrder> {
 	private String chasingWinStop;		// 中奖停止追号
 	private String lotteryNumber;		// 开奖号码
 	private Date lotteryTime;		// 开奖时间
-	private String lotteryAddress;		// 开奖地址
+	private String lotterySource;		// 开奖地址
 	private Long winCount;		// 中奖注数
+	private Double totalRebateAmount;		// 总返点金额
 	private Double winAmount;		// 中奖金额
 	private Double profitAndLoss;		// 盈亏
 	private Date cancelTime;		// 撤单时间
@@ -426,12 +428,12 @@ public class BetOrder extends DataEntity<BetOrder> {
 	}
 	
 	@Size(min=0, max=640, message="开奖地址长度不能超过 640 个字符")
-	public String getLotteryAddress() {
-		return lotteryAddress;
+	public String getLotterySource() {
+		return lotterySource;
 	}
 
-	public void setLotteryAddress(String lotteryAddress) {
-		this.lotteryAddress = lotteryAddress;
+	public void setLotterySource(String lotterySource) {
+		this.lotterySource = lotterySource;
 	}
 	
 	public Long getWinCount() {
@@ -709,5 +711,12 @@ public class BetOrder extends DataEntity<BetOrder> {
 	public void setCancelTime_lte(Date cancelTime) {
 		sqlMap.getWhere().and("cancel_time", QueryType.LTE, cancelTime);
 	}
-	
+
+	public Double getTotalRebateAmount() {
+		return totalRebateAmount;
+	}
+
+	public void setTotalRebateAmount(Double totalRebateAmount) {
+		this.totalRebateAmount = totalRebateAmount;
+	}
 }

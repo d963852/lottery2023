@@ -1,9 +1,12 @@
 package com.jeesite.modules.lotterycore.web;
 
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.jeesite.common.config.Global;
+import com.jeesite.common.entity.Page;
+import com.jeesite.common.web.BaseController;
+import com.jeesite.modules.lotterycore.entity.BetOrder;
+import com.jeesite.modules.lotterycore.entity.Game;
+import com.jeesite.modules.lotterycore.service.BetOrderService;
+import com.jeesite.modules.lotterycore.service.GameService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,11 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jeesite.common.config.Global;
-import com.jeesite.common.entity.Page;
-import com.jeesite.common.web.BaseController;
-import com.jeesite.modules.lotterycore.entity.BetOrder;
-import com.jeesite.modules.lotterycore.service.BetOrderService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * 投注订单Controller
@@ -31,6 +32,8 @@ public class BetOrderController extends BaseController {
 
 	@Autowired
 	private BetOrderService betOrderService;
+	@Autowired
+	private GameService gameService;
 	
 	/**
 	 * 获取数据
@@ -46,6 +49,8 @@ public class BetOrderController extends BaseController {
 	@RequiresPermissions("lotterycore:betOrder:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(BetOrder betOrder, Model model) {
+		List<Game> gameList = gameService.findList(new Game());
+		model.addAttribute("gameList", gameList);
 		model.addAttribute("betOrder", betOrder);
 		return "modules/lotterycore/betOrderList";
 	}

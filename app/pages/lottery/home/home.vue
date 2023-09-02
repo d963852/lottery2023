@@ -1,26 +1,30 @@
 <template>
 	<view class="wrap">
-		<!-- 语言切换和余额组件 -->
-		<js-lang title="lottery.title" :showBtn="true"></js-lang>
+		<!-- 余额组件 -->
+		<lo-balance :showBtn="true"></lo-balance>
+		
+		<!-- 语言切换组件 -->
+		<js-lang ref="jslang" :showBtn="true"></js-lang>
+		
 		<!-- 轮播图 -->
 		<u-swiper :height="300" :list="imgList" :title="false" @click="imgListClick"></u-swiper>
 
 		<!-- 功能栏 -->
 		<u-grid :col="4">
-			<u-grid-item style="color: red;">
-				<u-icon name="red-packet" :size="60"></u-icon>
+			<u-grid-item>
+				<u-icon name="red-packet" :style="{ color: '#CC3333' }" :size="60"></u-icon>
 				<view class="grid-text">{{ $t('lottery.actionList.recharge') }}</view>
 			</u-grid-item>
-			<u-grid-item style="color: red;">
-				<u-icon name="clock" :size="60"></u-icon>
+			<u-grid-item @click="navTo('/pages/lottery/bet-history/bet-history')">
+				<u-icon name="clock" :style="{ color: '#339933' }" :size="60"></u-icon>
 				<view class="grid-text">{{ $t('lottery.actionList.bettinghistory') }}</view>
 			</u-grid-item>
-			<u-grid-item style="color: red;">
-				<u-icon name="list-dot" :size="60"></u-icon>
+			<u-grid-item @click="navTo('/pages/sys/fund/log/fund-log')">
+				<u-icon name="list-dot" :style="{ color: '#CC6633' }" :size="60"></u-icon>
 				<view class="grid-text">{{ $t('lottery.actionList.accountDetails') }}</view>
 			</u-grid-item>
-			<u-grid-item style="color: red;">
-				<u-icon name="server-man" :size="60"></u-icon>
+			<u-grid-item>
+				<u-icon name="server-man" :style="{ color: '#3366CC' }" :size="60"></u-icon>
 				<view class="grid-text">{{ $t('lottery.actionList.customerService') }}</view>
 			</u-grid-item>
 		</u-grid>
@@ -146,7 +150,7 @@
 			},
 			navToBet(gameCode,gameName) {
 				uni.navigateTo({
-					url: '/pages/lottery/bet?gameCode=' + gameCode + '&gameName=' + gameName,
+					url: '/pages/lottery/bet/bet?gameCode=' + gameCode + '&gameName=' + gameName,
 				});
 			},
 			refreshCount() {

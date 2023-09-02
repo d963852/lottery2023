@@ -27,6 +27,7 @@ import java.util.Date;
 		@Column(name="base_price", attrName="basePrice", label="投注单价", isUpdateForce=true),
 		@Column(name="bet_time", attrName="betTime", label="投注时间", isUpdateForce=true),
 		@Column(name="game_code", attrName="gameCode", label="游戏代码"),
+		@Column(name="game_name", attrName="gameName", label="游戏名称"),
 		@Column(name="play_method_group_id", attrName="playMethodGroupId", label="玩法组id"),
 		@Column(name="play_method_group", attrName="playMethodGroup", label="玩法组", queryType=QueryType.LIKE),
 		@Column(name="play_method_id", attrName="playMethodId", label="玩法id"),
@@ -64,7 +65,7 @@ import java.util.Date;
 		@Column(includeEntity=BaseEntity.class),
 		@Column(name="deleted", attrName="deleted", label="是否删除"),
 		@Column(name="tenant_id", attrName="tenantId", label="租户编号"),
-	}, orderBy="a.update_date DESC"
+	}, orderBy="a.bet_time DESC"
 )
 public class BetOrder extends DataEntity<BetOrder> {
 	
@@ -79,6 +80,7 @@ public class BetOrder extends DataEntity<BetOrder> {
 	private Double basePrice;		// 投注单价
 	private Date betTime;		// 投注时间
 	private String gameCode;		// 游戏代码
+	private String gameName;		// 游戏名称
 	private String playMethodGroupId;		// 玩法组id
 	private String playMethodGroup;		// 玩法组
 	private String playMethodId;		// 玩法id
@@ -718,5 +720,13 @@ public class BetOrder extends DataEntity<BetOrder> {
 
 	public void setTotalRebateAmount(Double totalRebateAmount) {
 		this.totalRebateAmount = totalRebateAmount;
+	}
+
+	public String getGameName() {
+		return gameName;
+	}
+
+	public void setGameName(String gameName) {
+		this.gameName = gameName;
 	}
 }

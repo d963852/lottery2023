@@ -89,7 +89,7 @@
 						if (res.result == 'true') {
 							setTimeout(() => {
 								uni.reLaunch({
-									url: '/pages/lottery/index'
+									url: '/pages/lottery/home/home'
 								});
 							}, 500);
 						}

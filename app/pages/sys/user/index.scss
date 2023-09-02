@@ -4,7 +4,7 @@
  * @version 2020-9-1
  */
 .header {
-	background-color: #4094ff;
+	background-color: #fff;
 	
 	.userinfo {
 		display: flex;
@@ -12,8 +12,8 @@
 
 		.image {
 			flex-shrink: 0;
-			width: 120rpx;
-			height: 120rpx;
+			width: 80rpx;
+			height: 80rpx;
 			image {
 				border-radius: 100%;
 				width: 100%;
@@ -25,7 +25,7 @@
 			display: flex;
 			flex-flow: wrap;
 			padding-left: 30rpx;
-			color: #fff;
+			color: #888;
 
 			.username {
 				width: 100%;
@@ -48,7 +48,7 @@
 		flex-shrink: 0;
 		position: absolute;
 		right: 70rpx;
-		top: 65rpx;
+		top: 55rpx;
 		.u-btn {
 			font-size: 30rpx;
 		}

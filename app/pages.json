@@ -4,42 +4,13 @@
 	},
 	"pages": [
 		
-		/* 登录 */
-		{
-			"path": "pages/sys/login/index",
-			// "style": {
-			// 	"navigationBarTitleText": "登录"
-			// },
-			"style": {  
-			  "app-plus": {  
-			    "titleNView": false //禁用原生导航栏  
-			  }  
-			}
-		},
-		{
-			"path": "pages/sys/login/forget",
-			"style": {
-				"navigationBarTitleText": "忘记密码"
-			}
-		},
-		{
-			"path": "pages/sys/login/reg",
-			"style": {
-				"navigationBarTitleText": "注册账号"
-			}
-		},
+		
 		
 		// 彩票相关
 		{
-			"path": "pages/lottery/index",
+			"path": "pages/lottery/home/home",
 			"style": {
 				"navigationBarTitleText": "彩票大厅"
-			}
-		},
-		{
-			"path": "pages/history/index",
-			"style": {
-				"navigationBarTitleText": "开奖记录"
 			}
 		},
 		{
@@ -55,28 +26,63 @@
 			}
 		},
 		{
-			"path": "pages/lottery/bet",
+			"path": "pages/lottery/bet/bet",
 			"style": {
 				"navigationBarTitleText": "彩票投注"
+				// "navigationStyle": "custom" ,// 隐藏系统导航栏
+				// "navigationBarTextStyle": "white" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
+			}
+		},
+		{
+			"path": "pages/lottery/bet-history/bet-history",
+			"style": {
+				"navigationBarTitleText": "投注历史"
+				// "navigationStyle": "custom" ,// 隐藏系统导航栏
+				// "navigationBarTextStyle": "white" // 状态栏字体为白色，只能为 white-白色，black-黑色 二选一
+			}
+		},
+		
+		
+		/* 登录 */
+		{
+			"path": "pages/sys/login/index",
+			// "style": {
+			// 	"navigationBarTitleText": "登录"
+			// },
+			"style": {  
+			  "app-plus": {  
+			    "titleNView": false //禁用原生导航栏  
+			  }  
 			}
 		},
 		
 
-		/* 主页 */
-		{
-			"path": "pages/sys/home/index",
-			"style": {
-				"navigationBarTitleText": "工作台"
-			}
-		},
-
+	
 		/* 用户 */
 		{
 			"path": "pages/sys/user/index",
 			"style": {
-				"navigationBarTitleText": "用户中心",
-				"backgroundColor": "#f8f8f8",
-				"navigationBarBackgroundColor": "#f8f8f8"
+				"navigationBarTitleText": "用户中心"
+			}
+		},
+		{
+			"path": "pages/sys/fund/log/fund-log",
+			"style": {
+				"navigationBarTitleText": "账变明细"
+			}
+		},
+		
+		/* 提现信息管理 */
+		{
+			"path": "pages/sys/fund/withdraw-card/withdraw-card-form",
+			"style": {
+				"navigationBarTitleText": "编辑提款信息"
+			}
+		},
+		{
+			"path": "pages/sys/fund/withdraw-card/withdraw-card-list",
+			"style": {
+				"navigationBarTitleText": "提款信息"
 			}
 		},
 		{
@@ -177,16 +183,10 @@
 		"backgroundColor": "#ffffff",
 		"borderStyle": "white",
 		"list": [{
-				"pagePath": "pages/lottery/index",
+				"pagePath": "pages/lottery/home/home",
 				"iconPath": "static/jeesite/tabbar/msg_1.png",
 				"selectedIconPath": "static/jeesite/tabbar/msg_2.png",
 				"text": "彩票大厅"
-			},
-			{
-				"pagePath": "pages/history/index",
-				"iconPath": "static/jeesite/tabbar/home_1.png",
-				"selectedIconPath": "static/jeesite/tabbar/home_2.png",
-				"text": "开奖记录"
 			},
 			{
 				"pagePath": "pages/games/index",

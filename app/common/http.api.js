@@ -17,8 +17,6 @@ const install = (Vue, vm) => {
 		logout: (params = {}) => vm.$u.get(config.adminPath + '/logout', params),
 		authInfo: (params = {}) => vm.$u.get(config.adminPath + '/authInfo', params),
 		menuTree: (params = {}) => vm.$u.get(config.adminPath + '/menuTree', params),
-		switchSys: (params = {}) => vm.$u.get(config.adminPath + '/switch/' + params.sysCode),
-		dictData: (params = {}) => vm.$u.get(config.adminPath + '/sys/dictData/treeData', params),
 
 		// 账号服务：验证码接口、忘记密码接口、注册账号接口等
 		validCode: (params = {}) => vm.$u.getText('/validCode', params),
@@ -85,6 +83,32 @@ const install = (Vue, vm) => {
 			//获取会员投注返点上限
 			getRebate: () => vm.$u.post(config.adminPath +
 				'/api/member/getRebate', {}),
+			//获取会员账变列表
+			findFundLogList: (params = {}) => vm.$u.post(config.adminPath +
+				'/api/member/findFundLogList', params),
+		},
+		
+		// 提现卡服务类
+		withdrawCardService: {
+			//获取会员提现卡信息
+			get: (params = {}) => vm.$u.post(config.adminPath +
+				'/api/withdrawCard/get', params),
+			//获取会员提现卡列表
+			findList: (params = {}) => vm.$u.post(config.adminPath +
+				'/api/withdrawCard/findList', params),
+			//保存会员提现卡列表
+			save: (params = {}) => vm.$u.post(config.adminPath +
+				'/api/withdrawCard/save', params),
+			//保存会员提现卡列表
+			delete: (params = {}) => vm.$u.post(config.adminPath +
+				'/api/withdrawCard/delete', params),
+		},
+		
+		// 字典服务类
+		dictService:{
+			// 获取字典类型
+			findDictList: (params = {}) => vm.$u.post(config.adminPath +
+				'/api/lottery/findDictList', params),
 		},
 
 		//彩票服务类
@@ -114,6 +138,15 @@ const install = (Vue, vm) => {
 			// 下注
 			bet: (params = {}) => vm.$u.post(config.adminPath +
 				'/api/lottery/bet', params),
+			// 获取会员投注历史
+			findBetHistoyList: (params = {}) => vm.$u.post(config.adminPath +
+				'/api/lottery/findBetHistoryList', params),
+			// 获取指定游戏的开奖历史
+			findIssueHistoryList: (params = {}) => vm.$u.post(config.adminPath +
+				'/api/lottery/findIssueHistoryList', params),
+			// 撤单
+			cancelBetOrder: (params = {}) => vm.$u.post(config.adminPath +
+				'/api/lottery/cancelBetOrder', params),
 		},
 	};
 

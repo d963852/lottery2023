@@ -2,7 +2,6 @@
 	<view v-if="showBtn" class="js-lang" @tap="switchLang">
 		<view class="u-flex u-flex-nowrap u-text-right">
 			<u-icon size="46" color="#fdf6ec" :name="lang"></u-icon>
-			<u-tag class="u-margin-left-10" :text="calBalance" type="error" shape="circle" />
 		</view>
 	</view>
 </template>
@@ -16,15 +15,7 @@
 	 * @author ThinkGem
 	 * @version 2021-3-11
 	 */
-	import wsRequest from '@/static/common/js/webSocket.js';
-
 	export default {
-		data() {
-			return {
-				balance: 0.00,
-				timer: null,
-			}
-		},
 		props: {
 			title: {
 				type: String,
@@ -40,17 +31,9 @@
 			lang() {
 				return this.$i18n.locale == 'zh_CN' ? 'zh' : 'en';
 			},
-			calBalance() {
-				return '¥ ' + this.balance;
-			}
 		},
 		created() {
 			this.setBarTitle();
-			this.getBalance();
-			// 每30秒取一次余额
-			this.timer = setInterval(() => {
-				this.getBalance();
-			}, 30 * 1000);
 		},
 		methods: {
 			switchLang() {
@@ -62,45 +45,29 @@
 				this.setBarTitle();
 			},
 			setBarTitle() {
-				uni.setNavigationBarTitle({
-					title: this.$t(this.title)
-				});
-				uni.setTabBarItem({
-					index: 0,
-					text: this.$t('nav.lottery')
-				});
-				uni.setTabBarItem({
-					index: 1,
-					text: this.$t('nav.history')
-				});
-				uni.setTabBarItem({
-					index: 2,
-					text: this.$t('nav.games')
-				});
-				uni.setTabBarItem({
-					index: 3,
-					text: this.$t('nav.activities')
-				});
-				uni.setTabBarItem({
-					index: 4,
-					text: this.$t('nav.user')
-				});
-			},
-			//获取 用户余额
-			async getBalance() {
-				let res = await this.$u.api.memberService.getBalance();
-				// console.info(res);
-				if (res.success) {
-					this.balance = res.data;
-				} else {
-					this.$u.toast(this.$t('error.serverDisconnected'));
+				if (this.title) {
+					uni.setNavigationBarTitle({
+						title: this.$t(this.title)
+					});
+					uni.setTabBarItem({
+						index: 0,
+						text: this.$t('nav.lottery')
+					});
+					uni.setTabBarItem({
+						index: 1,
+						text: this.$t('nav.games')
+					});
+					uni.setTabBarItem({
+						index: 2,
+						text: this.$t('nav.activities')
+					});
+					uni.setTabBarItem({
+						index: 3,
+						text: this.$t('nav.user')
+					});
 				}
 			},
-		},
-		beforeDestroy() {
-			clearInterval(this.timer);
-			this.timer = null;
-		},
+		}
 	}
 </script>
 <style lang="scss" scoped>
@@ -108,6 +75,6 @@
 		position: absolute;
 		z-index: 9000;
 		top: -65rpx;
-		right: 15rpx;
+		right: 30rpx;
 	}
 </style>

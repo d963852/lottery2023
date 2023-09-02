@@ -28,7 +28,7 @@
 				<div class="form-group">
 					<label class="control-label">${text('状态')}：</label>
 					<div class="control-inline width-120">
-						<#form:select path="state" dictType="lottery_issue_status" blankOption="true" blankOptionLabel="请选择" class="form-control width-120" />
+						<#form:select path="state" dictType="lottery_issue_status" blankOption="true" class="form-control width-120" />
 					</div>
 				</div>
 				<div class="form-group">
@@ -80,7 +80,7 @@ $('#dataGrid').dataGrid({
 		{header:'${text("操作")}', name:'actions', width:120, formatter: function(val, obj, row, act){
 			var actions = [];
 			//<% if(hasPermi('lotterycore:issue:edit')){ %>
-				actions.push('<a href="${ctx}/lotterycore/issue/lotteryNumberForm?id='+row.id+'" class="btnList" title="${text("编辑彩票期号")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+				actions.push('<a href="${ctx}/lotterycore/issue/lotteryNumberForm?id='+row.id+'" class="btnList" title="${text("预设中奖号码")}"><i class="fa fa-diamond"></i></a>&nbsp;');
 				// if (row.status == Global.STATUS_NORMAL){
 				// 	actions.push('<a href="${ctx}/lotterycore/issue/disable?id='+row.id+'" class="btnList" title="${text("停用彩票期号")}" data-confirm="${text("确认要停用该彩票期号吗？")}"><i class="glyphicon glyphicon-ban-circle"></i></a>&nbsp;');
 				// } else if (row.status == Global.STATUS_DISABLE){

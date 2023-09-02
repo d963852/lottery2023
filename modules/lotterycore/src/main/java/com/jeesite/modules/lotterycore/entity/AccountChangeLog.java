@@ -39,7 +39,7 @@ import java.util.Date;
 		@Column(includeEntity=BaseEntity.class),
 		@Column(name="deleted", attrName="deleted", label="是否删除"),
 		@Column(name="tenant_id", attrName="tenantId", label="租户编号"),
-	}, orderBy="a.update_date DESC"
+	}, orderBy="a.update_date DESC,a.id DESC"
 )
 public class AccountChangeLog extends DataEntity<AccountChangeLog> {
 	

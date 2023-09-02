@@ -329,9 +329,10 @@ public class IssueService extends CrudService<IssueDao, Issue> {
         if (StrUtil.isBlankIfStr(issue.getLotteryNum()) || !issue.getState().equals(Constant.期号状态_已开奖)) {
             throw new BizException(BizError.该期还未开奖无法进行中奖验证和结算);
         }
-        // 查找本期所有的投注
+        // 查找本期所有的未开奖的投注
         BetOrder betOrderSC = new BetOrder();
         betOrderSC.setIssueId(issue.getId());
+        betOrderSC.setBizStatus(Constant.投注订单状态_未开奖);
         List<BetOrder> betOrderList = betOrderService.findList(betOrderSC);
         for (BetOrder betOrder : betOrderList) {
             // 查找投注对应的玩法
@@ -345,8 +346,27 @@ public class IssueService extends CrudService<IssueDao, Issue> {
                 if (member == null || member.getIsNewRecord()) {
                     throw new BizException(BizError.用户名不存在);
                 }
+
                 // 发放投注返点，只有在开奖后才能发放投注返点，因为这时已经不能撤单
-                double totalRebateAmount = payRebateAmountToParent(member, betOrder.getBetAmount(), betOrder.getId(), 0.0d);
+                // 发放客户自己投注返点
+                double selfRebateAmount = betOrder.getRebateAmount();
+                if (selfRebateAmount > 0) {
+                    double newBalance = selfRebateAmount + member.getBalance();
+                    // 记录账变日志
+                    accountChangeLogService.add(member,
+                            selfRebateAmount,
+                            newBalance,
+                            Constant.账变日志类型_入账_投注返点,
+                            Constant.操作人_系统自动,
+                            BetOrder.class.getName(),
+                            betOrder.getIssueId(),
+                            "");
+                    member.setBalance(newBalance);
+                }
+                // 发放上级投注返点
+                double totalRebateAmount = payRebateAmountToParent(member, betOrder.getBetAmount(), betOrder.getId(), 0.0d, member.getMemName());
+                totalRebateAmount = selfRebateAmount + totalRebateAmount;
+
                 // 调用中奖规则工具类计算中奖注数
                 int winCount = WinRulesUtils.calcWinningCount(playMethod.getWinRuleFun(), betOrder.getBetNumber(), issue.getLotteryNum(), betOrder.getExtBetNumber());
                 // 计算奖金 = 中奖注数*单注奖金*倍数*货币单位
@@ -368,7 +388,7 @@ public class IssueService extends CrudService<IssueDao, Issue> {
                 }
                 betOrderService.save(betOrder);
 
-                // TODO检查派奖
+                // 派奖
                 if (winAmount > 0) {
                     double newBalance = winAmount + member.getBalance();
                     // 记录账变日志
@@ -378,11 +398,11 @@ public class IssueService extends CrudService<IssueDao, Issue> {
                             Constant.账变日志类型_入账_中奖派奖,
                             Constant.操作人_系统自动,
                             BetOrder.class.getName(),
-                            betOrder.getIssueId());
+                            betOrder.getIssueId(),
+                            "");
                     member.setBalance(newBalance);
-                    memberService.save(member);
                 }
-
+                memberService.save(member);
             } catch (Exception e) {
                 logger.error(e.getMessage());
                 throw new BizException(BizError.valueOf(e.getMessage()));
@@ -402,10 +422,9 @@ public class IssueService extends CrudService<IssueDao, Issue> {
      * @param allAmount 合计金额，用于最后返回
      */
     @Transactional
-    public double payRebateAmountToParent(Member member, double betAmount, String bizId, double allAmount) throws Exception {
+    public double payRebateAmountToParent(Member member, double betAmount, String bizId, double allAmount, String memberName) throws Exception {
         if (!"0".equals(member.getParentCode())) {
             Member parentMember = memberService.get(member.getParentCode());
-            String memberName = member.getMemName();
             // 计算返点差
             double rebateDiff = parentMember.getRebate() - member.getRebate();
             if (rebateDiff < 0) {
@@ -420,17 +439,18 @@ public class IssueService extends CrudService<IssueDao, Issue> {
                 accountChangeLogService.add(parentMember,
                         rebateAmount,
                         parentMember.getBalance(),
-                        StrUtil.format("{}【{}】", Constant.账变日志类型_入账_下家投注返点, memberName),
+                        Constant.账变日志类型_入账_下家投注返点,
                         Constant.操作人_系统自动,
                         BetOrder.class.getName(),
-                        bizId);
+                        bizId,
+                        StrUtil.format("【{}】投注返点", memberName));
                 memberService.save(parentMember);
             }
             // 累加合计金额
             allAmount += rebateAmount;
 
             //递归调用直到所有上级都返点
-            return payRebateAmountToParent(parentMember, betAmount, bizId, allAmount);
+            return payRebateAmountToParent(parentMember, betAmount, bizId, allAmount, memberName);
         }
         return allAmount;
     }

@@ -1,78 +1,63 @@
 <template>
-	<view v-if="showBtn" class="balance">
-		<u-icon size="46" color="warning" :name="lang"></u-icon>
-		<view></view>
-	</view>
+	<u-sticky>
+		<view class="u-flex u-row-right u-text-right">
+			<u-tag class="u-margin-left-10 lo-balance" :text="calcBalance" type="error" shape="circle"/>
+		</view>
+	</u-sticky>
 </template>
 <script>
-/**
- * 余额组件
- * @property {String} title 顶部导航的标题 i18n 编码
- * @property {Boolean} showBtn 是否显示语言切换按钮
- * @example <js-lang title="login.title" :showBtn="true"></js-lang>
- * @description Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * @author ThinkGem
- * @version 2021-3-11
- */
-export default {
-	props: {
-		title: {
-			type: String,
-			default: ''
+	/**
+	 * 余额组件
+	 * @property {String} title 顶部导航的标题 i18n 编码
+	 * @property {Boolean} showBtn 是否显示语言切换按钮
+	 * @example <js-lang title="login.title" :showBtn="true"></js-lang>
+	 * @description Copyright (c) 2013-Now http://jeesite.com All rights reserved.
+	 * @author ThinkGem
+	 * @version 2021-3-11
+	 */
+	export default {
+		data() {
+			return {
+				balance: 0.00,
+				timer: null,
+			}
 		},
-		showBtn: {
-			type: Boolean,
-			default: false
-		}		
-	},
-	computed: {
-		lang() {
-			return this.$i18n.locale == 'zh_CN' ? 'zh' : 'en';
-		}
-	},
-	created(){
-		this.setBarTitle();
-	},
-	methods: {
-		switchLang() {
-			this.$i18n.locale = this.$i18n.locale == 'zh_CN' ? 'en' : 'zh_CN';
-			this.$u.vuex('vuex_locale', this.$i18n.locale);
-			this.$u.api.lang({lang: this.vuex_locale});
-			this.setBarTitle();
+		props: {},
+		computed: {
+			calcBalance() {
+				return '¥ ' + this.balance;
+			}
 		},
-		setBarTitle (){
-			uni.setNavigationBarTitle({
-				title: this.$t(this.title)
-			});
-			uni.setTabBarItem({
-				index: 0,
-				text: this.$t('nav.lottery')
-			});
-			uni.setTabBarItem({
-				index: 1,
-				text: this.$t('nav.history')
-			});
-			uni.setTabBarItem({
-				index: 2,
-				text: this.$t('nav.games')
-			});
-			uni.setTabBarItem({
-				index: 3,
-				text: this.$t('nav.activities')
-			});
-			uni.setTabBarItem({
-				index: 4,
-				text: this.$t('nav.user')
-			});
-		}
+		created() {
+			this.getBalance();
+			// 每30秒取一次余额
+			this.timer = setInterval(() => {
+				this.getBalance();
+			}, 30 * 1000);
+		},
+		methods: {
+			//获取 用户余额
+			async getBalance() {
+				let res = await this.$u.api.memberService.getBalance(this.vuex_user.id);
+				// console.info(res);
+				if (res.success) {
+					this.balance = res.data;
+				} else {
+					this.$u.toast(this.$t('error.serverDisconnected'));
+				}
+			},
+		},
+		beforeDestroy() {
+			clearInterval(this.timer);
+			this.timer = null;
+		},
 	}
-}
 </script>
 <style lang="scss" scoped>
-.js-lang {
-	position: absolute;
-	z-index: 10000;
-	top: -65rpx;
-	right: 300rpx;
-}
+	.lo-balance {
+		position: absolute;
+		z-index: 10000;
+		top: -68rpx;
+		right: 90rpx;
+	}
 </style>

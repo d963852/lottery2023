@@ -372,6 +372,13 @@ public class Issue extends DataEntity<Issue> {
         this.lotteryNumInner = lotteryNumInner;
     }
 
+    //设置状态为已开奖的三种
+    public void setStateDrawed(){
+        sqlMap.getWhere().andBracket("state", QueryType.EQ, "2",1)
+                .or("state", QueryType.EQ, "3", 2)
+                .or("state", QueryType.EQ, "4", 3).endBracket();
+    }
+
     @Override
     public String toString() {
         return "Issue{" +

@@ -37,7 +37,7 @@ export default {
 
 		actionList: {
 			recharge: "快速充值",
-			bettinghistory: "最近投注",
+			bettinghistory: "投注历史",
 			accountDetails: "账变明细",
 			customerService: "联系客服",
 		},
@@ -56,6 +56,9 @@ export default {
 	},
 	msg: {
 		stopBet: '本期投注已截止，请进入下一期后再投注',
+		cancelBetOrderOk: '已成功撤单',
+		cancelBetOrderError: '撤单失败，原因：',
+		actionSuccess:'操作成功',
 	},
 	betPage: {
 		current: "当前在售",

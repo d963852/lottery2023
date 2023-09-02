@@ -120,11 +120,12 @@ export default {
 	methods: {
 		loadData() {
 			if (this.dictType != ''){
-				this.$u.api.dictData({dictType: this.dictType}).then(res => {
+				this.$u.api.lotteryService.findDictList({dictType: this.dictType}).then(res => {
+					console.info(res)
 					if (typeof res === 'object' && res.result === 'login'){
 						return;
 					}
-					this.setItems(res);
+					this.setItems(res.data);
 				});
 			}else{
 				this.setItems(this.items);

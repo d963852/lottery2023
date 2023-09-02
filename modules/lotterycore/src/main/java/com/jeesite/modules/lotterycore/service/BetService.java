@@ -219,6 +219,7 @@ public class BetService extends BaseService {
             betOrder.setBasePrice(Constant.系统_单注销售单价);
             betOrder.setBetTime(DateUtil.date());
             betOrder.setGameCode(betRequestBean.getGameCode());
+            betOrder.setGameName(game.getGameName());
             betOrder.setPlayMethodGroupId(playMethodGroup.getId());
             betOrder.setPlayMethodGroup(playMethodGroup.getGroupName());
             betOrder.setPlayMethodId(playMethod.getId());
@@ -274,21 +275,8 @@ public class BetService extends BaseService {
                     Constant.账变日志类型_出账_投注扣款,
                     Constant.操作人_系统自动,
                     BetOrder.class.getName(),
-                    betOrder.getIssueId());
-
-            // 发放客户投注返点
-            changeAmount = betOrder.getRebateAmount();
-            if (changeAmount > 0) {
-                newBalance += changeAmount;
-                // 记录账变日志
-                accountChangeLogService.add(currentUser,
-                        changeAmount,
-                        newBalance,
-                        Constant.账变日志类型_入账_投注返点,
-                        Constant.操作人_系统自动,
-                        BetOrder.class.getName(),
-                        betOrder.getIssueId());
-            }
+                    betOrder.getIssueId(),
+                    "");
 
             // 客户账变完毕，保存余额
             currentUser.setBalance(NumberUtil.round(newBalance, 2).doubleValue());

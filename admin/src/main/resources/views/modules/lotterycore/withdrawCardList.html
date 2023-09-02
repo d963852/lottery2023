@@ -1,0 +1,146 @@
+<% layout('/layouts/default.html', {title: '提现信息管理', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa icon-notebook"></i> ${text('提现信息管理')}
+			</div>
+			<div class="box-tools pull-right">
+				<a href="#" class="btn btn-default" id="btnSearch" title="${text('查询')}"><i class="fa fa-filter"></i> ${text('查询')}</a>
+				<% if(hasPermi('lotterycore:withdrawCard:edit')){ %>
+					<a href="${ctx}/lotterycore/withdrawCard/form" class="btn btn-default btnTool" title="${text('新增提现信息')}"><i class="fa fa-plus"></i> ${text('新增')}</a>
+				<% } %>
+				<a href="#" class="btn btn-default" id="btnSetting" title="${text('设置')}"><i class="fa fa-navicon"></i></a>
+			</div>
+		</div>
+		<div class="box-body">
+			<#form:form id="searchForm" model="${withdrawCard}" action="${ctx}/lotterycore/withdrawCard/listData" method="post" class="form-inline hide"
+					data-page-no="${parameter.pageNo}" data-page-size="${parameter.pageSize}" data-order-by="${parameter.orderBy}">
+				<div class="form-group">
+					<label class="control-label">${text('用户ID')}：</label>
+					<div class="control-inline">
+						<#form:input path="userId" maxlength="64" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('用户帐号')}：</label>
+					<div class="control-inline">
+						<#form:input path="userAccount" maxlength="64" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('卡类型')}：</label>
+					<div class="control-inline width-120">
+						<#form:select path="cardType" dictType="" blankOption="true" class="form-control"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('开户行名称')}：</label>
+					<div class="control-inline">
+						<#form:input path="bankName" maxlength="64" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('账号')}：</label>
+					<div class="control-inline">
+						<#form:input path="bankAccount" maxlength="128" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('开户人')}：</label>
+					<div class="control-inline">
+						<#form:input path="bankAccountName" maxlength="64" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('开户行地址')}：</label>
+					<div class="control-inline">
+						<#form:input path="bankAddress" maxlength="64" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('支行名称')}：</label>
+					<div class="control-inline">
+						<#form:input path="subBankName" maxlength="64" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('业务状态')}：</label>
+					<div class="control-inline">
+						<#form:input path="bizStatus" maxlength="64" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('数据状态')}：</label>
+					<div class="control-inline width-120">
+						<#form:select path="status" dictType="sys_search_status" blankOption="true" class="form-control isQuick"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('备注')}：</label>
+					<div class="control-inline">
+						<#form:input path="remarks" maxlength="512" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('是否删除')}：</label>
+					<div class="control-inline">
+						<#form:input path="deleted" maxlength="64" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label">${text('租户编号')}：</label>
+					<div class="control-inline">
+						<#form:input path="tenantId" maxlength="64" class="form-control width-120"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary btn-sm">${text('查询')}</button>
+					<button type="reset" class="btn btn-default btn-sm isQuick">${text('重置')}</button>
+				</div>
+			</#form:form>
+			<table id="dataGrid"></table>
+			<div id="dataGridPage"></div>
+		</div>
+	</div>
+</div>
+<% } %>
+<script>
+// 初始化DataGrid对象
+$('#dataGrid').dataGrid({
+	searchForm: $("#searchForm"),
+	columnModel: [
+		{header:'${text("用户帐号")}', name:'userAccount', index:'a.user_account', width:150, align:"left", frozen:true, formatter: function(val, obj, row, act){
+			return '<a href="${ctx}/lotterycore/withdrawCard/form?id='+row.id+'" class="btnList" data-title="${text("编辑提现信息")}">'+(val||row.id)+'</a>';
+		}},
+		{header:'${text("卡类型")}', name:'cardType', index:'a.card_type', width:150, align:"center", formatter: function(val, obj, row, act){
+			return js.getDictLabel(${@DictUtils.getDictListJson('')}, val, '${text("未知")}', true);
+		}},
+		{header:'${text("开户行名称")}', name:'bankName', index:'a.bank_name', width:150, align:"left"},
+		{header:'${text("账号")}', name:'bankAccount', index:'a.bank_account', width:150, align:"left"},
+		{header:'${text("开户人")}', name:'bankAccountName', index:'a.bank_account_name', width:150, align:"left"},
+		{header:'${text("开户行地址")}', name:'bankAddress', index:'a.bank_address', width:150, align:"left"},
+		{header:'${text("支行名称")}', name:'subBankName', index:'a.sub_bank_name', width:150, align:"left"},
+		{header:'${text("业务状态")}', name:'bizStatus', index:'a.biz_status', width:150, align:"left"},
+		{header:'${text("数据状态")}', name:'status', index:'a.status', width:150, align:"center", formatter: function(val, obj, row, act){
+			return js.getDictLabel(${@DictUtils.getDictListJson('sys_search_status')}, val, '${text("未知")}', true);
+		}},
+		{header:'${text("修改时间")}', name:'updateDate', index:'a.update_date', width:150, align:"center"},
+		{header:'${text("备注")}', name:'remarks', index:'a.remarks', width:150, align:"left"},
+		{header:'${text("是否删除")}', name:'deleted', index:'a.deleted', width:150, align:"left"},
+		{header:'${text("租户编号")}', name:'tenantId', index:'a.tenant_id', width:150, align:"left"},
+		{header:'${text("操作")}', name:'actions', width:120, formatter: function(val, obj, row, act){
+			var actions = [];
+			//<% if(hasPermi('lotterycore:withdrawCard:edit')){ %>
+				actions.push('<a href="${ctx}/lotterycore/withdrawCard/form?id='+row.id+'" class="btnList" title="${text("编辑提现信息")}"><i class="fa fa-pencil"></i></a>&nbsp;');
+				actions.push('<a href="${ctx}/lotterycore/withdrawCard/delete?id='+row.id+'" class="btnList" title="${text("删除提现信息")}" data-confirm="${text("确认要删除该提现信息吗？")}"><i class="fa fa-trash-o"></i></a>&nbsp;');
+			//<% } %>
+			return actions.join('');
+		}}
+	],
+	// 加载成功后执行事件
+	ajaxSuccess: function(data){
+		
+	}
+});
+</script>

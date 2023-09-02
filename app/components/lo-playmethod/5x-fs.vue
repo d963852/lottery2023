@@ -45,13 +45,13 @@
 		data() {
 			return {
 				panelData: [{
-						id: "p05",
+						id: "p01",
 						title: '万位',
 						numberRowOne: [0, 1, 2, 3, 4],
 						numberRowTow: [5, 6, 7, 8, 9],
 					},
 					{
-						id: "p04",
+						id: "p02",
 						title: '千位',
 						numberRowOne: [0, 1, 2, 3, 4],
 						numberRowTow: [5, 6, 7, 8, 9],
@@ -63,24 +63,24 @@
 						numberRowTow: [5, 6, 7, 8, 9],
 					},
 					{
-						id: "p02",
+						id: "p04",
 						title: '十位',
 						numberRowOne: [0, 1, 2, 3, 4],
 						numberRowTow: [5, 6, 7, 8, 9],
 					},
 					{
-						id: "p01",
+						id: "p05",
 						title: '个位',
 						numberRowOne: [0, 1, 2, 3, 4],
 						numberRowTow: [5, 6, 7, 8, 9],
 					},
 				],
 				selectedNumber: {
-					p05: [],
-					p04: [],
-					p03: [],
-					p02: [],
 					p01: [],
+					p02: [],
+					p03: [],
+					p04: [],
+					p05: [],
 				},
 			};
 		},
@@ -100,8 +100,10 @@
 
 					// 计算投注注数
 					let betCount = 1;
+					let betNumberObj = [];
 					for (let key in newVal) {
 						betCount *= newVal[key].length;
+						betNumberObj.push(newVal[key]);
 					}
 
 					// 将选择结果反馈到上级组件
@@ -112,6 +114,7 @@
 						success: true,
 						betNumber: arr,
 						betCount: betCount,
+						betNumberObj: betNumberObj,
 					});
 				},
 				deep: true,

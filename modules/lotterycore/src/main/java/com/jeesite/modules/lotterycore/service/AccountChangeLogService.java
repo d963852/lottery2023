@@ -104,7 +104,7 @@ public class AccountChangeLogService extends CrudService<AccountChangeLogDao, Ac
      * @param bizId         关联业务id
      */
     @Transactional
-    public void add(Member member, double amount, double newBalance ,String changeType, String ActionAccount, String bizType, String bizId) {
+    public void add(Member member, double amount, double newBalance, String changeType, String ActionAccount, String bizType, String bizId, String remarks) {
 //        double newBalance = member.getBalance() + amount; 新的余额只能传过来，否则需要一步一保存
         AccountChangeLog accountChangeLog = new AccountChangeLog();
         accountChangeLog.setUserId(member.getId());
@@ -117,6 +117,7 @@ public class AccountChangeLogService extends CrudService<AccountChangeLogDao, Ac
         accountChangeLog.setActionTime(DateUtil.date());
         accountChangeLog.setBizType(bizType);
         accountChangeLog.setBizId(bizId);
+        accountChangeLog.setRemarks(remarks);
         save(accountChangeLog);
     }
 

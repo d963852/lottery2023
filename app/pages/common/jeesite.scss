@@ -125,10 +125,13 @@
 	color:$u-type-error;
 }
 
+.text-bold{
+	font-weight: bold;
+}
+
 .gray-border{
 	border: 1rpx solid #888;
 }
-
 	
 .btn-block{
 	width: 90%;
@@ -141,4 +144,8 @@
 	padding: 0rpx 22rpx;
 	border: 1px solid #888;
 	background-color: #eee;
+}
+
+.bottom-space{
+	height:60rpx;
 }

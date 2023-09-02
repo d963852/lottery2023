@@ -1,8 +1,18 @@
 <template>
 	<view class="wrap">
-		<!-- 语言切换和余额组件 -->
-		<js-lang :title="gameName" ref="jslang" :showBtn="true"></js-lang>
+		<!-- 自定义标题栏 -->
+		<!-- 		<u-navbar back-text="返回" title="剑未配妥，出门已是江湖" :background="titleBackground"
+		 title-color="#fff" back-icon-color="#fff" back-text-style="navbarTitleFontColor"></u-navbar> -->
 
+		<!-- 余额组件 -->
+		<lo-balance :showBtn="true"></lo-balance>
+
+		<!-- 语言切换组件 -->
+		<js-lang :title="navbarTitle" ref="jslang" :showBtn="true"></js-lang>
+
+
+
+		<!-- <scroll-view class="scroll-list" scroll-y="true"> -->
 		<!-- 当前在售 -->
 		<view class="u-flex u-row-between u-p-20" style="background: #fff;">
 			<view>
@@ -37,7 +47,7 @@
 				<u-icon name="star" class="u-m-r-10"></u-icon>
 				{{ gameInfo.lastIssueNumber }} &nbsp;{{ $t('betPage.lastIssueWinningNumbers') }}
 			</view>
-			<view>
+			<view @click="showLotteryHistory">
 				{{ $t('betPage.history') }}
 				<u-icon name="arrow-right"></u-icon>
 			</view>
@@ -167,7 +177,7 @@
 				<view class="u-flex-6 bet-list-title u-text-left">
 					{{ $t('betPage.betList') }}
 				</view>
-				<view class="u-flex-6 u-text-right">
+				<view class="u-flex-6 u-text-right" @click="navTo('/pages/lottery/bet-history/bet-history')">
 					{{ $t('betPage.betHistory') }} <u-icon name="arrow-right"></u-icon>
 				</view>
 			</view>
@@ -190,16 +200,16 @@
 					</view>
 				</view>
 				<view class="u-flex u-row-between u-p-20" v-for="(item, index) in betList" :key="index">
-					<view class="u-flex-2" @click="showBet(item.menuCode,item.menuName)">
+					<view class="u-flex-2" @click="showBet(index)">
 						<text>{{ item.finalCount }} </text>
 					</view>
-					<view class="u-flex-3" @click="showBet(item.menuCode,item.menuName)">
+					<view class="u-flex-3" @click="showBet(index)">
 						{{ item.bonusAmount }}{{ $t('betPage.currencyUnit') }}
 					</view>
-					<view class="u-flex-2" @click="showBet(item.menuCode,item.menuName)">
+					<view class="u-flex-2" @click="showBet(index)">
 						{{ item.rebate }}%
 					</view>
-					<view class="u-flex-3" @click="showBet(item.menuCode,item.menuName)">
+					<view class="u-flex-3" @click="showBet(index)">
 						{{ item.betAmount }} {{ $t('betPage.currencyUnit') }}
 					</view>
 					<view class="u-flex-1 u-text-right">
@@ -221,6 +231,83 @@
 				</view>
 			</view>
 			<u-gap height="15"></u-gap>
+		</view>
+
+		<!-- 投注详情 -->
+		<view>
+			<u-popup v-model="betListDetailVisible" :closeable=true mode="bottom" length="70%">
+				<view class="u-p-t-60 u-p-30 u-font-33">
+					<view class="u-text-center red-bold">
+						投注详情
+					</view>
+					<u-line margin="30rpx" />
+					<view>
+						游戏：
+						<text class="red-bold u-p-l-10 u-p-r-10">
+							{{ gameInfo.gameName }}
+						</text>
+					</view>
+					<u-line margin="30rpx" border-style="dashed"></u-line>
+					<view>
+						玩法：
+						<text class="red-bold u-p-l-10 u-p-r-10">
+							{{ betListDetailInfo.playMethodGroupName }} - {{ betListDetailInfo.playMethodName }}
+						</text>
+					</view>
+					<u-line margin="30rpx" border-style="dashed"></u-line>
+					<view class="u-flex u-row-left" style="background: #fff;">
+						<view>
+							奖金
+							<text class="red-bold u-p-l-10 u-p-r-10">{{ betListDetailInfo.bonusAmount }}</text>元
+						</view>
+						<view class="u-m-l-10 u-m-r-10">
+							/
+						</view>
+						<view>
+							返点
+							<text class="red-bold u-p-l-10 u-p-r-10">{{ betListDetailInfo.rebate }} %</text>
+						</view>
+					</view>
+					<u-line margin="30rpx" border-style="dashed"></u-line>
+					<view>
+						投注号
+					</view>
+					<view>
+						<view v-for="(item, index) in betListDetailInfo.betNumberObj" :key="index">
+							左第{{ index+1 }}位 <text class="red-bold u-p-l-10 u-p-r-10">{{ item.join(",") }}</text>
+						</view>
+					</view>
+					<u-line margin="30rpx" border-style="dashed"></u-line>
+					<view class="u-flex u-row-left" style="background: #fff;">
+						<view>
+							倍数
+							<text class="red-bold u-p-l-10 u-p-r-10">{{ betListDetailInfo.betMultiplier }}</text> 倍
+						</view>
+						<view class="u-m-l-10 u-m-r-10">
+							/
+						</view>
+						<view>
+							总注数
+							<text class="red-bold u-p-l-10 u-p-r-10">{{ betListDetailInfo.finalCount }} </text> 注
+						</view>
+					</view>
+					<u-line margin="30rpx" border-style="dashed"></u-line>
+					<view class="u-flex u-row-left" style="background: #fff;">
+						<view>
+							货币单位
+							<text class="red-bold u-p-l-10 u-p-r-10">{{ betListDetailInfo.betUnit.label }}</text>
+						</view>
+					</view>
+					<u-line margin="30rpx" border-style="dashed"></u-line>
+					<view class="u-flex u-row-left" style="background: #fff;">
+						<view>
+							投注金额
+							<text class="red-bold u-p-l-10 u-p-r-10">{{ betListDetailInfo.betAmount }} </text> 元
+						</view>
+					</view>
+					<u-line margin="30rpx" border-style="dashed"></u-line>
+				</view>
+			</u-popup>
 		</view>
 
 		<!-- 余额不足提示 -->
@@ -253,21 +340,65 @@
 			</u-popup>
 		</view>
 
+		<!-- 开奖历史简单版 -->
+		<view>
+			<u-popup v-model="lotteryHistoryVisible" :closeable=true mode="bottom" length="70%">
+				<view class="u-p-t-60 u-p-30">
+					<view >
+						<view class="u-flex u-row-between u-p-20" style="background: #fff;">
+							<view class="red-bold">
+								期号
+							</view>
+							<view class="red-bold">
+								开奖结果
+							</view>
+						</view>
+						<u-line margin="10rpx" border-style="dashed"></u-line>
+					</view>
+					<view v-for="(item,index) in lotteryHistoryData" :key="index">
+						<view class="u-flex u-row-between u-p-20" style="background: #fff;">
+							<view>
+								{{ item.issueNum }}
+							</view>
+							<view>
+								{{ item.lotteryNum }}
+							</view>
+						</view>
+						<u-line margin="10rpx" border-style="dashed"></u-line>
+					</view>
+				</view>
+			</u-popup>
+		</view>
+
 		<!-- 顶部弹出错误提醒 -->
 		<view>
 			<u-top-tips ref="uTips"></u-top-tips>
 		</view>
-
-
+		<!-- </scroll-view> -->
 	</view>
 </template>
 <script>
 	import utils from '@/common/utils.js';
 
 	export default {
+		// onBackPress(event) {
+		// 	uni.redirectTo({
+		// 		url: '/pages/lottery/index'
+		// 	});
+		// 	return true;
+		// },
 		data() {
 			return {
-				gameName: '', //标题栏
+				// titleBackground: {
+				// 	backgroundColor: '#fa3534',
+				// 	// 渐变色
+				// 	//backgroundImage: 'linear-gradient(45deg, rgb(28, 187, 180), rgb(141, 198, 63))'
+				// },
+				// navbarTitleFontColor:{
+				// 	 color: '#fff',
+				// },
+				navbarTitle:'',//标题栏
+				gameName: '', //游戏名称
 				balance: 0, //用户余额
 				gameInfo: {
 					lastIssueLotteryNumber: "正在开奖中",
@@ -284,6 +415,21 @@
 				needRechargeAlertVisible: false, //余额不足提醒
 				needAmount: 0, //需要的金额
 				needRechargeAmount: 0, //需充值金额
+				betListDetailVisible: false, //投注列表详情是否可见
+				betListDetailInfo: { //投注列表详情里要显示的数据
+					betNumber: {},
+					betCount: 0,
+					finalCount: 0,
+					betMultiplier: 1,
+					betUnit: {
+						value: 1,
+						label: '元',
+					},
+					betAmount: 0.00, //投注金额
+					rebate: 0, // 投注返点
+					bonusAmount: 0, // 投注奖金金额
+					rebateAmount: 0, //投注返点金额
+				},
 				multiplierList: [{ // 倍数选择列表
 						value: 1,
 						label: '1'
@@ -364,6 +510,9 @@
 				// playMethodMinBonus: 0, //玩法最小奖金
 				memberRebate: 0, //客户投注返点上限
 				sysMaxRebate: 0, //系统投注返点上限
+
+				lotteryHistoryVisible: false, //底部开奖历史是否可见
+				lotteryHistoryData: [], //底部开奖历史数据
 			};
 		},
 		computed: {
@@ -473,6 +622,11 @@
 		},
 		components: {},
 		async onLoad(param) {
+			if (param) {
+				this.gameCode = param.gameCode;
+				this.gameName = param.gameName;
+				this.navbarTitle = param.gameName;
+			}
 			// 获取最新销售基准单价
 			await this.$u.api.lotteryService.getBasePrice({}).then(res => {
 				if (res.success) {
@@ -495,15 +649,18 @@
 			});
 			// 获取游戏信息
 			if (param) {
-				this.gameCode = param.gameCode;
 				await this.getGameInfo(param.gameCode);
 				await this.loadComponent(param.gameCode);
-				this.gameName = param.gameName;
 			}
 		},
 		onShow() {},
 		created() {},
 		methods: {
+			backToIndex() {
+				uni.switchTab({
+					url: '/pages/lottery/home/home'
+				})
+			},
 			async getBalance() {
 				let res = await this.$u.api.memberService.getBalance();
 				// console.info(res);
@@ -621,6 +778,7 @@
 					// console.info('接收到子组件回传', betInfo);
 					// 计算投注注数
 					this.currentBet.betNumber = betInfo.betNumber;
+					this.currentBet.betNumberObj = betInfo.betNumberObj;
 					this.currentBet.betCount = betInfo.betCount;
 					this.currentBet.finalCount = betInfo.betCount * this.currentBet.betMultiplier;
 				}
@@ -710,24 +868,24 @@
 				this.currentBet.bonusAmount = bonus; //奖金
 				this.currentBet.rebate = selectRebate; // 返点率(还需要除以100)
 				this.currentBet.rebateAmount = selectRebate / 100 * this.currentBet.betAmount; //返点金额=返点率*投注金额
-				
-				console.log('this.currentPlayMethod', this.currentPlayMethod);
-				
-				console.log('this.memberRebate', this.memberRebate);
-				console.log('selectRebate', selectRebate);
-				console.log('rebateDiff', rebateDiff);
-				
-				console.log('this.currentPlayMethod.maxBonus', this.currentPlayMethod.maxBonus);
-				console.log('this.currentPlayMethod.minBonus', this.currentPlayMethod.minBonus);
-				console.log('bonusDiff', bonusDiff);
-			
-				console.log('this.sysMaxRebate', this.sysMaxRebate);
-				console.log('bonusAdd', bonusAdd);
-				console.log('bonus', bonus);
-				
-				console.log('this.currentBet.bonusAmount', this.currentBet.bonusAmount);
-				console.log('this.currentBet.rebate', this.currentBet.rebate);
-				console.log('this.currentBet.rebateAmount ', this.currentBet.rebateAmount );
+
+				// console.log('this.currentPlayMethod', this.currentPlayMethod);
+
+				// console.log('this.memberRebate', this.memberRebate);
+				// console.log('selectRebate', selectRebate);
+				// console.log('rebateDiff', rebateDiff);
+
+				// console.log('this.currentPlayMethod.maxBonus', this.currentPlayMethod.maxBonus);
+				// console.log('this.currentPlayMethod.minBonus', this.currentPlayMethod.minBonus);
+				// console.log('bonusDiff', bonusDiff);
+
+				// console.log('this.sysMaxRebate', this.sysMaxRebate);
+				// console.log('bonusAdd', bonusAdd);
+				// console.log('bonus', bonus);
+
+				// console.log('this.currentBet.bonusAmount', this.currentBet.bonusAmount);
+				// console.log('this.currentBet.rebate', this.currentBet.rebate);
+				// console.log('this.currentBet.rebateAmount ', this.currentBet.rebateAmount);
 			},
 			// 添加到投注列表及直接投注之前，计算当前投注的信息
 			async validateBalance(amount) {
@@ -752,6 +910,8 @@
 			async addToBetList() {
 				this.currentBet.betAmount = this.currentFinalBetAmount;
 				this.currentBet.playMethodId = this.currentPlayMethod.id;
+				this.currentBet.playMethodName = this.currentPlayMethod.playMethodName;
+				this.currentBet.playMethodGroupName = this.currentPlayMethodGroup.groupName;
 				// 检查余额是否足够
 				let validated = await this.validateBalance(this.currentBet.betAmount);
 				if (validated) {
@@ -800,16 +960,44 @@
 				});
 				if (betResult.success) {
 					// 投注成功，更新余额
-					this.$u.toast(this.$t('betPage.betSuccess'));
+					this.$refs.uTips.show({
+						title: this.$t('betPage.betSuccess'),
+						type: 'success',
+						duration: '3000'
+					})
 					this.$refs.jslang.balance = betResult.data;
 					this.waitForBetRequestDisable = false; // 启用添加列表、投注按钮
 				} else {
 					this.$refs.uTips.show({
 						title: '投注失败，原因：' + betResult.message,
-						type: 'warning ',
+						type: 'warning',
 						duration: '3000'
 					})
 					this.waitForBetRequestDisable = false; // 启用添加列表、投注按钮
+				}
+			},
+			showBet(index) {
+				console.info(index);
+				this.betListDetailInfo = this.betList[index];
+				this.betListDetailVisible = true;
+			},
+			navTo(url) {
+				console.info('url', url);
+				uni.navigateTo({
+					url: url,
+				});
+			},
+			async showLotteryHistory() {
+				let res = await this.$u.api.lotteryService.findIssueHistoryList({
+					gameCode: this.gameInfo.gameCode
+				});
+				console.info(res.data);
+				if (res.success) {
+					this.lotteryHistoryData = res.data;
+					this.lotteryHistoryVisible = true;
+				} else {
+					this.$u.toast(this.$t('error.serverDisconnected'));
+					return;
 				}
 			}
 		},
@@ -817,8 +1005,6 @@
 	};
 </script>
 <style lang="scss">
-	@import 'index.scss';
-
 	page {
 		background-color: #f8f8f8;
 	}

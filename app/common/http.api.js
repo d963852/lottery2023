@@ -39,25 +39,25 @@ const install = (Vue, vm) => {
 			infoSavePqa: (params = {}) => vm.$u.post(config.adminPath + '/sys/user/infoSavePqa', params),
 		},
 
-		// 员工用户查询
-		empUser: {
-			listData: (params = {}) => vm.$u.get(config.adminPath + '/sys/empUser/listData', params),
-		},
+		// // 员工用户查询
+		// empUser: {
+		// 	listData: (params = {}) => vm.$u.get(config.adminPath + '/sys/empUser/listData', params),
+		// },
 
-		// 组织机构查询
-		office: {
-			treeData: (params = {}) => vm.$u.get(config.adminPath + '/sys/office/treeData', params),
-		},
+		// // 组织机构查询
+		// office: {
+		// 	treeData: (params = {}) => vm.$u.get(config.adminPath + '/sys/office/treeData', params),
+		// },
 
-		// 增删改查例子
-		testData: {
-			form: (params = {}) => vm.$u.post(config.adminPath + '/test/testData/form', params),
-			list: (params = {}) => vm.$u.post(config.adminPath + '/test/testData/listData', params),
-			save: (params = {}) => vm.$u.postJson(config.adminPath + '/test/testData/save', params),
-			disable: (params = {}) => vm.$u.post(config.adminPath + '/test/testData/disable', params),
-			enable: (params = {}) => vm.$u.post(config.adminPath + '/test/testData/enable', params),
-			delete: (params = {}) => vm.$u.post(config.adminPath + '/test/testData/delete', params),
-		},
+		// // 增删改查例子
+		// testData: {
+		// 	form: (params = {}) => vm.$u.post(config.adminPath + '/test/testData/form', params),
+		// 	list: (params = {}) => vm.$u.post(config.adminPath + '/test/testData/listData', params),
+		// 	save: (params = {}) => vm.$u.postJson(config.adminPath + '/test/testData/save', params),
+		// 	disable: (params = {}) => vm.$u.post(config.adminPath + '/test/testData/disable', params),
+		// 	enable: (params = {}) => vm.$u.post(config.adminPath + '/test/testData/enable', params),
+		// 	delete: (params = {}) => vm.$u.post(config.adminPath + '/test/testData/delete', params),
+		// },
 
 		// 文章类服务
 		aricleService: {
@@ -68,86 +68,94 @@ const install = (Vue, vm) => {
 			getNoticeTitleList: (params = {}) => vm.$u.post(config.adminPath +
 				'/api/article/getNoticeTitleList', params),
 			//获取通知列表
-			getNoticeList: (params = {}) => vm.$u.post(config.adminPath +
-				'/api/article/getNoticeList', params),
+			getNoticeList: (params = {}) => vm.$u.post(config.adminPath + '/api/article/getNoticeList', params),
 			//获取通知清单
-			getArticle: (params = {}, id) => vm.$u.post(config.adminPath +
-				'/api/article/getArticle/' + id, params),
+			getArticle: (params = {}, id) => vm.$u.post(config.adminPath + '/api/article/getArticle/' + id,
+				params),
 		},
 
 		// 会员服务类
 		memberService: {
 			//获取会员余额
-			getBalance: () => vm.$u.post(config.adminPath +
-				'/api/member/getBalance', {}),
+			getBalance: () => vm.$u.post(config.adminPath + '/api/member/getBalance', {}),
 			//获取会员投注返点上限
-			getRebate: () => vm.$u.post(config.adminPath +
-				'/api/member/getRebate', {}),
-			//获取会员账变列表
-			findFundLogList: (params = {}) => vm.$u.post(config.adminPath +
-				'/api/member/findFundLogList', params),
+			getRebate: () => vm.$u.post(config.adminPath + '/api/member/getRebate', {}),
+
 		},
-		
+
 		// 提现卡服务类
 		withdrawCardService: {
 			//获取会员提现卡信息
-			get: (params = {}) => vm.$u.post(config.adminPath +
-				'/api/withdrawCard/get', params),
+			get: (params = {}) => vm.$u.post(config.adminPath + '/api/withdrawCard/get', params),
 			//获取会员提现卡列表
-			findList: (params = {}) => vm.$u.post(config.adminPath +
-				'/api/withdrawCard/findList', params),
+			findList: (params = {}) => vm.$u.post(config.adminPath + '/api/withdrawCard/findList', params),
 			//保存会员提现卡列表
-			save: (params = {}) => vm.$u.post(config.adminPath +
-				'/api/withdrawCard/save', params),
+			save: (params = {}) => vm.$u.post(config.adminPath + '/api/withdrawCard/save', params),
 			//保存会员提现卡列表
-			delete: (params = {}) => vm.$u.post(config.adminPath +
-				'/api/withdrawCard/delete', params),
-		},
-		
-		// 字典服务类
-		dictService:{
-			// 获取字典类型
-			findDictList: (params = {}) => vm.$u.post(config.adminPath +
-				'/api/lottery/findDictList', params),
+			delete: (params = {}) => vm.$u.post(config.adminPath + '/api/withdrawCard/delete', params),
 		},
 
-		//彩票服务类
-		lotteryService: {
-			// 获取最爱彩种
-			findFavGameList: (params = {}) => vm.$u.post(config.adminPath +
-				'/api/article/getIndexPictureList', params),
-			// 获取热门彩种
-			findHotGameList: (params = {
-				gameGroup: 'hot'
-			}) => vm.$u.post(config.adminPath +
-				'/api/lottery/findGameList', params),
-			// 获取彩种详情
-			getGameInfo: (params = {}) => vm.$u.post(config.adminPath +
-				'/api/lottery/getGameInfo', params),
-			// 获取玩法清单
-			findPlayMethodList: (params = {
-				gemecode: ''
-			}) => vm.$u.post(config.adminPath +
-				'/api/lottery/findPlayMethodList', params),
-			// 获取系统单注售价
-			getBasePrice: (params = {}) => vm.$u.post(config.adminPath +
-				'/api/lottery/getBasePrice', params),
-			// 获取系统投注返点上限
-			getSysMaxRebate: (params = {}) => vm.$u.post(config.adminPath +
-				'/api/lottery/getSysMaxRebate', params),
-			// 下注
-			bet: (params = {}) => vm.$u.post(config.adminPath +
-				'/api/lottery/bet', params),
+		// 字典服务类
+		dictService: {
+			// 获取字典类型
+			findList: (params = {}) => vm.$u.post(config.adminPath + '/api/dict/findList', params),
+		},
+
+		// 投注订单服务类
+		betOrderService: {
 			// 获取会员投注历史
-			findBetHistoyList: (params = {}) => vm.$u.post(config.adminPath +
-				'/api/lottery/findBetHistoryList', params),
+			findHistoryList: (params = {}) => vm.$u.post(config.adminPath + '/api/betOrder/findHistoryList',
+				params),
+			// 撤单
+			cancel: (params = {}) => vm.$u.post(config.adminPath + '/api/betOrder/cancel', params),
+		},
+
+		// 期号服务类
+		issueService: {
 			// 获取指定游戏的开奖历史
 			findIssueHistoryList: (params = {}) => vm.$u.post(config.adminPath +
 				'/api/lottery/findIssueHistoryList', params),
-			// 撤单
-			cancelBetOrder: (params = {}) => vm.$u.post(config.adminPath +
-				'/api/lottery/cancelBetOrder', params),
 		},
+
+		// 游戏服务类
+		gameService: {
+			// 获取热门彩种
+			findListByType: (params = {
+				gameType: 'hot'
+			}) => vm.$u.post(config.adminPath + '/api/game/findListByType', params),
+			// 获取彩种详情
+			getByCode: (params = {}) => vm.$u.post(config.adminPath + '/api/game/getByCode', params),
+			// 获取玩法清单
+		},
+
+		// 账变服务类
+		accountChangeLogService: {
+			//获取会员账变列表
+			findList: (params = {}) => vm.$u.post(config.adminPath + '/api/accountChangeLog/findList', params),
+		},
+
+		// 玩法服务类
+		playMethodService: {
+			findListByGameCode: (params = {
+				gemecode: ''
+			}) => vm.$u.post(config.adminPath +
+				'/api/playMethod/findListByGameCode', params),
+		},
+
+		// 系统设置服务类
+		sysConfigService: {
+			// 获取系统设置
+			getConfig: (params = {
+				configName: ''
+			}) => vm.$u.post(config.adminPath + '/api/sysConfig/getConfig', params),
+		},
+
+		// 投注核心服务类
+		betService: {
+			// 下注
+			bet: (params = {}) => vm.$u.post(config.adminPath + '/api/lottery/bet', params),
+		},
+
 	};
 
 }

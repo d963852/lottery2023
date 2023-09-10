@@ -83,7 +83,7 @@
 			};
 
 			// 获取提现卡类型列表
-			let withdrawCardTypeRes = await this.$u.api.dictService.findDictList({
+			let withdrawCardTypeRes = await this.$u.api.dictService.findList({
 				dictType: 'lottery_withdraw_card_type',
 			});
 			// console.info('lottery_withdraw_card_type', withdrawCardTypeRes);
@@ -95,7 +95,7 @@
 			};
 
 			// 获取银行列表
-			let bankNameRes = await this.$u.api.dictService.findDictList({
+			let bankNameRes = await this.$u.api.dictService.findList({
 				dictType: 'lottery_sys_bank_list',
 			});
 			// console.info('lottery_sys_bank_list', bankNameRes);

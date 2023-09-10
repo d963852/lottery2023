@@ -88,7 +88,7 @@
 				}, 100);
 			},
 			async loadList() {
-				let res = await this.$u.api.memberService.findFundLogList(this.query);
+				let res = await this.$u.api.accountChangeLogService.findList(this.query);
 				if (res.success) {
 					if (!res.data.list || res.data.list.length == 0) {
 						this.loadStatus = "nomore";
@@ -101,12 +101,12 @@
 					this.loadStatus = "loadmore";
 				} else {}
 			},
-			search(value) {
-				this.list = [];
-				this.query.pageNo = 0;
-				this.query.testInput = value;
-				this.loadList();
-			},
+			// search(value) {
+			// 	this.list = [];
+			// 	this.query.pageNo = 0;
+			// 	this.query.testInput = value;
+			// 	this.loadList();
+			// },
 			navTo(url) {
 				uni.navigateTo({
 					url: url

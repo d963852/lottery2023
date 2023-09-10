@@ -7,11 +7,12 @@
 		<js-lang ref="jslang" :showBtn="true"></js-lang>
 
 		<!-- 搜索-->
-		<view class="search">
+		<!-- <view class="search">
 			<u-search v-model="keywords" @custom="search" @search="search"></u-search>
-		</view>
+		</view> -->
 
 		<!-- 列表 -->
+		<u-line color="#aaa" border-style="dashed" margin="10rpx 5rpx" />
 		<view class="contentList" v-for="(item, index) in list" :key="index" @click="showDetail(index)">
 			<view class="u-flex u-row-between u-p-20" :class="getStatusCss(item.bizStatus)">
 				<view>
@@ -117,6 +118,13 @@
 							<text class="red-bold u-p-l-10 u-p-r-10">{{ detailInfo.betAmount }} </text> 元
 						</view>
 					</view>
+					<u-line margin="20rpx" border-style="dashed"></u-line>
+					<view class="u-flex u-row-left" style="background: #fff;">
+						<view>
+							状态
+							<text class="u-p-l-10 u-p-r-10">{{ detailInfo.bizStatus }} </text>
+						</view>
+					</view>
 					<view v-if="canCancleOrder(detailInfo.bizStatus)">
 						<u-line margin="20rpx" border-style="dashed"></u-line>
 						<u-button type="warning u-font-40" @click="cancelOrder(detailInfo.id)">
@@ -162,12 +170,7 @@
 		onLoad() {
 			this.loadList();
 		},
-		onShow() {
-			if (uni.getStorageSync('refreshList') === true) {
-				uni.removeStorageSync('refreshList');
-				this.search('');
-			}
-		},
+		onShow() {},
 		computed: {
 
 		},
@@ -180,7 +183,7 @@
 				}, 100);
 			},
 			async loadList() {
-				let res = await this.$u.api.lotteryService.findBetHistoyList(this.query);
+				let res = await this.$u.api.betOrderService.findHistoryList(this.query);
 				if (res.success) {
 					if (!res.data.list || res.data.list.length == 0) {
 						this.loadStatus = "nomore";
@@ -193,12 +196,12 @@
 					this.loadStatus = "loadmore";
 				}
 			},
-			search(value) {
-				this.list = [];
-				this.query.pageNo = 0;
-				this.query.testInput = value;
-				this.loadList();
-			},
+			// search(value) {
+			// 	this.list = [];
+			// 	this.query.pageNo = 0;
+			// 	this.query.testInput = value;
+			// 	this.loadList();
+			// },
 			navTo(url) {
 				uni.navigateTo({
 					url: url
@@ -238,11 +241,14 @@
 			// 撤单
 			async cancelOrder(orderId) {
 				console.info('orderId', orderId);
-				let res = await this.$u.api.lotteryService.cancelBetOrder({
+				let res = await this.$u.api.betOrderService.cancel({
 					orderId: orderId
 				});
 				if (res.success) {
 					this.$u.toast(this.$t('msg.cancelBetOrderOk'));
+					this.list = [];
+					this.loadList();
+					this.detailVisible = false;
 				} else {
 					this.$u.toast(this.$t('msg.cancelBetOrderError') + res.message);
 					return;

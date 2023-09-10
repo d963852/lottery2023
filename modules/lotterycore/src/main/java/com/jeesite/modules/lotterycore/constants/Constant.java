@@ -65,7 +65,7 @@ public class Constant {
     public static final String 账变日志类型_入账_投注返点 = "入账_投注返点";
     public static final String 账变日志类型_入账_下家投注返点 = "入账_下家投注返点";
     public static final String 账变日志类型_入账_提现失败返还冻结资金 = "入账_提现失败返还冻结资金";
-    public static final String 账变日志类型_入账_撤单返还 = "入账_撤单返还";
+    public static final String 账变日志类型_入账_撤单返还投注金额 = "入账_撤单返还投注金额";
     public static final String 账变日志类型_入账_中奖派奖 = "入账_中奖派奖";
     public static final String 账变日志类型_入账_工资 = "入账_工资";
     public static final String 账变日志类型_入账_分红 = "入账_分红";

@@ -120,7 +120,7 @@ export default {
 	methods: {
 		loadData() {
 			if (this.dictType != ''){
-				this.$u.api.lotteryService.findDictList({dictType: this.dictType}).then(res => {
+				this.$u.api.dictSerivce.findList({dictType: this.dictType}).then(res => {
 					console.info(res)
 					if (typeof res === 'object' && res.result === 'login'){
 						return;

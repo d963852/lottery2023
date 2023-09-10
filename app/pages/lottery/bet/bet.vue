@@ -344,7 +344,7 @@
 		<view>
 			<u-popup v-model="lotteryHistoryVisible" :closeable=true mode="bottom" length="70%">
 				<view class="u-p-t-60 u-p-30">
-					<view >
+					<view>
 						<view class="u-flex u-row-between u-p-20" style="background: #fff;">
 							<view class="red-bold">
 								期号
@@ -381,23 +381,9 @@
 	import utils from '@/common/utils.js';
 
 	export default {
-		// onBackPress(event) {
-		// 	uni.redirectTo({
-		// 		url: '/pages/lottery/index'
-		// 	});
-		// 	return true;
-		// },
 		data() {
 			return {
-				// titleBackground: {
-				// 	backgroundColor: '#fa3534',
-				// 	// 渐变色
-				// 	//backgroundImage: 'linear-gradient(45deg, rgb(28, 187, 180), rgb(141, 198, 63))'
-				// },
-				// navbarTitleFontColor:{
-				// 	 color: '#fff',
-				// },
-				navbarTitle:'',//标题栏
+				navbarTitle: '', //标题栏
 				gameName: '', //游戏名称
 				balance: 0, //用户余额
 				gameInfo: {
@@ -628,13 +614,17 @@
 				this.navbarTitle = param.gameName;
 			}
 			// 获取最新销售基准单价
-			await this.$u.api.lotteryService.getBasePrice({}).then(res => {
+			await this.$u.api.sysConfigService.getConfig({
+				configName: 'lottery.sys.basePrice'
+			}).then(res => {
 				if (res.success) {
 					this.basePrice = res.data;
 				}
 			});
 			// 获取最新系统投注返点上限
-			await this.$u.api.lotteryService.getSysMaxRebate({}).then(res => {
+			await this.$u.api.sysConfigService.getConfig({
+				configName: 'lottery.member.rebate'
+			}).then(res => {
 				if (res.success) {
 					this.sysMaxRebate = res.data;
 				}
@@ -672,7 +662,7 @@
 			},
 			// 获取游戏基本信息
 			getGameInfo(gameCode) {
-				this.$u.api.lotteryService.getGameInfo({
+				this.$u.api.gameService.getByCode({
 					gameCode: gameCode
 				}).then(res => {
 					// console.info(res.data);
@@ -730,7 +720,7 @@
 			// 根据游戏code取得游戏类型，显示玩法组件
 			async loadComponent(gameCode) {
 				let that = this;
-				this.$u.api.lotteryService.findPlayMethodList({
+				this.$u.api.playMethodService.findListByGameCode({
 					gameCode: gameCode
 				}).then(res => {
 					if (res.success) {
@@ -797,20 +787,14 @@
 			},
 			// 刷新游戏信息
 			updateCurrentIssue() {
-				// console.info("开始updateCurrentIssue");
 				setTimeout(() => {
-					this.$u.api.lotteryService.getGameInfo({
+					this.$u.api.gameService.getByCode({
 						gameCode: this.gameCode
 					}).then(res => {
 						// console.info("res", res);
 						if (res.success) {
 							this.nextGameInfo = res.data;
 							if (this.nextGameInfo.currentIssueNumber == this.gameInfo.currentIssueNumber) {
-								// console.info("this.nextGameInfo.currentIssueNumber", this.nextGameInfo
-								// 	.currentIssueNumber);
-								// console.info("this.gameInfo.currentIssueNumber", this.gameInfo
-								// 	.currentIssueNumber);
-								// console.info("数据未更新，继续尝试");
 								this.updateCurrentIssue();
 							} else {
 								// console.info("数据更新");
@@ -831,7 +815,7 @@
 			// 获取上期开奖结果
 			getLastIssueLotteryNumber() {
 				setTimeout(() => {
-					this.$u.api.lotteryService.getGameInfo({
+					this.$u.api.gameService.getByCode({
 						gameCode: this.gameCode
 					}).then(res => {
 						if (res.success) {
@@ -955,7 +939,7 @@
 				};
 				// 投注
 				this.waitForBetRequestDisable = true; // 禁用添加列表、投注按钮
-				let betResult = await this.$u.api.lotteryService.bet({
+				let betResult = await this.$u.api.betService.bet({
 					betRequest: JSON.stringify(betRequest),
 				});
 				if (betResult.success) {
@@ -988,7 +972,7 @@
 				});
 			},
 			async showLotteryHistory() {
-				let res = await this.$u.api.lotteryService.findIssueHistoryList({
+				let res = await this.$u.api.issueService.findIssueHistoryList({
 					gameCode: this.gameInfo.gameCode
 				});
 				console.info(res.data);

@@ -2,10 +2,10 @@
 	<view class="wrap">
 		<!-- 余额组件 -->
 		<lo-balance :showBtn="true"></lo-balance>
-		
+
 		<!-- 语言切换组件 -->
 		<js-lang ref="jslang" :showBtn="true"></js-lang>
-		
+
 		<!-- 轮播图 -->
 		<u-swiper :height="300" :list="imgList" :title="false" @click="imgListClick"></u-swiper>
 
@@ -73,7 +73,8 @@
 		<u-section :title="$t('lottery.hotGameListTitle')" :sub-title="$t('lottery.allGames')" font-size="30"
 			class="u-p-20"></u-section>
 		<u-grid :col="3">
-			<u-grid-item v-for="(item, index) in hotGameList" :key="item.menuCode" @click="navToBet(item.menuCode,item.menuName)">
+			<u-grid-item v-for="(item, index) in hotGameList" :key="item.menuCode"
+				@click="navToBet(item.menuCode,item.menuName)">
 				<view class="gameIcon">
 					<image :src="item.menuIcon"></image>
 				</view>
@@ -148,7 +149,7 @@
 					url: url
 				});
 			},
-			navToBet(gameCode,gameName) {
+			navToBet(gameCode, gameName) {
 				uni.navigateTo({
 					url: '/pages/lottery/bet/bet?gameCode=' + gameCode + '&gameName=' + gameName,
 				});
@@ -192,28 +193,28 @@
 					}
 				});
 			},
-			findHotGameList() {
-				// 获取最新5条通知
+			async findHotGameList() {
 				let that = this;
-				this.$u.api.lotteryService.findHotGameList().then(res => {
-					if (res.success) {
-						// console.info(res.data);
-						let newArray = res.data.map(function(item, index) {
-							return {
-								menuCode: item.gameCode,
-								menuName: item.gameName,
-								menuIcon: that.vuex_config.baseUrl + item.imgUrl,
-								menuColor: '#919328',
-								menuDes: item.gameDesc,
-								url: '#',
-							};
-						});
-						that.hotGameList = newArray;
-					} else {
-						that.$u.toast(that.$t('error.notFound'));
-					}
-
+				// 最热游戏推荐
+				let res = await this.$u.api.gameService.findListByType({
+					gameType: 'hot'
 				});
+				if (res.success) {
+					// console.info(res.data);
+					let newArray = res.data.map(function(item, index) {
+						return {
+							menuCode: item.gameCode,
+							menuName: item.gameName,
+							menuIcon: that.vuex_config.baseUrl + item.imgUrl,
+							menuColor: '#919328',
+							menuDes: item.gameDesc,
+							url: '#',
+						};
+					});
+					this.hotGameList = newArray;
+				} else {
+					this.$u.toast(this.$t('error.notFound'));
+				}
 			},
 
 

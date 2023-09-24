@@ -10,18 +10,18 @@
 		<relativePath>../parent/pom.xml</relativePath>
 	</parent>
 	
-	<artifactId>jeesite-web-api</artifactId>
+	<artifactId>api</artifactId>
 	<packaging>war</packaging>
 	
 	<description>专为分离端提供接口服务，关闭内置登录页和主框架页视图</description>
 	
-	<name>JeeSite Web Api</name>
+	<name>api</name>
 	<url>http://jeesite.com</url>
 	<inceptionYear>2013-Now</inceptionYear>
 	
 	<properties>
 		
-		<finalName>webApi</finalName><!-- war or jar 包的名称 -->
+		<finalName>api</finalName><!-- war or jar 包的名称 -->
 		<start-class>com.jeesite.modules.ApiApplication</start-class>
 		
 		<!-- docker setting -->

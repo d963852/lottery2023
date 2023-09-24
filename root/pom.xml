@@ -17,7 +17,7 @@
         <module>../admin</module>
         <module>../task</module>
         <module>../web</module>
-        <module>../web-api</module>
+        <module>../api</module>
     </modules>
 	
 	<developers>  
